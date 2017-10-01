@@ -40,7 +40,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public override bool Equals(object obj)
         {
-            return obj is MapleBool ? ((MapleBool)obj).val.Equals(val) : false;
+            return obj is MapleBool && ((MapleBool)obj).val.Equals(val);
         }
 
         public override int GetHashCode()
@@ -86,7 +86,6 @@ namespace MapleLib.WzLib.WzStructure
                         return false;
                     case True:
                         return true;
-                    case NotExist:
                     default:
                         throw new Exception("Tried to get value of nonexistant MapleBool");
                 }

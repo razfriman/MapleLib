@@ -8,13 +8,13 @@ namespace MapleLib.WzLib.Util
     {
         public WzMutableKey(byte[] WzIv, byte[] AesKey)
         {
-            this.iv = WzIv;
-            this.aesKey = AesKey;
+            iv = WzIv;
+            aesKey = AesKey;
         }
 
         private static readonly int BatchSize = 4096;
-        private byte[] iv;
-        private byte[] aesKey;
+        private readonly byte[] iv;
+        private readonly byte[] aesKey;
 
         private byte[] keys;
 
@@ -26,7 +26,7 @@ namespace MapleLib.WzLib.Util
                 {
                     EnsureKeySize(index + 1);
                 }
-                return this.keys[index];
+                return keys[index];
             }
         }
 
@@ -40,9 +40,9 @@ namespace MapleLib.WzLib.Util
             size = (int)Math.Ceiling(1.0 * size / BatchSize) * BatchSize;
             byte[] newKeys = new byte[size];
 
-            if (BitConverter.ToInt32(this.iv, 0) == 0)
+            if (BitConverter.ToInt32(iv, 0) == 0)
             {
-                this.keys = newKeys;
+                keys = newKeys;
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace MapleLib.WzLib.Util
 
             s.Flush();
             ms.Close();
-            this.keys = newKeys;
+            keys = newKeys;
         }
     }
 }

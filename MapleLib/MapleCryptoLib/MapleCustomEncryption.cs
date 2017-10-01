@@ -1,5 +1,4 @@
-﻿
-namespace MapleLib.MapleCryptoLib
+﻿namespace MapleLib.MapleCryptoLib
 {
     /// <summary>
     /// Class to handle the MapleStory Custom Encryption routines

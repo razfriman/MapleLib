@@ -14,7 +14,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static MapInfo Default = new MapInfo();
 
-        private WzImage image = null;
+        private WzImage image;
 
         public MapInfo()
         {
@@ -30,7 +30,7 @@ namespace MapleLib.WzLib.WzStructure
             this.strCategoryName = strCategoryName;
             WzFile file = image.WzFileParent;
             string loggerSuffix = ", map " + image.Name + ((file != null) ? (" of version " + Enum.GetName(typeof(WzMapleVersion), file.MapleVersion) + ", v" + file.Version.ToString()) : "");
-            foreach (WzImageProperty prop in image["info"].WzProperties) 
+            foreach (WzImageProperty prop in image["info"].WzProperties)
             {
                 switch (prop.Name)
                 {
@@ -75,7 +75,7 @@ namespace MapleLib.WzLib.WzStructure
                         break;
                     case "fieldLimit":
                         int fl = InfoTool.GetInt(prop);
-                        if (fl >= (int)Math.Pow(2, 23)) 
+                        if (fl >= (int)Math.Pow(2, 23))
                         {
                             Log.LogError($"Invalid fieldlimit: {fl}");
                             fl = fl & ((int)Math.Pow(2, 23) - 1);
@@ -113,7 +113,7 @@ namespace MapleLib.WzLib.WzStructure
                         break;
                     case "fieldType":
                         int ft = InfoTool.GetInt(prop);
-                        if (!Enum.IsDefined(typeof(FieldType), ft)) 
+                        if (!Enum.IsDefined(typeof(FieldType), ft))
                         {
                             Log.LogError($"Invalid fieldType: {ft}");
                             ft = 0;
@@ -144,14 +144,14 @@ namespace MapleLib.WzLib.WzStructure
                     case "timeMob":
                         startHour = InfoTool.GetOptionalInt(prop["startHour"]);
                         endHour = InfoTool.GetOptionalInt(prop["endHour"]);
-                        int? id = InfoTool.GetOptionalInt(prop["id"]);
+                        int? propId = InfoTool.GetOptionalInt(prop["id"]);
                         string message = InfoTool.GetOptionalString(prop["message"]);
-                        if (id == null || message == null || (startHour == null ^ endHour == null))
+                        if (propId == null || message == null || (startHour == null ^ endHour == null))
                         {
                             Log.LogError("timeMob is missing data");
                         }
                         else
-                            timeMob = new TimeMob((int?)startHour, (int?)endHour, (int)id, message);
+                            timeMob = new TimeMob(startHour, endHour, (int)propId, message);
                         break;
                     case "help":
                         help = InfoTool.GetString(prop);
@@ -298,7 +298,7 @@ namespace MapleLib.WzLib.WzStructure
             info["entrustedShop"] = InfoTool.SetOptionalBool(entrustedShop);
             info["effect"] = InfoTool.SetOptionalString(effect);
             info["lvForceMove"] = InfoTool.SetOptionalInt(lvForceMove);
-            if (timeMob != null) 
+            if (timeMob != null)
             {
                 WzSubProperty prop = new WzSubProperty();
                 prop["startHour"] = InfoTool.SetOptionalInt(timeMob.Value.startHour);
@@ -313,7 +313,7 @@ namespace MapleLib.WzLib.WzStructure
             info["dropExpire"] = InfoTool.SetOptionalInt(dropExpire);
             info["decHP"] = InfoTool.SetOptionalInt(decHP);
             info["decInterval"] = InfoTool.SetOptionalInt(decInterval);
-            if (autoLieDetector != null) 
+            if (autoLieDetector != null)
             {
                 WzSubProperty prop = new WzSubProperty();
                 prop["startHour"] = InfoTool.SetOptionalInt(autoLieDetector.Value.startHour);
@@ -349,7 +349,7 @@ namespace MapleLib.WzLib.WzStructure
             info["allMoveCheck"] = InfoTool.SetOptionalBool(allMoveCheck);
             info["VRLimit"] = InfoTool.SetOptionalBool(VRLimit);
             info["consumeItemCoolTime"] = InfoTool.SetOptionalBool(consumeItemCoolTime);
-            foreach (WzImageProperty prop in additionalProps) 
+            foreach (WzImageProperty prop in additionalProps)
             {
                 info.AddProperty(prop);
             }
@@ -372,55 +372,55 @@ namespace MapleLib.WzLib.WzStructure
         public FieldLimit fieldLimit = FieldLimit.FIELDOPT_NONE;
         public int returnMap = 999999999;
         public int forcedReturn = 999999999;
-        public bool cloud = false;
-        public bool swim = false;
-        public bool hideMinimap = false;
-        public bool town = false;
+        public bool cloud;
+        public bool swim;
+        public bool hideMinimap;
+        public bool town;
         public float mobRate = 1.5f;
 
         //Optional
         //public int link = -1;
-        public int? timeLimit = null;
-        public int? lvLimit = null;
-        public FieldType? fieldType = null;
-        public string onFirstUserEnter = null;
-        public string onUserEnter = null;
+        public int? timeLimit;
+        public int? lvLimit;
+        public FieldType? fieldType;
+        public string onFirstUserEnter;
+        public string onUserEnter;
         public MapleBool fly = null;
         public MapleBool noMapCmd = null;
         public MapleBool partyOnly = null;
         public MapleBool reactorShuffle = null;
-        public string reactorShuffleName = null;
+        public string reactorShuffleName;
         public MapleBool personalShop = null;
         public MapleBool entrustedShop = null;
-        public string effect = null; //Bubbling; 610030550 and many others
-        public int? lvForceMove = null; //limit FROM value
-        public TimeMob? timeMob = null;
-        public string help = null; //help string
+        public string effect; //Bubbling; 610030550 and many others
+        public int? lvForceMove; //limit FROM value
+        public TimeMob? timeMob;
+        public string help; //help string
         public MapleBool snow = null;
         public MapleBool rain = null;
-        public int? dropExpire = null; //in seconds
-        public int? decHP = null;
-        public int? decInterval = null;
-        public AutoLieDetector? autoLieDetector = null;
+        public int? dropExpire; //in seconds
+        public int? decHP;
+        public int? decInterval;
+        public AutoLieDetector? autoLieDetector;
         public MapleBool expeditionOnly = null;
-        public float? fs = null; //slip on ice speed, default 0.2
-        public int? protectItem = null; //ID, item protecting from cold
-        public int? createMobInterval = null; //used for massacre pqs
-        public int? fixedMobCapacity = null; //mob capacity to target (used for massacre pqs)
+        public float? fs; //slip on ice speed, default 0.2
+        public int? protectItem; //ID, item protecting from cold
+        public int? createMobInterval; //used for massacre pqs
+        public int? fixedMobCapacity; //mob capacity to target (used for massacre pqs)
 
         //Unknown optional
-        public int? moveLimit = null;
-        public string mapDesc = null;
-        public string mapName = null;
-        public string streetName = null;
+        public int? moveLimit;
+        public string mapDesc;
+        public string mapName;
+        public string streetName;
         public MapleBool miniMapOnOff = null;
         public MapleBool noRegenMap = null; //610030400
-        public List<int> allowedItem = null;
-        public float? recovery = null; //recovery rate, like in sauna (3)
+        public List<int> allowedItem;
+        public float? recovery; //recovery rate, like in sauna (3)
         public MapleBool blockPBossChange = null; //something with monster carnival
         public MapleBool everlast = null; //something with bonus stages of PQs
         public MapleBool damageCheckFree = null; //something with fishing event
-        public float? dropRate = null;
+        public float? dropRate;
         public MapleBool scrollDisable = null;
         public MapleBool needSkillForFly = null;
         public MapleBool zakum2Hack = null; //JQ hack protection
@@ -434,7 +434,7 @@ namespace MapleLib.WzLib.WzStructure
         public string strMapName = "<Untitled>";
         public string strStreetName = "<Untitled>";
         public string strCategoryName = "HaCreator";
-        public int id = 0;
+        public int id;
 
         //Editor related, not actual properties
         public MapType mapType = MapType.RegularMap;
@@ -443,12 +443,6 @@ namespace MapleLib.WzLib.WzStructure
         {
             get { return image; }
             set { image = value; }
-        }
-
-        public bool ShouldSerializeImage()
-        {
-            // To keep JSON.NET from serializing this
-            return false;
         }
 
         public struct TimeMob

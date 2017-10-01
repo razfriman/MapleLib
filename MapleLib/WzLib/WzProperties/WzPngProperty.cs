@@ -23,7 +23,7 @@ namespace MapleLib.WzLib.WzProperties
         internal Bitmap png;
         internal WzObject parent;
         //internal WzImage imgParent;
-        internal bool listWzUsed = false;
+        internal bool listWzUsed;
 
         internal WzBinaryReader wzReader;
         internal long offs;
@@ -55,7 +55,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get { return "PNG"; } set { } }
+        public override string Name { get => "PNG"; set { } }
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>

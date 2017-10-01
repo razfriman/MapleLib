@@ -4,12 +4,13 @@ namespace MapleLib.WzLib
 {
     public class WzImageResource : IDisposable
     {
-        bool parsed;
-        WzImage img;
+        private readonly bool parsed;
+        private readonly WzImage img;
+
         public WzImageResource(WzImage img)
         {
             this.img = img;
-            this.parsed = img.Parsed;
+            parsed = img.Parsed;
             if (!parsed)
             {
                 img.ParseImage();

@@ -4,11 +4,11 @@ using MapleLib.WzLib.Util;
 
 namespace MapleLib.WzLib
 {
-	/// <summary>
-	/// A class that parses and contains the data of a wz list file
-	/// </summary>
-	public static class ListFileParser
-	{
+    /// <summary>
+    /// A class that parses and contains the data of a wz list file
+    /// </summary>
+    public static class ListFileParser
+    {
         /// <summary>
 		/// Parses a wz list file on the disk
 		/// </summary>
@@ -38,7 +38,7 @@ namespace MapleLib.WzLib
                 listEntries.Add(decryptedStr);
             }
             wzParser.Close();
-            int lastIndex= listEntries.Count - 1;
+            int lastIndex = listEntries.Count - 1;
             string lastEntry = listEntries[lastIndex];
             listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "g";
             return listEntries;
@@ -49,8 +49,8 @@ namespace MapleLib.WzLib
             SaveToDisk(path, WzTool.GetIvByMapleVersion(version), listEntries);
         }
 
-		public static void SaveToDisk(string path, byte[] WzIv, List<string> listEntries)
-		{
+        public static void SaveToDisk(string path, byte[] WzIv, List<string> listEntries)
+        {
             int lastIndex = listEntries.Count - 1;
             string lastEntry = listEntries[lastIndex];
             listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "/";
@@ -59,12 +59,12 @@ namespace MapleLib.WzLib
             for (int i = 0; i < listEntries.Count; i++)
             {
                 s = listEntries[i];
-                wzWriter.Write((int)s.Length);
+                wzWriter.Write(s.Length);
                 char[] encryptedChars = wzWriter.EncryptString(s + (char)0);
                 for (int j = 0; j < encryptedChars.Length; j++)
                     wzWriter.Write((short)encryptedChars[j]);
             }
             listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "/";
-		}
+        }
     }
 }

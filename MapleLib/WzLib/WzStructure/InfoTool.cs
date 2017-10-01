@@ -66,8 +66,12 @@ namespace MapleLib.WzLib.WzStructure
 
         public static MapleBool GetOptionalBool(WzImageProperty source)
         {
-            if (source == null) return MapleBool.NotExist;
-            else return source.GetInt() == 1;
+            if (source == null)
+            {
+                return MapleBool.NotExist;
+            }
+
+            return source.GetInt() == 1;
         }
 
         public static WzIntProperty SetOptionalBool(MapleBool value)
@@ -108,10 +112,8 @@ namespace MapleLib.WzLib.WzStructure
             {
                 return SetString(value.Value.ToString());
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }

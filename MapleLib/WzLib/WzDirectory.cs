@@ -14,7 +14,7 @@ namespace MapleLib.WzLib
 		internal List<WzImage> images = new List<WzImage>();
 		internal List<WzDirectory> subDirs = new List<WzDirectory>();
 		internal WzBinaryReader reader;
-		internal uint offset = 0;
+		internal uint offset;
 		internal string name;
 		internal uint hash;
 		internal int size, checksum, offsetSize;
@@ -132,8 +132,6 @@ namespace MapleLib.WzLib
 		/// Creates a WzDirectory
 		/// </summary>
 		/// <param name="reader">The BinaryReader that is currently reading the wz file</param>
-		/// <param name="blockStart">The start of the data block</param>
-		/// <param name="parentname">The name of the directory</param>
         /// <param name="wzFile">The parent Wz File</param>
 		internal WzDirectory(WzBinaryReader reader, string dirName, uint verHash, byte[] WzIv, WzFile wzFile)
 		{
@@ -155,53 +153,56 @@ namespace MapleLib.WzLib
                 byte type = reader.ReadByte();
                 string fname = null;
                 int fsize;
-                int checksum;
-                uint offset;
+                int dirChecksum;
+                uint dirOffset;
 
                 long rememberPos = 0;
-                if (type == 1) //01 XX 00 00 00 00 00 OFFSET (4 bytes) 
+
+                switch (type)
                 {
-                    int unknown = reader.ReadInt32();
-                    reader.ReadInt16();
-                    uint offs = reader.ReadOffset();
-                    continue;
+                    case 1:
+                        int unknown = reader.ReadInt32();
+                        reader.ReadInt16();
+                        uint offs = reader.ReadOffset();
+                        continue;
+                    case 2:
+                        int stringOffset = reader.ReadInt32();
+                        rememberPos = reader.BaseStream.Position;
+                        reader.BaseStream.Position = reader.Header.FStart + stringOffset;
+                        type = reader.ReadByte();
+                        fname = reader.ReadString();
+                        break;
+                    case 3:
+                    case 4:
+                        fname = reader.ReadString();
+                        rememberPos = reader.BaseStream.Position;
+                        break;
+                    default:
+                        break;
                 }
-                else if (type == 2)
-                {
-                    int stringOffset = reader.ReadInt32();
-                    rememberPos = reader.BaseStream.Position;
-                    reader.BaseStream.Position = reader.Header.FStart + stringOffset;
-                    type = reader.ReadByte();
-                    fname = reader.ReadString();
-                }
-                else if (type == 3 || type == 4)
-                {
-                    fname = reader.ReadString();
-                    rememberPos = reader.BaseStream.Position;
-                }
-                else
-                {
-                }
+
                 reader.BaseStream.Position = rememberPos;
                 fsize = reader.ReadCompressedInt();
-                checksum = reader.ReadCompressedInt();
-                offset = reader.ReadOffset();
+                dirChecksum = reader.ReadCompressedInt();
+                dirOffset = reader.ReadOffset();
                 if (type == 3)
                 {
                     WzDirectory subDir = new WzDirectory(reader, fname, hash, WzIv, wzFile);
                     subDir.BlockSize = fsize;
-                    subDir.Checksum = checksum;
-                    subDir.Offset = offset;
+                    subDir.Checksum = dirChecksum;
+                    subDir.Offset = dirOffset;
                     subDir.Parent = this;
                     subDirs.Add(subDir);
                 }
                 else
                 {
-                    WzImage img = new WzImage(fname, reader);
-                    img.BlockSize = fsize;
-                    img.Checksum = checksum;
-                    img.Offset = offset;
-                    img.Parent = this;
+                    WzImage img = new WzImage(fname, reader)
+                    {
+                        BlockSize = fsize,
+                        Checksum = dirChecksum,
+                        Offset = dirOffset,
+                        Parent = this
+                    };
                     images.Add(img);
                 }
             }
@@ -217,7 +218,7 @@ namespace MapleLib.WzLib
 		{
 			foreach (WzImage img in images)
 			{
-                if (img.changed)
+                if (img.Changed)
                 {
                     fs.Position = img.tempFileStart;
                     byte[] buffer = new byte[img.size];
@@ -252,7 +253,7 @@ namespace MapleLib.WzLib
 			for (int i = 0; i < images.Count; i++)
 			{
                 img = images[i];
-                if (img.changed)
+                if (img.Changed)
                 {
                     memStream = new MemoryStream();
                     imgWriter = new WzBinaryWriter(memStream, this.WzIv);
@@ -285,7 +286,7 @@ namespace MapleLib.WzLib
 				offsetSize += WzTool.GetCompressedIntLength(imgLen);
 				offsetSize += WzTool.GetCompressedIntLength(img.Checksum);
 				offsetSize += 4;
-                if (img.changed)
+                if (img.Changed)
 				    imgWriter.Close();
 			}
 			fileWrite.Close();
@@ -389,19 +390,13 @@ namespace MapleLib.WzLib
 		{
 			foreach (WzImage img in images)
 			{
-				if (reader.BaseStream.Position != img.Offset)
-				{
-					reader.BaseStream.Position = img.Offset;
-				}
-				img.ParseImage();
+                reader.BaseStream.Position = img.Offset;
+                img.ParseImage();
 			}
 			foreach (WzDirectory subdir in subDirs)
 			{
-				if (reader.BaseStream.Position != subdir.Offset)
-				{
-					reader.BaseStream.Position = subdir.Offset;
-				}
-				subdir.ParseImages();
+                reader.BaseStream.Position = subdir.Offset;
+                subdir.ParseImages();
 			}
 		}
 
@@ -497,7 +492,7 @@ namespace MapleLib.WzLib
 		/// <summary>
 		/// Removes a sub directory from the list
 		/// </summary>
-		/// <param name="name">The sub directory to remove</param>
+		/// <param name="dir">The sub directory to remove</param>
 		public void RemoveDirectory(WzDirectory dir)
 		{
             subDirs.Remove(dir);

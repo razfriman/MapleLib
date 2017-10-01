@@ -91,12 +91,12 @@ namespace MapleLib.WzLib.WzProperties
         #region Cast Values
         public override float GetFloat()
         {
-            return (float)val;
+            return val;
         }
 
         public override double GetDouble()
         {
-            return (double)val;
+            return val;
         }
 
         public override long GetLong()

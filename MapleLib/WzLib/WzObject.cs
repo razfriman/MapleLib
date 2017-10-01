@@ -8,9 +8,9 @@ namespace MapleLib.WzLib
 	/// </summary>
 	public abstract class WzObject : IDisposable
 	{
-        private object tag = null;
-        private object tag2 = null;
-        private object tag3 = null;
+        private object tag;
+        private object tag2;
+        private object tag3;
 
 		public abstract void Dispose();
 
@@ -38,23 +38,20 @@ namespace MapleLib.WzLib
                 if (this is WzFile)
                 {
                     return ((WzFile)this)[name];
-                } 
-                else if (this is WzDirectory)
+                }
+                if (this is WzDirectory)
                 {
                     return ((WzDirectory)this)[name];
                 }
-                else if (this is WzImage)
+                if (this is WzImage)
                 {
                     return ((WzImage)this)[name];
                 }
-                else if (this is WzImageProperty)
+                if (this is WzImageProperty)
                 {
                     return ((WzImageProperty)this)[name];
                 }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
         }
 

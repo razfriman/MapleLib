@@ -8,10 +8,10 @@ namespace MapleLib.WzLib
 {
     public class WzSettingsManager
     {
-        string wzPath;
-        Type userSettingsType;
-        Type appSettingsType;
-        Type xnaColorType = null;
+        private readonly string wzPath;
+        private readonly Type userSettingsType;
+        private readonly Type appSettingsType;
+        private readonly Type xnaColorType;
 
 
         public WzSettingsManager(string wzPath, Type userSettingsType, Type appSettingsType)
