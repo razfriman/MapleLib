@@ -62,7 +62,7 @@ namespace MapleLib.WzLib
             return obj.ToDouble(0);
         }
 
-        public static explicit operator System.Drawing.Bitmap(AWzObject obj)
+        public static explicit operator Bitmap(AWzObject obj)
         {
             return obj.ToBitmap(null);
         }
@@ -127,9 +127,9 @@ namespace MapleLib.WzLib
             return def;
         }
 
-        internal virtual Point ToPoint(int pXDef = 0, int pYDef = 0)
+        internal virtual System.Drawing.Point ToPoint(int pXDef = 0, int pYDef = 0)
         {
-            return new Point(pXDef, pYDef);
+            return new System.Drawing.Point(pXDef, pYDef);
         }
 
         #endregion

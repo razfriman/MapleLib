@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using MapleLib.WzLib.Util;
 
@@ -26,32 +27,36 @@ namespace MapleLib.WzLib.WzProperties
                 mImageProp.WzValue = value;
             }
         }
-		/// <summary>
+		
+        /// <summary>
 		/// The parent of the object
 		/// </summary>
 		public override AWzObject Parent { get { return mParent; } internal set { mParent = value; } }
-		/// <summary>
+		
+        /// <summary>
 		/// The image that this property is contained in
 		/// </summary>
 		public override WzImage ParentImage { get { return mImgParent; } internal set { mImgParent = value; } }
-		/// <summary>
+		
+        /// <summary>
 		/// The WzPropertyType of the property
 		/// </summary>
 		public override WzPropertyType PropertyType { get { return WzPropertyType.Canvas; } }
-		/// <summary>
+		
+        /// <summary>
 		/// The properties contained in this property
 		/// </summary>
         public override List<AWzImageProperty> WzProperties { get { return mProperties; } }
-		/// <summary>
+		
+        /// <summary>
 		/// The name of the property
 		/// </summary>
 		public override string Name { get { return mName; } set { mName = value; } }
-		/// <summary>
+		
+        /// <summary>
 		/// Gets a wz property by it's name
 		/// </summary>
-		/// <param name="name">The name of the property</param>
 		/// <returns>The wz property with the specified name</returns>
-		
 		public override void WriteValue(WzBinaryWriter pWriter)
 		{
 			pWriter.WriteStringValue("Canvas", 0x73, 0x1B);
@@ -125,7 +130,7 @@ namespace MapleLib.WzLib.WzProperties
             return mImageProp;
         }
 
-        internal override System.Drawing.Bitmap ToBitmap(System.Drawing.Bitmap pDef)
+        internal override Bitmap ToBitmap(Bitmap pDef)
         {
             return mImageProp.GetPNG(false);
         }

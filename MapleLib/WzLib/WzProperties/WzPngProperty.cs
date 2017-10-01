@@ -291,7 +291,7 @@ namespace MapleLib.WzLib.WzProperties
             for (int i = 0; i < mHeight; i++)
                 for (int j = 0; j < mWidth; j++)
                 {
-                    Color curPixel = pBmp.GetPixel(j, i);
+                    var curPixel = pBmp.GetPixel(j, i);
                     buf[curPos] = curPixel.B;
                     buf[curPos + 1] = curPixel.G;
                     buf[curPos + 2] = curPixel.R;

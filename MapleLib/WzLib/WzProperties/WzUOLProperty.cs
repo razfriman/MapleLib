@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using MapleLib.WzLib.Util;
 
@@ -126,7 +127,7 @@ namespace MapleLib.WzLib.WzProperties
 		#endregion
 
         #region Cast Values
-        internal override System.Drawing.Bitmap ToBitmap(System.Drawing.Bitmap pDef)
+        internal override Bitmap ToBitmap(Bitmap pDef)
         {
             return LinkValue.ToBitmap(pDef);
         }
