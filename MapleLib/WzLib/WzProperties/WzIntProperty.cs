@@ -4,12 +4,14 @@ using MapleLib.WzLib.Util;
 namespace MapleLib.WzLib.WzProperties
 {
 	/// <summary>
-	/// A property with a string as a value
+	/// A property that is stored in the wz file with a signed byte and possibly followed by an int. If the 
+	/// signed byte is equal to -128, the value is is the int that follows, else the value is the byte.
 	/// </summary>
-	public class WzStringProperty : WzImageProperty
+	public class WzIntProperty : WzImageProperty
 	{
 		#region Fields
-		internal string name, val;
+		internal string name;
+		internal int val;
 		internal WzObject parent;
 		//internal WzImage imgParent;
 		#endregion
@@ -17,12 +19,12 @@ namespace MapleLib.WzLib.WzProperties
 		#region Inherited Members
         public override void SetValue(object value)
         {
-            val = (string)value;
+            val = System.Convert.ToInt32(value);
         }
 
         public override WzImageProperty DeepClone()
         {
-            WzStringProperty clone = new WzStringProperty(name, val);
+            WzIntProperty clone = new WzIntProperty(name, val);
             return clone;
         }
 
@@ -38,27 +40,26 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The WzPropertyType of the property
 		/// </summary>
-		public override WzPropertyType PropertyType { get { return WzPropertyType.String; } }
+		public override WzPropertyType PropertyType { get { return WzPropertyType.Int; } }
 		/// <summary>
 		/// The name of the property
 		/// </summary>
 		public override string Name { get { return name; } set { name = value; } }
 		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
 		{
-			writer.Write((byte)8);
-			writer.WriteStringValue(Value, 0, 1);
+			writer.Write((byte)3);
+			writer.WriteCompressedInt(Value);
 		}
 		public override void ExportXml(StreamWriter writer, int level)
 		{
-			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzString", this.Name, this.Value));
+			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzCompressedInt", this.Name, this.Value.ToString()));
 		}
 		/// <summary>
-		/// Disposes the object
+		/// Dispose the object
 		/// </summary>
 		public override void Dispose()
 		{
 			name = null;
-			val = null;
 		}
 		#endregion
 
@@ -66,25 +67,25 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The value of the property
 		/// </summary>
-		public string Value { get { return val; } set { val = value; } }
+		public int Value { get { return val; } set { val = value; } }
 		/// <summary>
-		/// Creates a blank WzStringProperty
+		/// Creates a blank WzCompressedIntProperty
 		/// </summary>
-		public WzStringProperty() { }
+		public WzIntProperty() { }
 		/// <summary>
-		/// Creates a WzStringProperty with the specified name
+		/// Creates a WzCompressedIntProperty with the specified name
 		/// </summary>
 		/// <param name="name">The name of the property</param>
-		public WzStringProperty(string name)
+		public WzIntProperty(string name)
 		{
 			this.name = name;
 		}
 		/// <summary>
-		/// Creates a WzStringProperty with the specified name and value
+		/// Creates a WzCompressedIntProperty with the specified name and value
 		/// </summary>
 		/// <param name="name">The name of the property</param>
 		/// <param name="value">The value of the property</param>
-		public WzStringProperty(string name, string value)
+		public WzIntProperty(string name, int value)
 		{
 			this.name = name;
 			this.val = value;
@@ -92,14 +93,34 @@ namespace MapleLib.WzLib.WzProperties
 		#endregion
 
         #region Cast Values
-        public override string GetString()
+        public override float GetFloat()
+        {
+            return (float)val;
+        }
+
+        public override double GetDouble()
+        {
+            return (double)val;
+        }
+
+        public override int GetInt()
         {
             return val;
         }
 
+        public override short GetShort()
+        {
+            return (short)val;
+        }
+
+        public override long GetLong()
+        {
+            return (long)val;
+        }
+
         public override string ToString()
         {
-            return val;
+            return val.ToString();
         }
         #endregion
 	}

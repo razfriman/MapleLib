@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*  MapleLib - A general-purpose MapleStory library
+ * Copyright (C) 2009, 2010, 2015 Snow and haha01haha01
+   
+ * This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+using System;
 using System.IO;
 using System.Text;
 using MapleLib.MapleCryptoLib;
@@ -8,30 +24,30 @@ namespace MapleLib.WzLib.Util
 	public class WzBinaryReader : BinaryReader
 	{
 		#region Properties
-		public byte[] WzKey { get; set; }
+		public WzMutableKey WzKey { get; set; }
 		public uint Hash { get; set; }
 		public WzHeader Header { get; set; }
 		#endregion
 
 		#region Constructors
-		public WzBinaryReader(Stream pInput, byte[] pWzIv)
-			: base(pInput)
+		public WzBinaryReader(Stream input, byte[] WzIv)
+			: base(input)
 		{
-			WzKey = WzKeyGenerator.GenerateWzKey(pWzIv);
+			WzKey = WzKeyGenerator.GenerateWzKey(WzIv);
 		}
 		#endregion
 
 		#region Methods
-		public string ReadStringAtOffset(long pOffset)
+		public string ReadStringAtOffset(long Offset)
 		{
-			return ReadStringAtOffset(pOffset, false);
+			return ReadStringAtOffset(Offset, false);
 		}
 
-		public string ReadStringAtOffset(long pOffset, bool pReadByte)
+		public string ReadStringAtOffset(long Offset, bool readByte)
 		{
 			long CurrentOffset = BaseStream.Position;
-			BaseStream.Position = pOffset;
-			if (pReadByte)
+			BaseStream.Position = Offset;
+			if (readByte)
 			{
 				ReadByte();
 			}
@@ -108,9 +124,9 @@ namespace MapleLib.WzLib.Util
 		/// Reads an ASCII string, without decryption
 		/// </summary>
 		/// <param name="filePath">Length of bytes to read</param>
-		public string ReadString(int pLength)
+		public string ReadString(int length)
 		{
-			return Encoding.ASCII.GetString(ReadBytes(pLength));
+			return Encoding.ASCII.GetString(ReadBytes(length));
 		}
 
 		public string ReadNullTerminatedString()
@@ -135,6 +151,16 @@ namespace MapleLib.WzLib.Util
 			return sb;
 		}
 
+        public long ReadLong()
+        {
+            sbyte sb = base.ReadSByte();
+            if (sb == sbyte.MinValue)
+            {
+                return ReadInt64();
+            }
+            return sb;
+        }
+
 		public uint ReadOffset()
 		{
 			uint offset = (uint)BaseStream.Position;
@@ -148,23 +174,23 @@ namespace MapleLib.WzLib.Util
 			return offset;
 		}
 
-		public string DecryptString(char[] pStringToDecrypt)
+		public string DecryptString(char[] stringToDecrypt)
 		{
 			string outputString = "";
-			for (int i = 0; i < pStringToDecrypt.Length; i++)
-				outputString += (char)(pStringToDecrypt[i] ^ ((char)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
+			for (int i = 0; i < stringToDecrypt.Length; i++)
+				outputString += (char)(stringToDecrypt[i] ^ ((char)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
 			return outputString;
 		}
 
-		public string DecryptNonUnicodeString(char[] pStringToDecrypt)
+		public string DecryptNonUnicodeString(char[] stringToDecrypt)
 		{
 			string outputString = "";
-			for (int i = 0; i < pStringToDecrypt.Length; i++)
-				outputString += (char)(pStringToDecrypt[i] ^ WzKey[i]);
+			for (int i = 0; i < stringToDecrypt.Length; i++)
+				outputString += (char)(stringToDecrypt[i] ^ WzKey[i]);
 			return outputString;
 		}
 
-		public string ReadStringBlock(uint pOffset)
+		public string ReadStringBlock(uint offset)
 		{
 			switch (ReadByte())
 			{
@@ -173,7 +199,7 @@ namespace MapleLib.WzLib.Util
 					return ReadString();
 				case 1:
 				case 0x1B:
-					return ReadStringAtOffset(pOffset + ReadInt32());
+					return ReadStringAtOffset(offset + ReadInt32());
 				default:
 					return "";
 			}

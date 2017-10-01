@@ -7,96 +7,64 @@ namespace MapleLib.WzLib
 	/// <summary>
 	/// A class that parses and contains the data of a wz list file
 	/// </summary>
-	public class WzListFile : AWzObject
+	public static class ListFileParser
 	{
-		#region Fields
-		internal byte[] mWzFileBytes;
-		internal List<string> mListEntries = new List<string>();
-		internal string mName = "";
-		internal byte[] mWzIv;
-        internal WzMapleVersion mVersion;
-		#endregion
-
-		/// <summary>
-		/// Name of the WzListFile
+        /// <summary>
+		/// Parses a wz list file on the disk
 		/// </summary>
-		public override string Name { get { return mName; } set { mName = value; } }
-		/// <summary>
-		/// The entries in the list wz file
-		/// </summary>
-		public string[] WzListEntries { get { return mListEntries.ToArray(); } }
-		/// <summary>
-		/// The WzObjectType of the file
-		/// </summary>
-		public override WzObjectType ObjectType { get { return WzObjectType.File; } }
-		public override AWzObject Parent { get { return null; } internal set { } }
-		public override void Dispose()
-		{
-			mWzFileBytes = null;
-			mName = null;
-			mListEntries.Clear();
-			mListEntries = null;
-		}
-
-		/// <summary>
-		/// Open a wz list file from a file on the disk
-		/// </summary>
-		/// <param name="pFilePath">Path to the wz file</param>
-		public WzListFile(string pFilePath, WzMapleVersion pVersion)
-		{
-			mName = Path.GetFileName(pFilePath);
-            mWzIv = WzTool.GetIvByMapleVersion(pVersion);
-            this.mVersion = pVersion;
-            mWzFileBytes = File.ReadAllBytes(pFilePath);
-		}
-		/// <summary>
-		/// Open a wz list file from an array of bytes in the memory
-		/// </summary>
-		/// <param name="pFileBytes">The wz file in the memory</param>
-		public WzListFile(byte[] pFileBytes, byte[] pWzIv)
-		{
-			mWzFileBytes = pFileBytes;
-			mWzIv = pWzIv;
-		}
-
-        public WzListFile(WzMapleVersion pVersion, string pName)
+		/// <param name="filePath">Path to the wz file</param>
+        public static List<string> ParseListFile(string filePath, WzMapleVersion version)
         {
-            this.mName = pName;
-            this.mVersion = pVersion;
-            this.mWzIv = WzTool.GetIvByMapleVersion(pVersion);
+            return ParseListFile(filePath, WzTool.GetIvByMapleVersion(version));
         }
 
-		/// <summary>
-		/// Parses the wz list file
+        /// <summary>
+		/// Parses a wz list file on the disk
 		/// </summary>
-		public void ParseWzFile()
-		{
-			WzBinaryReader wzParser = new WzBinaryReader(new MemoryStream(mWzFileBytes), mWzIv);
-			while (wzParser.PeekChar() != -1)
-			{
-				int Len = wzParser.ReadInt32();
-				char[] List = new char[Len];
-				for (int i = 0; i < Len; i++)
-					List[i] = (char)wzParser.ReadInt16();
-				wzParser.ReadUInt16();
-				string Decrypted = wzParser.DecryptString(List);
-				if (wzParser.PeekChar() == -1)
-					if (Decrypted[Decrypted.Length - 1] == '/')
-						Decrypted = Decrypted.TrimEnd("/".ToCharArray()) + "g"; // Last char should always be a g (.img)
-				mListEntries.Add(Decrypted);
-			}
-			wzParser.Close();
-		}
-		internal void SaveToDisk(string pPath)
-		{
-            WzBinaryWriter wzWriter = new WzBinaryWriter(File.Create(pPath), mWzIv);
-            foreach (string entry in mListEntries)
+		/// <param name="filePath">Path to the wz file</param>
+        public static List<string> ParseListFile(string filePath, byte[] WzIv)
+        {
+            List<string> listEntries = new List<string>();
+            byte[] wzFileBytes = File.ReadAllBytes(filePath);
+            WzBinaryReader wzParser = new WzBinaryReader(new MemoryStream(wzFileBytes), WzIv);
+            while (wzParser.PeekChar() != -1)
             {
-                string newEntry = entry + "\0";
-                wzWriter.Write(newEntry.Length);
-                wzWriter.Write(newEntry, true, true);
+                int len = wzParser.ReadInt32();
+                char[] strChrs = new char[len];
+                for (int i = 0; i < len; i++)
+                    strChrs[i] = (char)wzParser.ReadInt16();
+                wzParser.ReadUInt16(); //encrypted null
+                string decryptedStr = wzParser.DecryptString(strChrs);
+                listEntries.Add(decryptedStr);
             }
-            wzWriter.Close();
+            wzParser.Close();
+            int lastIndex= listEntries.Count - 1;
+            string lastEntry = listEntries[lastIndex];
+            listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "g";
+            return listEntries;
+        }
+
+        public static void SaveToDisk(string path, WzMapleVersion version, List<string> listEntries)
+        {
+            SaveToDisk(path, WzTool.GetIvByMapleVersion(version), listEntries);
+        }
+
+		public static void SaveToDisk(string path, byte[] WzIv, List<string> listEntries)
+		{
+            int lastIndex = listEntries.Count - 1;
+            string lastEntry = listEntries[lastIndex];
+            listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "/";
+            WzBinaryWriter wzWriter = new WzBinaryWriter(File.Create(path), WzIv);
+            string s;
+            for (int i = 0; i < listEntries.Count; i++)
+            {
+                s = listEntries[i];
+                wzWriter.Write((int)s.Length);
+                char[] encryptedChars = wzWriter.EncryptString(s + (char)0);
+                for (int j = 0; j < encryptedChars.Length; j++)
+                    wzWriter.Write((short)encryptedChars[j]);
+            }
+            listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "/";
 		}
-	}
+    }
 }

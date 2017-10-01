@@ -6,25 +6,36 @@ namespace MapleLib.WzLib.WzProperties
 	/// <summary>
 	/// A property that has the value of a double
 	/// </summary>
-	public class WzDoubleProperty : AWzImageProperty
+	public class WzDoubleProperty : WzImageProperty
 	{
 		#region Fields
-		internal string mName;
-		internal double mVal;
-		internal AWzObject mParent;
-		internal WzImage mImgParent;
+		internal string name;
+		internal double val;
+		internal WzObject parent;
+		//internal WzImage imgParent;
 		#endregion
 
 		#region Inherited Members
-        public override object WzValue { get { return mVal; } set { mVal = (double)value; } }
+        public override void SetValue(object value)
+        {
+            val = (double)value;
+        }
+
+        public override WzImageProperty DeepClone()
+        {
+            WzDoubleProperty clone = new WzDoubleProperty(name, val);
+            return clone;
+        }
+
+		public override object WzValue { get { return Value; } }
 		/// <summary>
 		/// The parent of the object
 		/// </summary>
-		public override AWzObject Parent { get { return mParent; } internal set { mParent = value; } }
-		/// <summary>
+		public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+		/*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
-		public override WzImage ParentImage { get { return mImgParent; } internal set { mImgParent = value; } }
+		public override WzImage ParentImage { get { return imgParent; } internal set { imgParent = value; } }*/
 		/// <summary>
 		/// The WzPropertyType of the property
 		/// </summary>
@@ -32,19 +43,19 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The name of this property
 		/// </summary>
-		public override string Name { get { return mName; } set { mName = value; } }
-		public override void WriteValue(WzBinaryWriter pWriter)
+		public override string Name { get { return name; } set { name = value; } }
+		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
 		{
-			pWriter.Write((byte)5);
-			pWriter.Write(Value);
+			writer.Write((byte)5);
+			writer.Write(Value);
 		}
-		public override void ExportXml(StreamWriter pWriter, int pLevel)
+		public override void ExportXml(StreamWriter writer, int level)
 		{
-			pWriter.WriteLine(XmlUtil.Indentation(pLevel) + XmlUtil.EmptyNamedValuePair("WzDouble", this.Name, this.Value.ToString()));
+			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzDouble", this.Name, this.Value.ToString()));
 		}
 		public override void Dispose()
 		{
-			mName = null;
+			name = null;
 		}
 		#endregion
 
@@ -52,7 +63,7 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The value of this property
 		/// </summary>
-		public double Value { get { return mVal; } set { mVal = value; } }
+		public double Value { get { return val; } set { val = value; } }
 		/// <summary>
 		/// Creates a blank WzDoubleProperty
 		/// </summary>
@@ -60,44 +71,53 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// Creates a WzDoubleProperty with the specified name
 		/// </summary>
-		/// <param name="pName">The name of the property</param>
-		public WzDoubleProperty(string pName)
+		/// <param name="name">The name of the property</param>
+		public WzDoubleProperty(string name)
 		{
-			this.mName = pName;
+			this.name = name;
 		}
 		/// <summary>
 		/// Creates a WzDoubleProperty with the specified name and value
 		/// </summary>
-		/// <param name="pName">The name of the property</param>
-		/// <param name="pValue">The value of the property</param>
-		public WzDoubleProperty(string pName, double pValue)
+		/// <param name="name">The name of the property</param>
+		/// <param name="value">The value of the property</param>
+		public WzDoubleProperty(string name, double value)
 		{
-			this.mName = pName;
-			this.mVal = pValue;
+			this.name = name;
+			this.val = value;
 		}
 		#endregion
 
         #region Cast Values
-        internal override float ToFloat(float pDef)
+        public override float GetFloat()
         {
-            return (float)mVal;
+            return (float)val;
         }
 
-        internal override double ToDouble(double pDef)
+        public override double GetDouble()
         {
-            return mVal;
+            return val;
         }
 
-        internal override int ToInt(int pDef)
+        public override int GetInt()
         {
-            return (int)mVal;
+            return (int)val;
         }
 
-        internal override ushort ToUnsignedShort(ushort pDef)
+        public override short GetShort()
         {
-            return (ushort)mVal;
+            return (short)val;
+        }
+
+        public override long GetLong()
+        {
+            return (long)val;
+        }
+
+        public override string ToString()
+        {
+            return val.ToString();
         }
         #endregion
-
 	}
 }

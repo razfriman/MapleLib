@@ -10,69 +10,70 @@ namespace MapleLib.WzLib.Util
 
 		public static Hashtable StringCache = new Hashtable();
 
-        public static uint RotateLeft(uint pValue, byte pBits)
-        {
-            return (uint)(((pValue) << (pBits)) | ((pValue) >> (32 - (pBits))));
-        }
-        public static uint RotateRight(uint pValue, byte pBits)
-        {
-            return (uint)(((pValue) >> (pBits)) | ((pValue) << (32 - (pBits))));
-        }
-
-		public static int GetCompressedIntLength(int pInt)
+		public static UInt32 RotateLeft(UInt32 x, byte n)
 		{
-			if (pInt > 127 || pInt < -127)
+			return (UInt32)(((x) << (n)) | ((x) >> (32 - (n))));
+		}
+
+		public static UInt32 RotateRight(UInt32 x, byte n)
+		{
+			return (UInt32)(((x) >> (n)) | ((x) << (32 - (n))));
+		}
+
+		public static int GetCompressedIntLength(int i)
+		{
+			if (i > 127 || i < -127)
 				return 5;
 			return 1;
 		}
 
-		public static int GetEncodedStringLength(string pString)
+		public static int GetEncodedStringLength(string s)
 		{
 			int len = 0;
-			if (string.IsNullOrEmpty(pString))
+			if (string.IsNullOrEmpty(s))
 				return 1;
 			bool unicode = false;
-			foreach (char c in pString)
+			foreach (char c in s)
 				if (c > 255)
 					unicode = true;
 			if (unicode)
 			{
-				if (pString.Length > 126)
+				if (s.Length > 126)
 					len += 5;
 				else
 					len += 1;
-				len += pString.Length * 2;
+				len += s.Length * 2;
 			}
 			else
 			{
-				if (pString.Length > 127)
+				if (s.Length > 127)
 					len += 5;
 				else
 					len += 1;
-				len += pString.Length;
+				len += s.Length;
 			}
 			return len;
 		}
 
-		public static int GetWzObjectValueLength(string pString, byte pType)
+		public static int GetWzObjectValueLength(string s, byte type)
 		{
-			string storeName = pType + "_" + pString;
-			if (pString.Length > 4 && StringCache.ContainsKey(storeName))
+			string storeName = type + "_" + s;
+			if (s.Length > 4 && StringCache.ContainsKey(storeName))
 			{
 				return 5;
 			}
 			else
 			{
 				StringCache[storeName] = 1;
-				return 1 + GetEncodedStringLength(pString);
+				return 1 + GetEncodedStringLength(s);
 			}
 		}
 
-		public static T StringToEnum<T>(string pName)
+		public static T StringToEnum<T>(string name)
 		{
 			try
 			{
-				return (T)Enum.Parse(typeof(T), pName);
+				return (T)Enum.Parse(typeof(T), name);
 			}
 			catch
 			{
@@ -80,26 +81,91 @@ namespace MapleLib.WzLib.Util
 			}
 		}
 
-		public static byte[] GetIvByMapleVersion(WzMapleVersion pVersion)
+		public static byte[] GetIvByMapleVersion(WzMapleVersion ver)
 		{
-			switch (pVersion)
+			switch (ver)
 			{
 				case WzMapleVersion.EMS:
-					return CryptoConstants.WZ_MSEAIV;
+					return CryptoConstants.WZ_MSEAIV;//?
 				case WzMapleVersion.GMS:
 					return CryptoConstants.WZ_GMSIV;
-				case WzMapleVersion.CLASSIC:
                 case WzMapleVersion.BMS:
+				case WzMapleVersion.CLASSIC:
 				default:
 					return new byte[4];
 			}
 		}
 
-        public static byte[] Combine(byte[] pFirst, byte[] pSecond)
+        private static int GetRecognizedCharacters(string source)
         {
-            byte[] result = new byte[pFirst.Length + pSecond.Length];
-            Array.Copy(pFirst, 0, result, 0, pFirst.Length);
-            Array.Copy(pSecond, 0, result, pFirst.Length, pSecond.Length);
+            int result = 0;
+            foreach (char c in source)
+                if (0x20 <= c && c <= 0x7E)
+                    result++;
+            return result;
+        }
+
+        private static double GetDecryptionSuccessRate(string wzPath, WzMapleVersion encVersion, ref short? version)
+        {
+            WzFile wzf;
+            if (version == null)
+                wzf = new WzFile(wzPath, encVersion);
+            else
+                wzf = new WzFile(wzPath, (short)version, encVersion);
+            wzf.ParseWzFile();
+            if (version == null) version = wzf.Version;
+            int recognizedChars = 0;
+            int totalChars = 0;
+            foreach (WzDirectory wzdir in wzf.WzDirectory.WzDirectories)
+            {
+                recognizedChars += GetRecognizedCharacters(wzdir.Name);
+                totalChars += wzdir.Name.Length;
+            }
+            foreach (WzImage wzimg in wzf.WzDirectory.WzImages)
+            {
+                recognizedChars += GetRecognizedCharacters(wzimg.Name);
+                totalChars += wzimg.Name.Length;
+            }
+            wzf.Dispose();
+            return (double)recognizedChars / (double)totalChars;
+        }
+
+        public static WzMapleVersion DetectMapleVersion(string wzFilePath, out short fileVersion)
+        {
+            Hashtable mapleVersionSuccessRates = new Hashtable();
+            short? version = null;
+            mapleVersionSuccessRates.Add(WzMapleVersion.GMS, GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.GMS, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.EMS, GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.EMS, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.BMS, GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.BMS, ref version));
+            fileVersion = (short)version;
+            WzMapleVersion mostSuitableVersion = WzMapleVersion.GMS;
+            double maxSuccessRate = 0;
+            foreach (DictionaryEntry mapleVersionEntry in mapleVersionSuccessRates)
+                if ((double)mapleVersionEntry.Value > maxSuccessRate)
+                {
+                    mostSuitableVersion = (WzMapleVersion)mapleVersionEntry.Key;
+                    maxSuccessRate = (double)mapleVersionEntry.Value;
+                }
+            if (maxSuccessRate < 0.7 && File.Exists(Path.Combine(Path.GetDirectoryName(wzFilePath), "ZLZ.dll")))
+                return WzMapleVersion.GETFROMZLZ;
+            else return mostSuitableVersion;
+        }
+
+        public const int WzHeader = 0x31474B50; //PKG1
+
+        public static bool IsListFile(string path)
+        {
+            BinaryReader reader = new BinaryReader(File.OpenRead(path));
+            bool result = reader.ReadInt32() != WzHeader;
+            reader.Close();
+            return result;
+        }
+
+        private static byte[] Combine(byte[] a, byte[] b)
+        {
+            byte[] result = new byte[a.Length + b.Length];
+            Array.Copy(a, 0, result, 0, a.Length);
+            Array.Copy(b, 0, result, a.Length, b.Length);
             return result;
         }
 	}

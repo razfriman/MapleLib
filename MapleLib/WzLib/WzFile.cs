@@ -9,551 +9,585 @@ using MapleLib.Helper;
 
 namespace MapleLib.WzLib
 {
-    /// <summary>
-    /// A class that contains all the information of a wz file
-    /// </summary>
-    public class WzFile : WzDirectory
-    {
+	/// <summary>
+	/// A class that contains all the information of a wz file
+	/// </summary>
+	public class WzFile : WzObject
+	{
         public static ILogger Log = LogManager.Log;
 
-        #region Fields
-        internal string mPath;
-        internal WzHeader mHeader;
-        internal short mVersion = 0;
-        internal uint mVersionHash = 0;
-        internal short mFileVersion = 0;
-        internal WzMapleVersion mMapleVersion;
-        #endregion
+		#region Fields
+		internal string path;
+		internal WzDirectory wzDir;
+		internal WzHeader header;
+		internal string name = "";
+		internal short version = 0;
+		internal uint versionHash = 0;
+		internal short fileVersion = 0;
+		internal WzMapleVersion mapleVersion;
+		internal byte[] WzIv;
+		#endregion
 
-        /// <summary>
-        /// Name of the WzFile
-        /// </summary>
-        public override string Name
-        {
-            get { return mName; }
-            set { mName = value; }
-        }
+		/// <summary>
+		/// The parsed IWzDir after having called ParseWzDirectory(), this can either be a WzDirectory or a WzListDirectory
+		/// </summary>
+		public WzDirectory WzDirectory
+		{
+			get { return wzDir; }
+		}
 
-        /// <summary>
-        /// The WzObjectType of the file
-        /// </summary>
-        public override WzObjectType ObjectType { get { return WzObjectType.File; } }
+		/// <summary>
+		/// Name of the WzFile
+		/// </summary>
+		public override string Name
+		{
+			get { return name; }
+			set { name = value; }
+		}
 
-        public WzHeader Header { get { return mHeader; } set { mHeader = value; } }
+		/// <summary>
+		/// The WzObjectType of the file
+		/// </summary>
+		public override WzObjectType ObjectType
+		{
+			get { return WzObjectType.File; }
+		}
 
-        public short Version { get { return mFileVersion; } }
+		/// <summary>
+		/// Returns WzDirectory[name]
+		/// </summary>
+		/// <param name="name">Name</param>
+		/// <returns>WzDirectory[name]</returns>
+		public new WzObject this[string name]
+		{
+			get { return WzDirectory[name]; }
+		}
 
-        public string FilePath { get { return mPath; } }
+        public WzHeader Header { get { return header; } set { header = value; } }
 
-        public WzMapleVersion MapleVersion { get { return mMapleVersion; } }
+        public short Version { get { return fileVersion; } set { fileVersion = value; } }
 
-        public override AWzObject Parent { get { return null; } internal set { } }
+        public string FilePath { get { return path; } }
 
-        public override void Dispose()
-        {
-            mReader.Close();
-            Header = null;
-            mPath = null;
-            mName = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
+        public WzMapleVersion MapleVersion { get { return mapleVersion; } set { mapleVersion = value; } }
 
-        public WzFile(short pGameVersion, WzMapleVersion pVersion)
-        {
-            this.Header = WzHeader.GetDefault();
-            mFileVersion = pGameVersion;
-            mMapleVersion = pVersion;
-            mWzIv = WzTool.GetIvByMapleVersion(pVersion);
-        }
+		public override WzObject Parent { get { return null; } internal set { } }
 
-        /// <summary>
-        /// Open a wz file from a file on the disk
-        /// </summary>
-        /// <param name="pFilePath">Path to the wz file</param>
-        public WzFile(string pFilePath, WzMapleVersion pVersion)
-        {
-            mName = Path.GetFileName(pFilePath);
-            mPath = pFilePath;
-            mFileVersion = -1;
-            mMapleVersion = pVersion;
-            if (pVersion == WzMapleVersion.LOAD_FROM_ZLZ)
+        public override WzFile WzFileParent { get { return this; } }
+
+		public override void Dispose()
+		{
+            if (wzDir.reader == null) return;
+			wzDir.reader.Close();
+			Header = null;
+			path = null;
+			name = null;
+			WzDirectory.Dispose();
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+
+		public WzFile(short gameVersion, WzMapleVersion version)
+		{
+			wzDir = new WzDirectory();
+			this.Header = WzHeader.GetDefault();
+			fileVersion = gameVersion;
+			mapleVersion = version;
+			WzIv = WzTool.GetIvByMapleVersion(version);
+			wzDir.WzIv = WzIv;
+		}
+
+		/// <summary>
+		/// Open a wz file from a file on the disk
+		/// </summary>
+		/// <param name="filePath">Path to the wz file</param>
+		public WzFile(string filePath, WzMapleVersion version)
+		{
+			name = Path.GetFileName(filePath);
+			path = filePath;
+			fileVersion = -1;
+			mapleVersion = version;
+            if (version == WzMapleVersion.GETFROMZLZ)
             {
-                FileStream zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(pFilePath), "ZLZ.dll"));
-                mWzIv = Util.WzKeyGenerator.GetIvFromZlz(zlzStream);
+                FileStream zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
+                WzIv = Util.WzKeyGenerator.GetIvFromZlz(zlzStream);
                 zlzStream.Close();
             }
-            else
-            {
-                mWzIv = WzTool.GetIvByMapleVersion(pVersion);
-            }
-        }
+			else WzIv = WzTool.GetIvByMapleVersion(version);
+		}
 
-        /// <summary>
-        /// Open a wz file from a file on the disk
-        /// </summary>
-        /// <param name="pFilePath">Path to the wz file</param>
-        public WzFile(string pFilePath, short pGameVersion, WzMapleVersion pVersion)
-        {
-            mName = Path.GetFileName(pFilePath);
-            mPath = pFilePath;
-            mFileVersion = pGameVersion;
-            mMapleVersion = pVersion;
-            if (pVersion == WzMapleVersion.LOAD_FROM_ZLZ)
+		/// <summary>
+		/// Open a wz file from a file on the disk
+		/// </summary>
+		/// <param name="filePath">Path to the wz file</param>
+		public WzFile(string filePath, short gameVersion, WzMapleVersion version)
+		{
+			name = Path.GetFileName(filePath);
+			path = filePath;
+			fileVersion = gameVersion;
+			mapleVersion = version;
+            if (version == WzMapleVersion.GETFROMZLZ)
             {
-                FileStream zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(pFilePath), "ZLZ.dll"));
-                mWzIv = Util.WzKeyGenerator.GetIvFromZlz(zlzStream);
+                FileStream zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
+                WzIv = Util.WzKeyGenerator.GetIvFromZlz(zlzStream);
                 zlzStream.Close();
             }
-            else
-            {
-                mWzIv = WzTool.GetIvByMapleVersion(pVersion);
-            }
-        }
+            else WzIv = WzTool.GetIvByMapleVersion(version);
+		}
 
-        /// <summary>
-        /// Parses the wz file, if the wz file is a list.wz file, WzDirectory will be a WzListDirectory, if not, it'll simply be a WzDirectory
-        /// </summary>
-        public void ParseWzFile()
-        {
-            if (mMapleVersion == WzMapleVersion.GENERATE)
-                throw new InvalidOperationException("Cannot call ParseWzFile() if WZ file type is GENERATE");
-            ParseMainWzDirectory();
+		/// <summary>
+		/// Parses the wz file, if the wz file is a list.wz file, WzDirectory will be a WzListDirectory, if not, it'll simply be a WzDirectory
+		/// </summary>
+		public void ParseWzFile()
+		{
+			if (mapleVersion == WzMapleVersion.GENERATE)
+				throw new InvalidOperationException("Cannot call ParseWzFile() if WZ file type is GENERATE");
+			ParseMainWzDirectory();
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+
+		public void ParseWzFile(byte[] WzIv)
+		{
+			if (mapleVersion != WzMapleVersion.GENERATE)
+				throw new InvalidOperationException(
+					"Cannot call ParseWzFile(byte[] generateKey) if WZ file type is not GENERATE");
+			this.WzIv = WzIv;
+			ParseMainWzDirectory();
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+
+		internal void ParseMainWzDirectory()
+		{
+			if (this.path == null)
+			{
+                Log.LogCritical("Path is null");
+				return;
+			}
+
+			WzBinaryReader reader = new WzBinaryReader(File.Open(this.path, FileMode.Open, FileAccess.Read, FileShare.Read), WzIv);
+
+			this.Header = new WzHeader();
+			this.Header.Ident = reader.ReadString(4);
+			this.Header.FSize = reader.ReadUInt64();
+			this.Header.FStart = reader.ReadUInt32();
+			this.Header.Copyright = reader.ReadNullTerminatedString();
+			reader.ReadBytes((int)(Header.FStart - reader.BaseStream.Position));
+			reader.Header = this.Header;
+			this.version = reader.ReadInt16();
+			if (fileVersion == -1)
+			{
+				for (int j = 0; j < short.MaxValue; j++)
+				{
+					this.fileVersion = (short)j;
+					this.versionHash = GetVersionHash(version, fileVersion);
+					if (this.versionHash != 0)
+					{
+						reader.Hash = this.versionHash;
+						long position = reader.BaseStream.Position;
+						WzDirectory testDirectory = null;
+						try
+						{
+							testDirectory = new WzDirectory(reader, this.name, this.versionHash, this.WzIv, this);
+							testDirectory.ParseDirectory();
+						}
+						catch
+						{
+							reader.BaseStream.Position = position;
+							continue;
+						}
+						WzImage testImage = testDirectory.GetChildImages()[0];
+
+						try
+						{
+							reader.BaseStream.Position = testImage.Offset;
+							byte checkByte = reader.ReadByte();
+							reader.BaseStream.Position = position;
+							testDirectory.Dispose();
+							switch (checkByte)
+							{
+								case 0x73:
+								case 0x1b:
+									{
+										WzDirectory directory = new WzDirectory(reader, this.name, this.versionHash, this.WzIv, this);
+										directory.ParseDirectory();
+										this.wzDir = directory;
+										return;
+									}
+							}
+							reader.BaseStream.Position = position;
+						}
+						catch
+						{
+							reader.BaseStream.Position = position;
+						}
+					}
+				}
+				throw new Exception("Error with game version hash : The specified game version is incorrect and WzLib was unable to determine the version itself");
+			}
+			else
+			{
+				this.versionHash = GetVersionHash(version, fileVersion);
+				reader.Hash = this.versionHash;
+				WzDirectory directory = new WzDirectory(reader, this.name, this.versionHash, this.WzIv, this);
+				directory.ParseDirectory();
+				this.wzDir = directory;
+			}
+		}
+
+		private uint GetVersionHash(int encver, int realver)
+		{
+			int EncryptedVersionNumber = encver;
+			int VersionNumber = realver;
+			int VersionHash = 0;
+			int DecryptedVersionNumber = 0;
+			string VersionNumberStr;
+			int a = 0, b = 0, c = 0, d = 0, l = 0;
+
+			VersionNumberStr = VersionNumber.ToString();
+
+			l = VersionNumberStr.Length;
+			for (int i = 0; i < l; i++)
+			{
+				VersionHash = (32 * VersionHash) + (int)VersionNumberStr[i] + 1;
+			}
+			a = (VersionHash >> 24) & 0xFF;
+			b = (VersionHash >> 16) & 0xFF;
+			c = (VersionHash >> 8) & 0xFF;
+			d = VersionHash & 0xFF;
+			DecryptedVersionNumber = (0xff ^ a ^ b ^ c ^ d);
+
+			if (EncryptedVersionNumber == DecryptedVersionNumber)
+			{
+				return Convert.ToUInt32(VersionHash);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		private void CreateVersionHash()
+		{
+			versionHash = 0;
+			foreach (char ch in fileVersion.ToString())
+			{
+				versionHash = (versionHash * 32) + (byte)ch + 1;
+			}
+			uint a = (versionHash >> 24) & 0xFF,
+				b = (versionHash >> 16) & 0xFF,
+				c = (versionHash >> 8) & 0xFF,
+				d = versionHash & 0xFF;
+			version = (byte)~(a ^ b ^ c ^ d);
+		}
+
+		/// <summary>
+		/// Saves a wz file to the disk, AKA repacking.
+		/// </summary>
+		/// <param name="path">Path to the output wz file</param>
+		public void SaveToDisk(string path)
+		{
+            WzIv = WzTool.GetIvByMapleVersion(mapleVersion);
+			CreateVersionHash();
+			wzDir.SetHash(versionHash);
+			string tempFile = Path.GetFileNameWithoutExtension(path) + ".TEMP";
+			File.Create(tempFile).Close();
+			wzDir.GenerateDataFile(tempFile);
+			WzTool.StringCache.Clear();
+			uint totalLen = wzDir.GetImgOffsets(wzDir.GetOffsets(Header.FStart + 2));
+			WzBinaryWriter wzWriter = new WzBinaryWriter(File.Create(path), WzIv);
+			wzWriter.Hash = (uint)versionHash;
+			Header.FSize = totalLen - Header.FStart;
+			for (int i = 0; i < 4; i++)
+				wzWriter.Write((byte)Header.Ident[i]);
+			wzWriter.Write((long)Header.FSize);
+			wzWriter.Write(Header.FStart);
+			wzWriter.WriteNullTerminatedString(Header.Copyright);
+			long extraHeaderLength = Header.FStart - wzWriter.BaseStream.Position;
+			if (extraHeaderLength > 0)
+			{
+				wzWriter.Write(new byte[(int)extraHeaderLength]);
+			}
+			wzWriter.Write(version);
+			wzWriter.Header = Header;
+			wzDir.SaveDirectory(wzWriter);
+			wzWriter.StringCache.Clear();
+			FileStream fs = File.OpenRead(tempFile);
+			wzDir.SaveImages(wzWriter, fs);
+			fs.Close();
+			File.Delete(tempFile);
+			wzWriter.StringCache.Clear();
+			wzWriter.Close();
             GC.Collect();
             GC.WaitForPendingFinalizers();
-        }
+		}
 
-        public void ParseWzFile(byte[] pWzIv)
-        {
-            if (mMapleVersion != WzMapleVersion.GENERATE)
-                throw new InvalidOperationException(
-                    "Cannot call ParseWzFile(byte[] generateKey) if WZ file type is not GENERATE");
-            this.mWzIv = pWzIv;
-            ParseMainWzDirectory();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
+		public void ExportXml(string path, bool oneFile)
+		{
+			if (oneFile)
+			{
+				FileStream fs = File.Create(path + "/" + this.name + ".xml");
+				StreamWriter writer = new StreamWriter(fs);
 
-        internal void ParseMainWzDirectory()
-        {
-            if (this.mPath == null)
-            {
-                Log.LogError("Path is null");
-                return;
-            }
+				int level = 0;
+				writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzFile", this.name, true));
+				this.wzDir.ExportXml(writer, oneFile, level, false);
+				writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzFile"));
 
-            WzBinaryReader reader = new WzBinaryReader(File.Open(this.mPath, FileMode.Open, FileAccess.Read, FileShare.Read), mWzIv);
+				writer.Close();
+			}
+			else
+			{
+				throw new Exception("Under Construction");
+			}
+		}
 
-            this.Header = new WzHeader();
-            this.Header.Ident = reader.ReadString(4);
-            this.Header.FSize = reader.ReadUInt64();
-            this.Header.FStart = reader.ReadUInt32();
-            this.Header.Copyright = reader.ReadNullTerminatedString();
-            reader.ReadBytes((int)(Header.FStart - reader.BaseStream.Position));
-            reader.Header = this.Header;
-            this.mVersion = reader.ReadInt16();
-            if (mFileVersion == -1)
-            {
-                for (int j = 0; j < short.MaxValue; j++)
-                {
-                    this.mFileVersion = (short)j;
-                    this.mVersionHash = GetVersionHash(mVersion, mFileVersion);
-                    if (this.mVersionHash != 0)
-                    {
-                        reader.Hash = this.mVersionHash;
-                        long position = reader.BaseStream.Position;
-                        WzDirectory testDirectory = null;
-                        try
-                        {
-                            testDirectory = new WzDirectory(reader, this.mName, this.mVersionHash, this.mWzIv);
-                            testDirectory.ParseDirectory();
-                        }
-                        catch
-                        {
-                            reader.BaseStream.Position = position;
-                            continue;
-                        }
-                        WzImage testImage = testDirectory.GetChildImages()[0];
-
-                        try
-                        {
-                            reader.BaseStream.Position = testImage.Offset;
-                            byte checkByte = reader.ReadByte();
-                            reader.BaseStream.Position = position;
-                            testDirectory.Dispose();
-                            switch (checkByte)
-                            {
-                                case 0x73:
-                                case 0x1b:
-                                    {
-
-                                        this.mReader = reader;
-                                        this.mHash = mVersionHash;
-                                        ParseDirectory();
-                                        return;
-                                    }
-                            }
-                            reader.BaseStream.Position = position;
-                        }
-                        catch
-                        {
-                            reader.BaseStream.Position = position;
-                        }
-                    }
-                }
-                throw new Exception("Error with game version hash : The specified game version is incorrect and WzLib was unable to determine the version itself");
-            }
-            else
-            {
-                this.mVersionHash = GetVersionHash(mVersion, mFileVersion);
-                reader.Hash = this.mVersionHash;
-                this.mReader = reader;
-                this.mHash = mVersionHash;
-                ParseDirectory();
-            }
-        }
-
-        private uint GetVersionHash(int pEncVer, int pRealVer)
-        {
-            int EncryptedVersionNumber = pEncVer;
-            int VersionNumber = pRealVer;
-            int VersionHash = 0;
-            int DecryptedVersionNumber = 0;
-            string VersionNumberStr;
-            int a = 0, b = 0, c = 0, d = 0, l = 0;
-
-            VersionNumberStr = VersionNumber.ToString();
-
-            l = VersionNumberStr.Length;
-            for (int i = 0; i < l; i++)
-            {
-                VersionHash = (32 * VersionHash) + (int)VersionNumberStr[i] + 1;
-            }
-            a = (VersionHash >> 24) & 0xFF;
-            b = (VersionHash >> 16) & 0xFF;
-            c = (VersionHash >> 8) & 0xFF;
-            d = VersionHash & 0xFF;
-            DecryptedVersionNumber = (0xff ^ a ^ b ^ c ^ d);
-
-            if (EncryptedVersionNumber == DecryptedVersionNumber)
-            {
-                return Convert.ToUInt32(VersionHash);
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private void CreateVersionHash()
-        {
-            mVersionHash = 0;
-            foreach (char ch in mFileVersion.ToString())
-            {
-                mVersionHash = (mVersionHash * 32) + (byte)ch + 1;
-            }
-            uint a = (mVersionHash >> 24) & 0xFF,
-                b = (mVersionHash >> 16) & 0xFF,
-                c = (mVersionHash >> 8) & 0xFF,
-                d = mVersionHash & 0xFF;
-            mVersion = (byte)~(a ^ b ^ c ^ d);
-        }
-
-        /// <summary>
-        /// Saves a wz file to the disk, AKA repacking.
-        /// </summary>
-        /// <param name="pPath">Path to the output wz file</param>
-        public void SaveToDisk(string pPath)
-        {
-            mWzIv = WzTool.GetIvByMapleVersion(mMapleVersion);
-            CreateVersionHash();
-            SetHash(mVersionHash);
-            string tempFile = Path.GetFileNameWithoutExtension(pPath) + ".TEMP";
-            File.Create(tempFile).Close();
-            GenerateDataFile(tempFile);
-            WzTool.StringCache.Clear();
-            uint totalLen = GetImgOffsets(GetOffsets(Header.FStart + 2));
-            WzBinaryWriter wzWriter = new WzBinaryWriter(File.Create(pPath), mWzIv);
-            wzWriter.Hash = (uint)mVersionHash;
-            Header.FSize = totalLen - Header.FStart;
-            wzWriter.Write(Header.Ident, false);
-            wzWriter.Write((long)Header.FSize);
-            wzWriter.Write(Header.FStart);
-            wzWriter.WriteNullTerminatedString(Header.Copyright);
-            wzWriter.Write(new byte[Header.ExtraBytes]);
-            wzWriter.Write(mVersion);
-            wzWriter.Header = Header;
-            SaveDirectory(wzWriter);
-            wzWriter.StringCache.Clear();
-            FileStream fs = File.OpenRead(tempFile);
-            SaveImages(wzWriter, fs);
-            fs.Close();
-            File.Delete(tempFile);
-            wzWriter.StringCache.Clear();
-            wzWriter.Close();
-        }
-
-        public void ExportXml(string pPath, bool pOneFile)
-        {
-            if (pOneFile)
-            {
-                FileStream fs = File.Create(pPath + "/" + this.mName + ".xml");
-                StreamWriter writer = new StreamWriter(fs);
-
-                int level = 0;
-                writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzFile", this.mName, true));
-                ExportXml(writer, pOneFile, level, false);
-                writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzFile"));
-
-                writer.Close();
-            }
-            else
-            {
-                throw new Exception("Under Construction");
-            }
-        }
-
-        #region Search Methods
-
-        /// <summary>
-        /// Returns an array of objects from a given path. Wild cards are supported
-        /// For example :
-        /// GetObjectsFromPath("Map.wz/Map0/*");
-        /// Would return all the objects (in this case images) from the sub directory Map0
-        /// </summary>
-        /// <param name="path">The path to the object(s)</param>
-        /// <returns>An array of AWzObjects containing the found objects</returns>
-        public AWzObject[] GetObjectsFromWildcardPath(string path)
-        {
-            if (path.ToLower() == mName.ToLower())
-                return new AWzObject[] { this };
+		/// <summary>
+		/// Returns an array of objects from a given path. Wild cards are supported
+		/// For example :
+		/// GetObjectsFromPath("Map.wz/Map0/*");
+		/// Would return all the objects (in this case images) from the sub directory Map0
+		/// </summary>
+		/// <param name="path">The path to the object(s)</param>
+		/// <returns>An array of IWzObjects containing the found objects</returns>
+		public List<WzObject> GetObjectsFromWildcardPath(string path)
+		{
+            if (path.ToLower() == name.ToLower())
+                return new List<WzObject> { WzDirectory };
             else if (path == "*")
             {
-                List<AWzObject> fullList = new List<AWzObject>();
-                fullList.Add(this);
-                fullList.AddRange(GetObjectsFromDirectory(this));
-                return fullList.ToArray();
+                List<WzObject> fullList = new List<WzObject>();
+                fullList.Add(WzDirectory);
+                fullList.AddRange(GetObjectsFromDirectory(WzDirectory));
+                return fullList;
             }
             else if (!path.Contains("*"))
-                return new AWzObject[] { GetObjectFromPath(path) };
-            string[] seperatedNames = path.Split("/".ToCharArray());
-            if (seperatedNames.Length == 2 && seperatedNames[1] == "*")
-                return GetObjectsFromDirectory(this);
-            List<AWzObject> objList = new List<AWzObject>();
-            foreach (WzImage img in WzImages)
-                foreach (string spath in GetPathsFromImage(img, mName + "/" + img.Name))
-                    if (strMatch(path, spath))
-                        objList.Add(GetObjectFromPath(spath));
-            foreach (WzDirectory dir in WzDirectories)
-                foreach (string spath in GetPathsFromDirectory(dir, mName + "/" + dir.Name))
-                    if (strMatch(path, spath))
-                        objList.Add(GetObjectFromPath(spath));
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            return objList.ToArray();
-        }
+                return new List<WzObject> { GetObjectFromPath(path) };
+			string[] seperatedNames = path.Split("/".ToCharArray());
+			if (seperatedNames.Length == 2 && seperatedNames[1] == "*")
+				return GetObjectsFromDirectory(WzDirectory);
+			List<WzObject> objList = new List<WzObject>();
+			foreach (WzImage img in WzDirectory.WzImages)
+				foreach (string spath in GetPathsFromImage(img, name + "/" + img.Name))
+					if (strMatch(path, spath))
+						objList.Add(GetObjectFromPath(spath));
+			foreach (WzDirectory dir in wzDir.WzDirectories)
+				foreach (string spath in GetPathsFromDirectory(dir, name + "/" + dir.Name))
+					if (strMatch(path, spath))
+						objList.Add(GetObjectFromPath(spath));
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+			return objList;
+		}
 
-        public AWzObject[] GetObjectsFromRegexPath(string path)
-        {
-            if (path.ToLower() == mName.ToLower())
-                return new AWzObject[] { this };
-            List<AWzObject> objList = new List<AWzObject>();
-            foreach (WzImage img in WzImages)
-                foreach (string spath in GetPathsFromImage(img, mName + "/" + img.Name))
-                    if (Regex.Match(spath, path).Success)
-                        objList.Add(GetObjectFromPath(spath));
-            foreach (WzDirectory dir in WzDirectories)
-                foreach (string spath in GetPathsFromDirectory(dir, mName + "/" + dir.Name))
-                    if (Regex.Match(spath, path).Success)
-                        objList.Add(GetObjectFromPath(spath));
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            return objList.ToArray();
-        }
+		public List<WzObject> GetObjectsFromRegexPath(string path)
+		{
+			if (path.ToLower() == name.ToLower())
+                return new List<WzObject> { WzDirectory };
+			List<WzObject> objList = new List<WzObject>();
+			foreach (WzImage img in WzDirectory.WzImages)
+				foreach (string spath in GetPathsFromImage(img, name + "/" + img.Name))
+					if (Regex.Match(spath, path).Success)
+						objList.Add(GetObjectFromPath(spath));
+			foreach (WzDirectory dir in wzDir.WzDirectories)
+				foreach (string spath in GetPathsFromDirectory(dir, name + "/" + dir.Name))
+					if (Regex.Match(spath, path).Success)
+						objList.Add(GetObjectFromPath(spath));
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+			return objList;
+		}
 
-        public AWzObject[] GetObjectsFromDirectory(WzDirectory dir)
-        {
-            List<AWzObject> objList = new List<AWzObject>();
-            foreach (WzImage img in dir.WzImages)
-            {
-                objList.Add(img);
-                objList.AddRange(GetObjectsFromImage(img));
-            }
-            foreach (WzDirectory subdir in dir.WzDirectories)
-            {
-                objList.Add(subdir);
-                objList.AddRange(GetObjectsFromDirectory(subdir));
-            }
-            return objList.ToArray();
-        }
+		public List<WzObject> GetObjectsFromDirectory(WzDirectory dir)
+		{
+			List<WzObject> objList = new List<WzObject>();
+			foreach (WzImage img in dir.WzImages)
+			{
+				objList.Add(img);
+				objList.AddRange(GetObjectsFromImage(img));
+			}
+			foreach (WzDirectory subdir in dir.WzDirectories)
+			{
+				objList.Add(subdir);
+				objList.AddRange(GetObjectsFromDirectory(subdir));
+			}
+			return objList;
+		}
 
-        public AWzObject[] GetObjectsFromImage(WzImage img)
-        {
-            List<AWzObject> objList = new List<AWzObject>();
-            foreach (AWzImageProperty prop in img.WzProperties)
-            {
-                objList.Add(prop);
-                objList.AddRange(GetObjectsFromProperty(prop));
-            }
-            return objList.ToArray();
-        }
+		public List<WzObject> GetObjectsFromImage(WzImage img)
+		{
+			List<WzObject> objList = new List<WzObject>();
+			foreach (WzImageProperty prop in img.WzProperties)
+			{
+				objList.Add(prop);
+				objList.AddRange(GetObjectsFromProperty(prop));
+			}
+			return objList;
+		}
 
-        public AWzObject[] GetObjectsFromProperty(AWzImageProperty prop)
-        {
-            List<AWzObject> objList = new List<AWzObject>();
-            switch (prop.PropertyType)
-            {
-                case WzPropertyType.Canvas:
-                    objList.AddRange(prop.WzProperties);
-                    objList.Add(((WzCanvasProperty)prop).PngProperty);
-                    break;
-                case WzPropertyType.Convex:
-                    objList.AddRange(prop.WzProperties);
-                    break;
-                case WzPropertyType.SubProperty:
-                    objList.AddRange(prop.WzProperties);
-                    break;
-                case WzPropertyType.Vector:
-                    objList.Add(((WzVectorProperty)prop).X);
-                    objList.Add(((WzVectorProperty)prop).Y);
-                    break;
-            }
-            return objList.ToArray();
-        }
+		public List<WzObject> GetObjectsFromProperty(WzImageProperty prop)
+		{
+			List<WzObject> objList = new List<WzObject>();
+			switch (prop.PropertyType)
+			{
+				case WzPropertyType.Canvas:
+					foreach (WzImageProperty canvasProp in ((WzCanvasProperty)prop).WzProperties)
+						objList.AddRange(GetObjectsFromProperty(canvasProp));
+					objList.Add(((WzCanvasProperty)prop).PngProperty);
+					break;
+				case WzPropertyType.Convex:
+                    foreach (WzImageProperty exProp in ((WzConvexProperty)prop).WzProperties)
+						objList.AddRange(GetObjectsFromProperty(exProp));
+					break;
+				case WzPropertyType.SubProperty:
+					foreach (WzImageProperty subProp in ((WzSubProperty)prop).WzProperties)
+						objList.AddRange(GetObjectsFromProperty(subProp));
+					break;
+				case WzPropertyType.Vector:
+					objList.Add(((WzVectorProperty)prop).X);
+					objList.Add(((WzVectorProperty)prop).Y);
+					break;
+			}
+			return objList;
+		}
 
-        internal string[] GetPathsFromDirectory(WzDirectory dir, string curPath)
-        {
-            List<string> objList = new List<string>();
-            foreach (WzImage img in dir.WzImages)
-            {
-                objList.Add(curPath + "/" + img.Name);
+		internal List<string> GetPathsFromDirectory(WzDirectory dir, string curPath)
+		{
+			List<string> objList = new List<string>();
+			foreach (WzImage img in dir.WzImages)
+			{
+				objList.Add(curPath + "/" + img.Name);
 
-                objList.AddRange(GetPathsFromImage(img, curPath + "/" + img.Name));
-            }
-            foreach (WzDirectory subdir in dir.WzDirectories)
-            {
-                objList.Add(curPath + "/" + subdir.Name);
-                objList.AddRange(GetPathsFromDirectory(subdir, curPath + "/" + subdir.Name));
-            }
-            return objList.ToArray();
-        }
+				objList.AddRange(GetPathsFromImage(img, curPath + "/" + img.Name));
+			}
+			foreach (WzDirectory subdir in dir.WzDirectories)
+			{
+				objList.Add(curPath + "/" + subdir.Name);
+				objList.AddRange(GetPathsFromDirectory(subdir, curPath + "/" + subdir.Name));
+			}
+			return objList;
+		}
 
-        internal string[] GetPathsFromImage(WzImage img, string curPath)
-        {
-            List<string> objList = new List<string>();
-            foreach (AWzImageProperty prop in img.WzProperties)
-            {
-                objList.Add(curPath + "/" + prop.Name);
-                objList.AddRange(GetPathsFromProperty(prop, curPath + "/" + prop.Name));
-            }
-            return objList.ToArray();
-        }
+		internal List<string> GetPathsFromImage(WzImage img, string curPath)
+		{
+			List<string> objList = new List<string>();
+			foreach (WzImageProperty prop in img.WzProperties)
+			{
+				objList.Add(curPath + "/" + prop.Name);
+				objList.AddRange(GetPathsFromProperty(prop, curPath + "/" + prop.Name));
+			}
+			return objList;
+		}
 
-        internal string[] GetPathsFromProperty(AWzImageProperty prop, string curPath)
-        {
-            List<string> objList = new List<string>();
-            switch (prop.PropertyType)
-            {
-                case WzPropertyType.Canvas:
-                    foreach (AWzImageProperty canvasProp in prop.WzProperties)
-                    {
-                        objList.Add(curPath + "/" + canvasProp.Name);
-                        objList.AddRange(GetPathsFromProperty(canvasProp, curPath + "/" + canvasProp.Name));
-                    }
-                    objList.Add(curPath + "/PNG");
-                    break;
-                case WzPropertyType.Convex:
-                    foreach (AWzImageProperty conProp in prop.WzProperties)
-                    {
-                        objList.Add(curPath + "/" + conProp.Name);
-                        objList.AddRange(GetPathsFromProperty(conProp, curPath + "/" + conProp.Name));
-                    }
-                    break;
-                case WzPropertyType.SubProperty:
-                    foreach (AWzImageProperty subProp in prop.WzProperties)
-                    {
-                        objList.Add(curPath + "/" + subProp.Name);
-                        objList.AddRange(GetPathsFromProperty(subProp, curPath + "/" + subProp.Name));
-                    }
-                    break;
-                case WzPropertyType.Vector:
-                    objList.Add(curPath + "/X");
-                    objList.Add(curPath + "/Y");
-                    break;
-            }
-            return objList.ToArray();
-        }
+        internal List<string> GetPathsFromProperty(WzImageProperty prop, string curPath)
+		{
+			List<string> objList = new List<string>();
+			switch (prop.PropertyType)
+			{
+				case WzPropertyType.Canvas:
+					foreach (WzImageProperty canvasProp in ((WzCanvasProperty)prop).WzProperties)
+					{
+						objList.Add(curPath + "/" + canvasProp.Name);
+						objList.AddRange(GetPathsFromProperty(canvasProp, curPath + "/" + canvasProp.Name));
+					}
+					objList.Add(curPath + "/PNG");
+					break;
+				case WzPropertyType.Convex:
+					foreach (WzImageProperty exProp in ((WzConvexProperty)prop).WzProperties)
+					{
+						objList.Add(curPath + "/" + exProp.Name);
+						objList.AddRange(GetPathsFromProperty(exProp, curPath + "/" + exProp.Name));
+					}
+					break;
+				case WzPropertyType.SubProperty:
+					foreach (WzImageProperty subProp in ((WzSubProperty)prop).WzProperties)
+					{
+						objList.Add(curPath + "/" + subProp.Name);
+						objList.AddRange(GetPathsFromProperty(subProp, curPath + "/" + subProp.Name));
+					}
+					break;
+				case WzPropertyType.Vector:
+					objList.Add(curPath + "/X");
+					objList.Add(curPath + "/Y");
+					break;
+			}
+			return objList;
+		}
 
-        public AWzObject GetObjectFromPath(string path)
-        {
-            string[] seperatedPath = path.Split("/".ToCharArray());
-            if (seperatedPath[0].ToLower() != mName.ToLower())
+		public WzObject GetObjectFromPath(string path)
+		{
+			string[] seperatedPath = path.Split("/".ToCharArray());
+            if (seperatedPath[0].ToLower() != wzDir.name.ToLower() && seperatedPath[0].ToLower() != wzDir.name.Substring(0, wzDir.name.Length - 3).ToLower())
                 return null;
-            if (seperatedPath.Length == 1)
-                return this;
-            AWzObject curObj = this;
-            for (int i = 1; i < seperatedPath.Length; i++)
-            {
-                if (curObj == null)
-                {
-                    return null;
-                }
-                switch (curObj.ObjectType)
-                {
-                    case WzObjectType.Directory:
-                        curObj = ((WzDirectory)curObj)[seperatedPath[i]];
-                        continue;
-                    case WzObjectType.Image:
-                        curObj = ((WzImage)curObj)[seperatedPath[i]];
-                        continue;
-                    case WzObjectType.Property:
-                        switch (((AWzImageProperty)curObj).PropertyType)
-                        {
-                            case WzPropertyType.Canvas:
-                                curObj = ((WzCanvasProperty)curObj)[seperatedPath[i]];
-                                continue;
-                            case WzPropertyType.Convex:
-                                curObj = ((WzConvexProperty)curObj)[seperatedPath[i]];
-                                continue;
-                            case WzPropertyType.SubProperty:
-                                curObj = ((WzSubProperty)curObj)[seperatedPath[i]];
-                                continue;
-                            case WzPropertyType.Vector:
-                                if (seperatedPath[i] == "X")
-                                    return ((WzVectorProperty)curObj).X;
-                                else if (seperatedPath[i] == "Y")
-                                    return ((WzVectorProperty)curObj).Y;
-                                else
-                                    return null;
-                            default: // Wut?
-                                return null;
-                        }
-                }
-            }
-            if (curObj == null)
-            {
-                return null;
-            }
-            return curObj;
-        }
+			if (seperatedPath.Length == 1)
+				return WzDirectory;
+			WzObject curObj = WzDirectory;
+			for (int i = 1; i < seperatedPath.Length; i++)
+			{
+				if (curObj == null)
+				{
+					return null;
+				}
+				switch (curObj.ObjectType)
+				{
+					case WzObjectType.Directory:
+						curObj = ((WzDirectory)curObj)[seperatedPath[i]];
+						continue;
+					case WzObjectType.Image:
+						curObj = ((WzImage)curObj)[seperatedPath[i]];
+						continue;
+					case WzObjectType.Property:
+						switch (((WzImageProperty)curObj).PropertyType)
+						{
+							case WzPropertyType.Canvas:
+								curObj = ((WzCanvasProperty)curObj)[seperatedPath[i]];
+								continue;
+							case WzPropertyType.Convex:
+								curObj = ((WzConvexProperty)curObj)[seperatedPath[i]];
+								continue;
+							case WzPropertyType.SubProperty:
+								curObj = ((WzSubProperty)curObj)[seperatedPath[i]];
+								continue;
+							case WzPropertyType.Vector:
+								if (seperatedPath[i] == "X")
+									return ((WzVectorProperty)curObj).X;
+								else if (seperatedPath[i] == "Y")
+									return ((WzVectorProperty)curObj).Y;
+								else
+									return null;
+							default: // Wut?
+								return null;
+						}
+				}
+			}
+			if (curObj == null)
+			{
+				return null;
+			}
+			return curObj;
+		}
 
-        internal bool strMatch(string strWildCard, string strCompare)
+		internal bool strMatch(string strWildCard, string strCompare)
+		{
+			if (strWildCard.Length == 0) return strCompare.Length == 0;
+			if (strCompare.Length == 0) return false;
+			if (strWildCard[0] == '*' && strWildCard.Length > 1)
+				for (int index = 0; index < strCompare.Length; index++)
+				{
+					if (strMatch(strWildCard.Substring(1), strCompare.Substring(index)))
+						return true;
+				}
+			else if (strWildCard[0] == '*')
+				return true;
+			else if (strWildCard[0] == strCompare[0])
+				return strMatch(strWildCard.Substring(1), strCompare.Substring(1));
+			return false;
+		}
+
+        public override void Remove()
         {
-            if (strWildCard.Length == 0) return strCompare.Length == 0;
-            if (strCompare.Length == 0) return false;
-            if (strWildCard[0] == '*' && strWildCard.Length > 1)
-                for (int index = 0; index < strCompare.Length; index++)
-                {
-                    if (strMatch(strWildCard.Substring(1), strCompare.Substring(index)))
-                        return true;
-                }
-            else if (strWildCard[0] == '*')
-                return true;
-            else if (strWildCard[0] == strCompare[0])
-                return strMatch(strWildCard.Substring(1), strCompare.Substring(1));
-            return false;
+            Dispose();
         }
-
-        #endregion
-    }
+	}
 }

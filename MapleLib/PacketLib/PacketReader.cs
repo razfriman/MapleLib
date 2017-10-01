@@ -58,7 +58,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Reads a byte array from the stream
 		/// </summary>
-		/// <param name="length">Amount of bytes</param>
+		/// <param name="pCount">Amount of bytes</param>
 		/// <returns>A byte array</returns>
 		public byte[] ReadBytes(int pCount)
 		{

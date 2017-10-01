@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using MapleLib.MapleCryptoLib;
 
 namespace MapleLib.WzLib.Util
@@ -12,7 +10,7 @@ namespace MapleLib.WzLib.Util
 	public class WzBinaryWriter : BinaryWriter
 	{
 		#region Properties
-		public byte[] WzKey { get; set; }
+		public WzMutableKey WzKey { get; set; }
 		public uint Hash { get; set; }
 		public Hashtable StringCache { get; set; }
 		public WzHeader Header { get; set; }
@@ -20,39 +18,42 @@ namespace MapleLib.WzLib.Util
 		#endregion
 
 		#region Constructors
-		public WzBinaryWriter(Stream pOutput, byte[] pWzIv, bool pLeaveOpen = false)
-			: base(pOutput)
+		public WzBinaryWriter(Stream output, byte[] WzIv)
+			: this(output, WzIv, false) { }
+
+		public WzBinaryWriter(Stream output, byte[] WzIv, bool leaveOpen)
+			: base(output)
 		{
-			WzKey = WzKeyGenerator.GenerateWzKey(pWzIv);
+			WzKey = WzKeyGenerator.GenerateWzKey(WzIv);
 			StringCache = new Hashtable();
-			this.LeaveOpen = pLeaveOpen;
+			this.LeaveOpen = leaveOpen;
 		}
 		#endregion
 
 		#region Methods
-		public void WriteStringValue(string pString, int pWithoutOffset, int pWithOffset)
+		public void WriteStringValue(string s, int withoutOffset, int withOffset)
 		{
-			if (pString.Length > 4 && StringCache.ContainsKey(pString))
+			if (s.Length > 4 && StringCache.ContainsKey(s))
 			{
-				Write((byte)pWithOffset);
-				Write((int)StringCache[pString]);
+				Write((byte)withOffset);
+				Write((int)StringCache[s]);
 			}
 			else
 			{
-				Write((byte)pWithoutOffset);
+				Write((byte)withoutOffset);
 				int sOffset = (int)this.BaseStream.Position;
-				Write(pString);
-				if (!StringCache.ContainsKey(pString))
+				Write(s);
+				if (!StringCache.ContainsKey(s))
 				{
-					StringCache[pString] = sOffset;
+					StringCache[s] = sOffset;
 				}
 			}
 		}
 
-		public void WriteWzObjectValue(string pString, byte pType)
+		public void WriteWzObjectValue(string s, byte type)
 		{
-			string storeName = pType + "_" + pString;
-			if (pString.Length > 4 && StringCache.ContainsKey(storeName))
+			string storeName = type + "_" + s;
+			if (s.Length > 4 && StringCache.ContainsKey(storeName))
 			{
 				Write((byte)2);
 				Write((int)StringCache[storeName]);
@@ -60,8 +61,8 @@ namespace MapleLib.WzLib.Util
 			else
 			{
 				int sOffset = (int)(this.BaseStream.Position - Header.FStart);
-				Write(pType);
-				Write(pString);
+				Write(type);
+				Write(s);
 				if (!StringCache.ContainsKey(storeName))
 				{
 					StringCache[storeName] = sOffset;
@@ -69,44 +70,40 @@ namespace MapleLib.WzLib.Util
 			}
 		}
 
-		public void Write(string pValue, bool pEncryption = true, bool pUnicode = false)
+		public override void Write(string value)
 		{
-            if (!pEncryption)
-            {
-                base.Write(pValue);
-                return;
-            }
-			if (pValue.Length == 0)
+			if (value.Length == 0)
 			{
 				Write((byte)0);
 			}
 			else
 			{
-				for (int i = 0; i < pValue.Length; i++)
+				bool unicode = false;
+				for (int i = 0; i < value.Length; i++)
 				{
-					if (pValue[i] > sbyte.MaxValue)
+					if (value[i] > sbyte.MaxValue)
 					{
-						pUnicode = true;
+						unicode = true;
 					}
 				}
 
-				if (pUnicode)
+				if (unicode)
 				{
 					ushort mask = 0xAAAA;
 
-					if (pValue.Length > sbyte.MaxValue)
+					if (value.Length >= sbyte.MaxValue) // Bugfix - >= because if value.Length = MaxValue, MaxValue will be written and then treated as a long-length marker
 					{
 						Write(sbyte.MaxValue);
-						Write(pValue.Length);
+						Write(value.Length);
 					}
 					else
 					{
-						Write((sbyte)pValue.Length);
+						Write((sbyte)value.Length);
 					}
 
-					for (int i = 0; i < pValue.Length; i++)
+					for (int i = 0; i < value.Length; i++)
 					{
-						ushort encryptedChar = (ushort)pValue[i];
+						ushort encryptedChar = (ushort)value[i];
 						encryptedChar ^= (ushort)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2]);
 						encryptedChar ^= mask;
 						mask++;
@@ -117,19 +114,19 @@ namespace MapleLib.WzLib.Util
 				{
 					byte mask = 0xAA;
 
-					if (pValue.Length > sbyte.MaxValue)
+					if (value.Length > sbyte.MaxValue) // Note - no need for >= here because of 2's complement (MinValue == -(MaxValue + 1))
 					{
 						Write(sbyte.MinValue);
-						Write(pValue.Length);
+						Write(value.Length);
 					}
 					else
 					{
-						Write((sbyte)(-pValue.Length));
+						Write((sbyte)(-value.Length));
 					}
 
-					for (int i = 0; i < pValue.Length; i++)
+					for (int i = 0; i < value.Length; i++)
 					{
-						byte encryptedChar = (byte)pValue[i];
+						byte encryptedChar = (byte)value[i];
 						encryptedChar ^= WzKey[i];
 						encryptedChar ^= mask;
 						mask++;
@@ -139,18 +136,13 @@ namespace MapleLib.WzLib.Util
 			}
 		}
 
-        /// <summary>
-        /// No Encryption
-        /// </summary>
-        /// <param name="pValue"></param>
-        /// <param name="pLength"></param>
-		public void Write(string pValue, int pLength)
+		public void Write(string value, int length)
 		{
-			for (int i = 0; i < pLength; i++)
+			for (int i = 0; i < length; i++)
 			{
-				if (i < pValue.Length)
+				if (i < value.Length)
 				{
-					Write(pValue[i]);
+					Write(value[i]);
 				}
 				else
 				{
@@ -159,42 +151,76 @@ namespace MapleLib.WzLib.Util
 			}
 		}
 
-        /// <summary>
-        /// No Encryption
-        /// </summary>
-        /// <param name="pValue"></param>
-		public void WriteNullTerminatedString(string pValue)
+        public char[] EncryptString(string stringToDecrypt)
+        {
+            char[] outputChars = new char[stringToDecrypt.Length];
+            for (int i = 0; i < stringToDecrypt.Length; i++)
+                outputChars[i] = (char)(stringToDecrypt[i] ^ ((char)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
+            return outputChars;
+        }
+
+        public char[] EncryptNonUnicodeString(string stringToDecrypt)
+        {
+            char[] outputChars = new char[stringToDecrypt.Length];
+            for (int i = 0; i < stringToDecrypt.Length; i++)
+                outputChars[i] = (char)(stringToDecrypt[i] ^ WzKey[i]);
+            return outputChars;
+        }
+
+		public void WriteNullTerminatedString(string value)
 		{
-			for (int i = 0; i < pValue.Length; i++)
+			for (int i = 0; i < value.Length; i++)
 			{
-				Write((byte)pValue[i]);
+				Write((byte)value[i]);
 			}
+			Write((byte)0);
 		}
 
-		public void WriteCompressedInt(int pValue)
+		public void WriteCompressedInt(int value)
 		{
-			if (pValue > sbyte.MaxValue || pValue <= sbyte.MinValue)
+			if (value > sbyte.MaxValue || value <= sbyte.MinValue)
 			{
 				Write(sbyte.MinValue);
-				Write(pValue);
+				Write(value);
 			}
 			else
 			{
-				Write((sbyte)pValue);
+				Write((sbyte)value);
 			}
 		}
 
-		public void WriteOffset(uint pValue)
+        public void WriteCompressedLong(long value)
+        {
+            if (value > sbyte.MaxValue || value <= sbyte.MinValue)
+            {
+                Write(sbyte.MinValue);
+                Write(value);
+            }
+            else
+            {
+                Write((sbyte)value);
+            }
+        }
+
+		public void WriteOffset(uint value)
 		{
 			uint encOffset = (uint)BaseStream.Position;
 			encOffset = (encOffset - Header.FStart) ^ 0xFFFFFFFF;
 			encOffset *= Hash;
 			encOffset -= CryptoConstants.WZ_OffsetConstant;
-			encOffset = WzTool.RotateLeft(encOffset, (byte)(encOffset & 0x1F));
-			uint writeOffset = encOffset ^ (pValue - (Header.FStart * 2));
+			encOffset = RotateLeft(encOffset, (byte)(encOffset & 0x1F));
+			uint writeOffset = encOffset ^ (value - (Header.FStart * 2));
 			Write(writeOffset);
 		}
 
+		private uint RotateLeft(uint x, byte n)
+		{
+			return (uint)(((x) << (n)) | ((x) >> (32 - (n))));
+		}
+		private uint RotateRight(uint x, byte n)
+		{
+			return (uint)(((x) >> (n)) | ((x) << (32 - (n))));
+		}
 		public override void Close()
 		{
 			if (!LeaveOpen)

@@ -83,7 +83,6 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Starts listening and accepting connections
 		/// </summary>
-		/// <param name="port">Port to listen to</param>
 		public void StartMonitoring(IPAddress pIP)
 		{
 
@@ -91,7 +90,7 @@ namespace MapleLib.PacketLib
 
 			mSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);//??
 
-			byte[] byIn = new byte[4] { 1, 0, 0, 0 };
+			byte[] byIn = { 1, 0, 0, 0 };
 			byte[] byOut = null;
 
 			mSocket.IOControl(IOControlCode.ReceiveAll, byIn, byOut);
@@ -136,10 +135,7 @@ namespace MapleLib.PacketLib
 				int received = socketInfo.Socket.EndReceive(pIAR);
 				if (received == 0)
 				{
-					if (OnClientDisconnected != null)
-					{
-						OnClientDisconnected(this);
-					}
+                    OnClientDisconnected?.Invoke(this);
 					return;
 				}
 

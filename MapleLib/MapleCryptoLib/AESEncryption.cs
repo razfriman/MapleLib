@@ -50,7 +50,7 @@ namespace MapleLib.MapleCryptoLib
 			int start = 0;
 			while (remaining > 0)
 			{
-				byte[] myIV = MapleCrypto.multiplyBytes(pIV, 4, 4);
+				byte[] myIV = MapleCrypto.MultiplyBytes(pIV, 4, 4);
 				if (remaining < llength)
 				{
 					llength = remaining;

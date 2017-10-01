@@ -6,41 +6,45 @@ namespace MapleLib.WzLib.WzProperties
 	/// <summary>
 	/// A property that contains an x and a y value
 	/// </summary>
-	public class WzVectorProperty : AWzImageProperty, IExtended
+	public class WzVectorProperty : WzExtended
 	{
 		#region Fields
 		internal string name;
-		internal WzCompressedIntProperty x, y;
-		internal AWzObject parent;
-		internal WzImage imgParent;
+		internal WzIntProperty x, y;
+		internal WzObject parent;
+		//internal WzImage imgParent;
 		#endregion
 
 		#region Inherited Members
-        public override object WzValue
+        public override void SetValue(object value)
         {
-            get { return new System.Drawing.Point(x.Value, y.Value); }
-            set
+            if (value is System.Drawing.Point)
             {
-                if (value is System.Drawing.Point)
-                {
-                    x.mVal = ((System.Drawing.Point)value).X;
-                    y.mVal = ((System.Drawing.Point)value).Y;
-                }
-                else
-                {
-                    x.mVal = ((System.Drawing.Size)value).Width;
-                    y.mVal = ((System.Drawing.Size)value).Height;
-                }
+                x.val = ((System.Drawing.Point)value).X;
+                y.val = ((System.Drawing.Point)value).Y;
+            }
+            else
+            {
+                x.val = ((System.Drawing.Size)value).Width;
+                y.val = ((System.Drawing.Size)value).Height;
             }
         }
+
+        public override WzImageProperty DeepClone()
+        {
+            WzVectorProperty clone = new WzVectorProperty(name, x, y);
+            return clone;
+        }
+
+		public override object WzValue { get { return new System.Drawing.Point(x.Value, y.Value); } }
 		/// <summary>
 		/// The parent of the object
 		/// </summary>
-		public override AWzObject Parent { get { return parent; } internal set { parent = value; } }
-		/// <summary>
+		public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+		/*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
-		public override WzImage ParentImage { get { return imgParent; } internal set { imgParent = value; } }
+		public override WzImage ParentImage { get { return imgParent; } internal set { imgParent = value; } }*/
 		/// <summary>
 		/// The name of the property
 		/// </summary>
@@ -77,11 +81,11 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The X value of the Vector2D
 		/// </summary>
-		public WzCompressedIntProperty X { get { return x; } set { x = value; } }
+		public WzIntProperty X { get { return x; } set { x = value; } }
 		/// <summary>
 		/// The Y value of the Vector2D
 		/// </summary>
-		public WzCompressedIntProperty Y { get { return y; } set { y = value; } }
+		public WzIntProperty Y { get { return y; } set { y = value; } }
 		/// <summary>
 		/// The Point of the Vector2D created from the X and Y
 		/// </summary>
@@ -104,7 +108,7 @@ namespace MapleLib.WzLib.WzProperties
 		/// <param name="name">The name of the property</param>
 		/// <param name="x">The x value of the vector</param>
 		/// <param name="y">The y value of the vector</param>
-		public WzVectorProperty(string name, WzCompressedIntProperty x, WzCompressedIntProperty y)
+		public WzVectorProperty(string name, WzIntProperty x, WzIntProperty y)
 		{
 			this.name = name;
 			this.x = x;
@@ -113,15 +117,15 @@ namespace MapleLib.WzLib.WzProperties
 		#endregion
 
         #region Cast Values
-        internal override System.Drawing.Point ToPoint(int pXDef = 0, int pYDef = 0)
+        public override System.Drawing.Point GetPoint()
         {
-            return new System.Drawing.Point(x.mVal, y.mVal);
+            return new System.Drawing.Point(x.val, y.val);
         }
 
         public override string ToString()
         {
-            return "X: " + x.mVal.ToString() + ", Y: " + y.mVal.ToString();
+            return "X: " + x.val.ToString() + ", Y: " + y.val.ToString();
         }
         #endregion
-    }
+	}
 }

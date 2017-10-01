@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 
 namespace MapleLib.PacketLib
 {
@@ -10,9 +6,6 @@ namespace MapleLib.PacketLib
 	{
 		protected MemoryStream mBuffer;
 
-		public byte[] ToArray()
-		{
-			return mBuffer.ToArray();
-		}
+		public byte[] ToArray() => mBuffer.ToArray();
 	}
 }

@@ -50,7 +50,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a byte to the stream
 		/// </summary>
-		/// <param name="@byte">The byte to write</param>
+		/// <param name="pByte">The byte to write</param>
 		public void WriteByte(int pByte)
 		{
 			pBinWriter.Write((byte)pByte);
@@ -59,7 +59,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a byte array to the stream
 		/// </summary>
-		/// <param name="@bytes">The byte array to write</param>
+		/// <param name="pBytes">The byte array to write</param>
 		public void WriteBytes(byte[] pBytes)
 		{
 			pBinWriter.Write(pBytes);
@@ -68,7 +68,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a boolean to the stream
 		/// </summary>
-		/// <param name="@bool">The boolean to write</param>
+		/// <param name="pBool">The boolean to write</param>
 		public void WriteBool(bool pBool)
 		{
 			pBinWriter.Write(pBool);
@@ -77,7 +77,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a short to the stream
 		/// </summary>
-		/// <param name="@short">The short to write</param>
+		/// <param name="pShort">The short to write</param>
 		public void WriteShort(int pShort)
 		{
 			pBinWriter.Write((short)pShort);
@@ -86,7 +86,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes an int to the stream
 		/// </summary>
-		/// <param name="@int">The int to write</param>
+		/// <param name="pInt">The int to write</param>
 		public void WriteInt(int pInt)
 		{
 			pBinWriter.Write(pInt);
@@ -95,7 +95,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a long to the stream
 		/// </summary>
-		/// <param name="@long">The long to write</param>
+		/// <param name="pLong">The long to write</param>
 		public void WriteLong(long pLong)
 		{
 			pBinWriter.Write(pLong);
@@ -104,7 +104,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a string to the stream
 		/// </summary>
-		/// <param name="@string">The string to write</param>
+		/// <param name="pString">The string to write</param>
 		public void WriteString(String pString)
 		{
 			pBinWriter.Write(pString.ToCharArray());
@@ -113,7 +113,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a string prefixed with a [short] length before it, to the stream
 		/// </summary>
-		/// <param name="@string">The string to write</param>
+		/// <param name="pString">The string to write</param>
 		public void WriteMapleString(String pString)
 		{
 			WriteShort((short)pString.Length);
@@ -123,7 +123,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Writes a hex-string to the stream
 		/// </summary>
-		/// <param name="@string">The hex-string to write</param>
+		/// <param name="pHexString">The hex-string to write</param>
 		public void WriteHexString(String pHexString)
 		{
 			WriteBytes(HexEncoding.GetBytes(pHexString));
@@ -132,8 +132,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a byte in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@byte">The byte to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pByte">The byte to set</param>
 		public void SetByte(long pIndex, int pByte)
 		{
 			long oldIndex = mBuffer.Position;
@@ -145,8 +145,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a byte array in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@bytes">The bytes to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pBytes">The bytes to set</param>
 		public void SetBytes(long pIndex, byte[] pBytes)
 		{
 			long oldIndex = mBuffer.Position;
@@ -158,8 +158,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a bool in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@bool">The bool to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pBool">The bool to set</param>
 		public void SetBool(long pIndex, bool pBool)
 		{
 			long oldIndex = mBuffer.Position;
@@ -171,8 +171,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a short in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@short">The short to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pShort">The short to set</param>
 		public void SetShort(long pIndex, int pShort)
 		{
 			long oldIndex = mBuffer.Position;
@@ -184,8 +184,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets an int in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@int">The int to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pInt">The int to set</param>
 		public void SetInt(long pIndex, int pInt)
 		{
 			long oldIndex = mBuffer.Position;
@@ -197,8 +197,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a long in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@long">The long to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pLong">The long to set</param>
 		public void SetLong(long pIndex, long pLong)
 		{
 			long oldIndex = mBuffer.Position;
@@ -210,8 +210,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a long in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@string">The long to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pString">The long to set</param>
 		public void SetString(long pIndex, string pString)
 		{
 			long oldIndex = mBuffer.Position;
@@ -223,8 +223,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a string prefixed with a [short] length before it, in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@string">The string to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pString">The string to set</param>
 		public void SetMapleString(long pIndex, string pString)
 		{
 			long oldIndex = mBuffer.Position;
@@ -236,8 +236,8 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Sets a hex-string in the stream
 		/// </summary>
-		/// <param name="index">The index of the stream to set data at</param>
-		/// <param name="@string">The hex-string to set</param>
+		/// <param name="pIndex">The index of the stream to set data at</param>
+		/// <param name="pString">The hex-string to set</param>
 		public void SetHexString(long pIndex, string pString)
 		{
 			long oldIndex = mBuffer.Position;

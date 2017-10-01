@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.IO;
-using System.Text;
-using MapleLib.MapleCryptoLib;
 
 namespace MapleLib.WzLib.Util
 {
@@ -12,17 +8,17 @@ namespace MapleLib.WzLib.Util
 		private static readonly char[] specialCharacters = {'"', '\'', '&', '<', '>'};
 		private static readonly string[] replacementStrings = {"&quot;", "&apos;", "&amp;", "&lt;", "&gt;"};
 
-		public static string SanitizeText(string pText)
+		public static string SanitizeText(string text)
 		{
 			string fixedText = "";
 			bool charFixed;
-			for (int i = 0; i < pText.Length; i++)
+			for (int i = 0; i < text.Length; i++)
 			{
 				charFixed = false;
 				for (int k = 0; k < specialCharacters.Length; k++)
 				{
 
-					if (pText[i] == specialCharacters[k])
+					if (text[i] == specialCharacters[k])
 					{
 						fixedText += replacementStrings[k];
 						charFixed = true;
@@ -31,50 +27,50 @@ namespace MapleLib.WzLib.Util
 				}
 				if (!charFixed)
 				{
-					fixedText += pText[i];
+					fixedText += text[i];
 				}
 			}
 			return fixedText;
 		}
 
-		public static string OpenNamedTag(string pTag, string pName, bool pFinish)
+		public static string OpenNamedTag(string tag, string name, bool finish)
 		{
-			return OpenNamedTag(pTag, pName, pFinish, false);
+			return OpenNamedTag(tag, name, finish, false);
 		}
 
-		public static string EmptyNamedTag(string pTag, string pName)
+		public static string EmptyNamedTag(string tag, string name)
 		{
-			return OpenNamedTag(pTag, pName, true, true);
+			return OpenNamedTag(tag, name, true, true);
 		}
 
-		public static string EmptyNamedValuePair(string pTag, string pName, string pValue)
+		public static string EmptyNamedValuePair(string tag, string name, string value)
 		{
-			return OpenNamedTag(pTag, pName, false, false) + Attrib("value", pValue, true, true);
+			return OpenNamedTag(tag, name, false, false) + Attrib("value", value, true, true);
 		}
 
-		public static string OpenNamedTag(string pTag, string pName, bool pFinish, bool pEmpty)
+		public static string OpenNamedTag(string tag, string name, bool finish, bool empty)
 		{
-			return "<" + pTag + " name=\"" + pName + "\"" + (pFinish ? (pEmpty ? "/>" : ">") : " ");
+			return "<" + tag + " name=\"" + name + "\"" + (finish ? (empty ? "/>" : ">") : " ");
 		}
 
-		public static string Attrib(string pName, string pValue)
+		public static string Attrib(string name, string value)
 		{
-			return Attrib(pName, pValue, false, false);
+			return Attrib(name, value, false, false);
 		}
 
-		public static string Attrib(string pName, string pValue, bool pCloseTag, bool pEmpty)
+		public static string Attrib(string name, string value, bool closeTag, bool empty)
 		{
-			return pName + "=\"" + SanitizeText(pValue) + "\"" + (pCloseTag ? (pEmpty ? "/>" : ">") : " ");
+			return name + "=\"" + SanitizeText(value) + "\"" + (closeTag ? (empty ? "/>" : ">") : " ");
 		}
 
-		public static string CloseTag(string pTag)
+		public static string CloseTag(string tag)
 		{
-			return "</" + pTag + ">";
+			return "</" + tag + ">";
 		}
 
-		public static string Indentation(int pLevel)
+		public static string Indentation(int level)
 		{
-			char[] indent = new char[pLevel];
+			char[] indent = new char[level];
 			for (int i = 0; i < indent.Length; i++)
 			{
 				indent[i] = '\t';

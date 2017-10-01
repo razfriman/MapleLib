@@ -86,12 +86,8 @@ namespace MapleLib.PacketLib
 		private Session CreateSession()
 		{
 			Session session = new Session(mSocket, SessionType.CLIENT_TO_SERVER);
-
-			if (OnClientConnected != null)
-				OnClientConnected(session);
-
+            OnClientConnected?.Invoke(session);
 			session.WaitForDataNoEncryption();
-
 			return session;
 		}
 	}

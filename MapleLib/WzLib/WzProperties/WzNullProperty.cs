@@ -6,23 +6,34 @@ namespace MapleLib.WzLib.WzProperties
 	/// <summary>
 	/// A property that's value is null
 	/// </summary>
-	public class WzNullProperty : AWzImageProperty
+	public class WzNullProperty : WzImageProperty
 	{
 		#region Fields
-		internal string mName;
-		internal AWzObject mParent;
-		internal WzImage mImgParent;
+		internal string name;
+		internal WzObject parent;
+		//internal WzImage imgParent;
 		#endregion
 
 		#region Inherited Members
+        public override void SetValue(object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override WzImageProperty DeepClone()
+        {
+            WzNullProperty clone = new WzNullProperty(name);
+            return clone;
+        }
+
 		/// <summary>
 		/// The parent of the object
 		/// </summary>
-		public override AWzObject Parent { get { return mParent; } internal set { mParent = value; } }
-		/// <summary>
+		public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+		/*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
-		public override WzImage ParentImage { get { return mImgParent; } internal set { mImgParent = value; } }
+		public override WzImage ParentImage { get { return imgParent; } internal set { imgParent = value; } }*/
 		/// <summary>
 		/// The WzPropertyType of the property
 		/// </summary>
@@ -31,28 +42,25 @@ namespace MapleLib.WzLib.WzProperties
 		/// The name of the property
 		/// </summary>
 		/// 
-		public override string Name { get { return mName; } set { mName = value; } }
+		public override string Name { get { return name; } set { name = value; } }
 		/// <summary>
 		/// The WzObjectType of the property
 		/// </summary>
 		public override WzObjectType ObjectType { get { return WzObjectType.Property; } }
-
-        public override object WzValue { get { return null; } set { } }
-
-		public override void WriteValue(WzBinaryWriter pWriter)
+		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
 		{
-			pWriter.Write((byte)0);
+			writer.Write((byte)0);
 		}
-		public override void ExportXml(StreamWriter pWriter, int pLevel)
+		public override void ExportXml(StreamWriter writer, int level)
 		{
-			pWriter.WriteLine(XmlUtil.Indentation(pLevel) + XmlUtil.EmptyNamedTag("WzNull", this.Name));
+			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedTag("WzNull", this.Name));
 		}
 		/// <summary>
 		/// Disposes the object
 		/// </summary>
 		public override void Dispose()
 		{
-			mName = null;
+			name = null;
 		}
 		#endregion
 
@@ -64,10 +72,10 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// Creates a WzNullProperty with the specified name
 		/// </summary>
-		/// <param name="pPropName">The name of the property</param>
-		public WzNullProperty(string pPropName)
+		/// <param name="propName">The name of the property</param>
+		public WzNullProperty(string propName)
 		{
-			mName = pPropName;
+			name = propName;
 		}
 		#endregion
 

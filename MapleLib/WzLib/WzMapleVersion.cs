@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MapleLib.WzLib
+﻿namespace MapleLib.WzLib
 {
 	public enum WzMapleVersion
 	{
@@ -12,6 +7,6 @@ namespace MapleLib.WzLib
 		BMS,
 		CLASSIC,
 		GENERATE,
-        LOAD_FROM_ZLZ
+        GETFROMZLZ
 	}
 }
