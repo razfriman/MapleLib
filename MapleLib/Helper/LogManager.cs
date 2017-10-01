@@ -6,12 +6,6 @@ namespace MapleLib.Helper
     {
         private static ILogger _log;
 
-        public static void ConfigureLogger(ILoggerFactory factory)
-        {
-            factory.AddDebug(LogLevel.Debug);
-            factory.AddConsole(LogLevel.Debug);
-        }
-
         public static ILogger Log
         {
             get

@@ -5,7 +5,6 @@
     /// </summary>
     public static class CryptoConstants
     {
-
         /// <summary>
         /// AES UserKey used by MapleStory
         /// </summary>
