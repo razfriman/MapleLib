@@ -1,12 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using MapleLib.Helper;
 using MapleLib.MapleCryptoLib;
+using Microsoft.Extensions.Logging;
 
 namespace MapleLib.WzLib.Util
 {
 	public class WzKeyGenerator
 	{
+        public static ILogger Log = LogManager.Log;
+
 		/// <summary>
 		/// Generates the wz key used in the encryption from ZLZ.dll
 		/// </summary>
@@ -79,7 +83,7 @@ namespace MapleLib.WzLib.Util
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error disposing AES streams" + e);
+				Log.LogError("Error disposing AES streams", e);
 			}
 
 			return wzKey;

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using MapleLib.Helper;
 using MapleLib.MapleCryptoLib;
+using Microsoft.Extensions.Logging;
 
 namespace MapleLib.PacketLib
 {
 	public class Monitor
 	{
+        public static ILogger Log = LogManager.Log;
+
 		/// <summary>
 		/// The Monitor socket
 		/// </summary>
@@ -120,7 +124,7 @@ namespace MapleLib.PacketLib
 			}
 			catch (Exception se)
 			{
-				Console.WriteLine("[Error] Session.WaitForData: " + se);
+                Log.LogError("Session.WaitForData", se);
 			}
 		}
 
@@ -144,8 +148,9 @@ namespace MapleLib.PacketLib
 
 				byte[] dataa = new byte[received];
 				Buffer.BlockCopy(socketInfo.DataBuffer, 0, dataa, 0, received);
-				Console.WriteLine(BitConverter.ToString(dataa));
-				Console.WriteLine(HexEncoding.ToStringFromAscii(dataa));
+
+                Log.LogInformation(BitConverter.ToString(dataa));
+				Log.LogInformation(HexEncoding.ToStringFromAscii(dataa));
 				WaitForData();
 				/*if (socketInfo.Index == socketInfo.DataBuffer.Length) {
 					switch (socketInfo.State) {
@@ -180,22 +185,21 @@ namespace MapleLib.PacketLib
 					WaitForData(socketInfo);
 					}*/
 			}
-			catch (ObjectDisposedException)
+			catch (ObjectDisposedException e)
 			{
-				Console.WriteLine("[Error] Session.OnDataReceived: Socket has been closed");
+                Log.LogError("Socket has been closed", e);
 			}
 			catch (SocketException se)
 			{
 				if (se.ErrorCode != 10054)
 				{
-					Console.WriteLine("[Error] Session.OnDataReceived: " + se);
+                    Log.LogError("Session.OnDataReceived", se);
 				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("[Error] Session.OnDataReceived: " + e);
+				Log.LogError("Session.OnDataReceived", e);
 			}
 		}
-
 	}
 }

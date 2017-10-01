@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using MapleLib.MapleCryptoLib;
+using MapleLib.Helper;
+using Microsoft.Extensions.Logging;
 
 namespace MapleLib.PacketLib
 {
@@ -11,6 +12,8 @@ namespace MapleLib.PacketLib
 	/// </summary>
 	public class Acceptor
 	{
+
+        public static ILogger Log = LogManager.Log;
 
 		/// <summary>
 		/// The listener socket
@@ -57,7 +60,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Client connected handler
 		/// </summary>
-		/// <param name="iarl">The IAsyncResult</param>
+		/// <param name="pIAR">The IAsyncResult</param>
 		private void OnClientConnect(IAsyncResult pIAR)
 		{
 			try
@@ -65,20 +68,17 @@ namespace MapleLib.PacketLib
 				Socket socket = mListener.EndAccept(pIAR);
 				Session session = new Session(socket, SessionType.SERVER_TO_CLIENT);
 
-				if (OnClientConnected != null)
-					OnClientConnected(session);
-
+                OnClientConnected?.Invoke(session);
 				session.WaitForData();
-
 				mListener.BeginAccept(new AsyncCallback(OnClientConnect), null);
 			}
-			catch (ObjectDisposedException)
+			catch (ObjectDisposedException e)
 			{
-				Console.WriteLine("[Error] OnClientConnect: Socket closed.");
+                Log.LogError("OnClientConnect: Socket closed.", e);
 			}
-			catch (Exception se)
+			catch (Exception e)
 			{
-				Console.WriteLine("[Error] OnClientConnect: " + se);
+                Log.LogError("OnClientConnect", e);
 			}
 		}
 	}

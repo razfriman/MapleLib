@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using MapleLib.Helper;
+using Microsoft.Extensions.Logging;
 
 namespace MapleLib.MapleCryptoLib
 {
@@ -8,8 +10,9 @@ namespace MapleLib.MapleCryptoLib
 	/// <summary>
 	/// Class to handle the AES Encryption routines
 	/// </summary>
-	public class AESEncryption
+	public static class AESEncryption
 	{
+        public static ILogger Log = LogManager.Log;
 
 		/// <summary>
 		/// Encrypt data using MapleStory's AES algorithm
@@ -18,9 +21,9 @@ namespace MapleLib.MapleCryptoLib
 		/// <param name="pData">Data to encrypt</param>
 		/// <param name="pLength">Length of data</param>
 		/// <returns>Crypted data</returns>
-		public static byte[] aesCrypt(byte[] pIV, byte[] pData, int pLength)
+		public static byte[] AesCrypt(byte[] pIV, byte[] pData, int pLength)
 		{
-            return aesCrypt(pIV, pData, pLength, CryptoConstants.TrimmedUserKey);
+            return AesCrypt(pIV, pData, pLength, CryptoConstants.TrimmedUserKey);
 		}
 
 		/// <summary>
@@ -31,14 +34,15 @@ namespace MapleLib.MapleCryptoLib
 		/// <param name="pLength">length of data</param>
 		/// <param name="pKey">the AES key to use</param>
 		/// <returns>Crypted data</returns>
-		public static byte[] aesCrypt(byte[] pIV, byte[] pData, int pLength, byte[] pKey)
+        public static byte[] AesCrypt(byte[] pIV, byte[] pData, int pLength, byte[] pKey)
 		{
-			AesManaged crypto = new AesManaged();
-			crypto.KeySize = 256; //in bits
-			crypto.Key = pKey;
-			crypto.Mode = CipherMode.ECB; // Should be OFB, but this works too
-
-			MemoryStream memStream = new MemoryStream();
+            var crypto = new AesManaged
+            {
+                KeySize = 256, //in bits
+                Key = pKey,
+                Mode = CipherMode.ECB // Should be OFB, but this works too
+            };
+            MemoryStream memStream = new MemoryStream();
 			CryptoStream cryptoStream = new CryptoStream(memStream, crypto.CreateEncryptor(), CryptoStreamMode.Write);
 
 			int remaining = pLength;
@@ -74,7 +78,7 @@ namespace MapleLib.MapleCryptoLib
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error disposing AES streams" + e);
+                Log.LogError("Disposing AES streams", e);
 			}
 
 			return pData;

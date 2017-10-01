@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
+using MapleLib.Helper;
 using MapleLib.MapleCryptoLib;
+using Microsoft.Extensions.Logging;
 
 namespace MapleLib.PacketLib
 {
@@ -9,6 +11,7 @@ namespace MapleLib.PacketLib
 	/// </summary>
 	public class Session
 	{
+        public static ILogger Log = LogManager.Log;
 
 		/// <summary>
 		/// The Session's socket
@@ -121,7 +124,7 @@ namespace MapleLib.PacketLib
 			}
 			catch (Exception se)
 			{
-				Console.WriteLine("[Error] Session.WaitForData: " + se);
+                Log.LogError("Session.WaitForData", se);
 			}
 		}
 
@@ -168,8 +171,8 @@ namespace MapleLib.PacketLib
 								short packetLength = (short)MapleCrypto.getPacketLength(packetHeader);
 								if (mType == SessionType.SERVER_TO_CLIENT && !mRIV.checkPacketToServer(BitConverter.GetBytes(packetHeader)))
 								{
-									Console.WriteLine("[Error] Packet check failed. Disconnecting client.");
-									//this.Socket.Close();
+                                    Log.LogError("Packet check failed. Disconnecting client");
+									this.Socket.Close();
 								}
 								socketInfo.State = SocketInfo.StateEnum.Content;
 								socketInfo.DataBuffer = new byte[packetLength];
@@ -210,24 +213,24 @@ namespace MapleLib.PacketLib
 				}
 				else
 				{
-					Console.WriteLine("[Warning] Not enough data");
+                    Log.LogWarning("Not enough data");
 					WaitForData(socketInfo);
 				}
 			}
-			catch (ObjectDisposedException)
+			catch (ObjectDisposedException e)
 			{
-				Console.WriteLine("[Error] Session.OnDataReceived: Socket has been closed");
+                Log.LogError("Socket has been closed", e);
 			}
 			catch (SocketException se)
 			{
 				if (se.ErrorCode != 10054)
 				{
-					Console.WriteLine("[Error] Session.OnDataReceived: " + se);
+                    Log.LogError("Session.OnDataReceived", se);
 				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("[Error] Session.OnDataReceived: " + e);
+				Log.LogError("Session.OnDataReceived", e);
 			}
 		}
 

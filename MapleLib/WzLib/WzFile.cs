@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using System;
 using MapleLib.WzLib.Util;
 using MapleLib.WzLib.WzProperties;
+using Microsoft.Extensions.Logging;
+using MapleLib.Helper;
 
 namespace MapleLib.WzLib
 {
@@ -12,6 +14,8 @@ namespace MapleLib.WzLib
     /// </summary>
     public class WzFile : WzDirectory
     {
+        public static ILogger Log = LogManager.Log;
+
         #region Fields
         internal string mPath;
         internal WzHeader mHeader;
@@ -134,7 +138,7 @@ namespace MapleLib.WzLib
         {
             if (this.mPath == null)
             {
-                Console.WriteLine("[Error] Path is null");
+                Log.LogError("Path is null");
                 return;
             }
 

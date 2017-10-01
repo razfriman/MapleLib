@@ -177,7 +177,6 @@ namespace MapleLib.WzLib.WzProperties
             zip.Close();
             memStream.Position = 0;
             byte[] buffer = new byte[memStream.Length + 2];
-            Console.WriteLine(BitConverter.ToString(memStream.ToArray()));
             memStream.Read(buffer, 2, buffer.Length - 2);
             memStream.Close();
             memStream.Dispose();
