@@ -12,25 +12,22 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// The connecting socket
 		/// </summary>
-		private readonly Socket mSocket;
+        private readonly Socket _socket;
 
 		/// <summary>
 		/// Method called when the client connects
 		/// </summary>
-		public delegate void ClientConnectedHandler(Session pSession);
+        public delegate void ClientConnectedHandler(Session session);
 
 		/// <summary>
 		/// Client connected event
 		/// </summary>
 		public event ClientConnectedHandler OnClientConnected;
 
-		/// <summary>
-		/// Creates a new instance of Acceptor
-		/// </summary>
-		public Connector()
-		{
-			mSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		}
+        /// <summary>
+        /// Creates a new instance of Acceptor
+        /// </summary>
+        public Connector() => _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
 		/// <summary>
 		/// Connects to a listener
@@ -39,7 +36,7 @@ namespace MapleLib.PacketLib
 		/// <returns>Session connecting to</returns>
 		public Session Connect(IPEndPoint pEP)
 		{
-			mSocket.Connect(pEP);
+			_socket.Connect(pEP);
 			return CreateSession();
 		}
 
@@ -51,7 +48,7 @@ namespace MapleLib.PacketLib
 		/// <returns>Session connecting to</returns>
 		public Session Connect(IPAddress pIP, int pPort)
 		{
-			mSocket.Connect(pIP, pPort);
+			_socket.Connect(pIP, pPort);
 			return CreateSession();
 		}
 
@@ -63,7 +60,7 @@ namespace MapleLib.PacketLib
 		/// <returns>Session connecting to</returns>
 		public Session Connect(IPAddress[] pIP, int pPort)
 		{
-			mSocket.Connect(pIP, pPort);
+			_socket.Connect(pIP, pPort);
 			return CreateSession();
 		}
 
@@ -75,7 +72,7 @@ namespace MapleLib.PacketLib
 		/// <returns>Session connecting to</returns>
 		public Session Connect(string pIP, int pPort)
 		{
-			mSocket.Connect(pIP, pPort);
+			_socket.Connect(pIP, pPort);
 			return CreateSession();
 		}
 
@@ -85,7 +82,7 @@ namespace MapleLib.PacketLib
 		/// <returns>Session created with listener</returns>
 		private Session CreateSession()
 		{
-			Session session = new Session(mSocket, SessionType.CLIENT_TO_SERVER);
+			var session = new Session(_socket, SessionType.CLIENT_TO_SERVER);
             OnClientConnected?.Invoke(session);
 			session.WaitForDataNoEncryption();
 			return session;

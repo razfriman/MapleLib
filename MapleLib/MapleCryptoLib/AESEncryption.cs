@@ -44,13 +44,13 @@ namespace MapleLib.MapleCryptoLib
             {
                 using (CryptoStream cryptoStream = new CryptoStream(memStream, crypto.CreateEncryptor(), CryptoStreamMode.Write))
                 {
-                    int remaining = length;
-                    int llength = 0x5B0;
-                    int start = 0;
+                    var remaining = length;
+                    var llength = 0x5B0;
+                    var start = 0;
 
                     while (remaining > 0)
                     {
-                        byte[] myIV = MapleCrypto.MultiplyBytes(iv, 4, 4);
+                        var myIV = MapleCrypto.MultiplyBytes(iv, 4, 4);
                         if (remaining < llength)
                         {
                             llength = remaining;

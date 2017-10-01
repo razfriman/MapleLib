@@ -16,24 +16,24 @@ namespace MapleLib.PacketLib
         /// <summary>
         /// The Session's socket
         /// </summary>
-        private readonly Socket mSocket;
+        private readonly Socket _socket;
 
-        private SessionType mType;
+        private SessionType _type;
 
         /// <summary>
         /// The Recieved packet crypto manager
         /// </summary>
-        private MapleCrypto mRIV;
+        private MapleCrypto _riv;
 
         /// <summary>
         /// The Sent packet crypto manager
         /// </summary>
-        private MapleCrypto mSIV;
+        private MapleCrypto _siv;
 
         /// <summary>
         /// Method to handle packets received
         /// </summary>
-        public delegate void PacketReceivedHandler(PacketReader pPacket, bool pIsInit);
+        public delegate void PacketReceivedHandler(PacketReader packet, bool isInit);
 
         /// <summary>
         /// Packet received event
@@ -43,14 +43,15 @@ namespace MapleLib.PacketLib
         /// <summary>
         /// Method to handle client disconnected
         /// </summary>
-        public delegate void ClientDisconnectedHandler(Session pSession);
+        public delegate void ClientDisconnectedHandler(Session session);
 
         /// <summary>
         /// Client disconnected event
         /// </summary>
         public event ClientDisconnectedHandler OnClientDisconnected;
 
-        public delegate void InitPacketReceived(short pVersion, byte pServerIdentifier);
+        public delegate void InitPacketReceived(short version, byte serverIdentifier);
+
         public event InitPacketReceived OnInitPacketReceived;
 
         /// <summary>
@@ -58,8 +59,8 @@ namespace MapleLib.PacketLib
         /// </summary>
         public MapleCrypto RIV
         {
-            get { return mRIV; }
-            set { mRIV = value; }
+            get => _riv;
+            set => _riv = value;
         }
 
         /// <summary>
@@ -67,60 +68,49 @@ namespace MapleLib.PacketLib
         /// </summary>
         public MapleCrypto SIV
         {
-            get { return mSIV; }
-            set { mSIV = value; }
+			get => _siv;
+			set => _siv = value;
         }
 
         /// <summary>
         /// The Session's socket
         /// </summary>
-        public Socket Socket
-        {
-            get { return mSocket; }
-        }
+        public Socket Socket => _socket;
 
-        public SessionType Type
-        {
-            get { return mType; }
-        }
+        public SessionType Type => _type;
+
         /// <summary>
         /// Creates a new instance of a Session
         /// </summary>
-        /// <param name="pSocket">Socket connection of the session</param>
+        /// <param name="socket">Socket connection of the session</param>
 
-        public Session(Socket pSocket, SessionType pType)
+        public Session(Socket socket, SessionType type)
         {
-            mSocket = pSocket;
-            mType = pType;
+            _socket = socket;
+            _type = type;
         }
 
         /// <summary>
         /// Waits for more data to arrive
         /// </summary>
-        public void WaitForData()
-        {
-            WaitForData(new SocketInfo(mSocket, 4));
-        }
+        public void WaitForData() => WaitForData(new SocketInfo(_socket, 4));
 
-        public void WaitForDataNoEncryption()
-        {
-            WaitForData(new SocketInfo(mSocket, 2, true));
-        }
+        public void WaitForDataNoEncryption() => WaitForData(new SocketInfo(_socket, 2, true));
 
         /// <summary>
         /// Waits for more data to arrive
         /// </summary>
-        /// <param name="pSocketInfo">Info about data to be received</param>
-        private void WaitForData(SocketInfo pSocketInfo)
+        /// <param name="socketInfo">Info about data to be received</param>
+        private void WaitForData(SocketInfo socketInfo)
         {
             try
             {
-                mSocket.BeginReceive(pSocketInfo.DataBuffer,
-                    pSocketInfo.Index,
-                    pSocketInfo.DataBuffer.Length - pSocketInfo.Index,
+                _socket.BeginReceive(socketInfo.DataBuffer,
+                    socketInfo.Index,
+                    socketInfo.DataBuffer.Length - socketInfo.Index,
                     SocketFlags.None,
                     new AsyncCallback(OnDataReceived),
-                    pSocketInfo);
+                    socketInfo);
             }
             catch (Exception se)
             {
@@ -131,13 +121,13 @@ namespace MapleLib.PacketLib
         /// <summary>
         /// Data received event handler
         /// </summary>
-        /// <param name="pIAR">IAsyncResult of the data received event</param>
-        private void OnDataReceived(IAsyncResult pIAR)
+        /// <param name="iar">IAsyncResult of the data received event</param>
+        private void OnDataReceived(IAsyncResult iar)
         {
-            SocketInfo socketInfo = (SocketInfo)pIAR.AsyncState;
+            var socketInfo = (SocketInfo)iar.AsyncState;
             try
             {
-                int received = socketInfo.Socket.EndReceive(pIAR);
+                var received = socketInfo.Socket.EndReceive(iar);
                 if (received == 0)
                 {
                     OnClientDisconnected?.Invoke(this);
@@ -151,10 +141,10 @@ namespace MapleLib.PacketLib
                     switch (socketInfo.State)
                     {
                         case SocketInfo.StateEnum.Header:
-                            if (socketInfo.NoEncryption)
+                            if (socketInfo.IsNoEncryption)
                             {
-                                PacketReader headerReader = new PacketReader(socketInfo.DataBuffer);
-                                short packetHeader = headerReader.ReadShort();
+                                var headerReader = new PacketReader(socketInfo.DataBuffer);
+                                var packetHeader = headerReader.ReadShort();
                                 socketInfo.State = SocketInfo.StateEnum.Content;
                                 socketInfo.DataBuffer = new byte[packetHeader];
                                 socketInfo.Index = 0;
@@ -162,14 +152,14 @@ namespace MapleLib.PacketLib
                             }
                             else
                             {
-                                PacketReader headerReader = new PacketReader(socketInfo.DataBuffer);
-                                byte[] packetHeaderB = headerReader.ToArray();
-                                int packetHeader = headerReader.ReadInt();
-                                short packetLength = (short)MapleCrypto.GetPacketLength(packetHeader);
-                                if (mType == SessionType.SERVER_TO_CLIENT && !mRIV.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
+                                var headerReader = new PacketReader(socketInfo.DataBuffer);
+                                var packetHeaderB = headerReader.ToArray();
+                                var packetHeader = headerReader.ReadInt();
+                                var packetLength = (short)MapleCrypto.GetPacketLength(packetHeader);
+                                if (_type == SessionType.SERVER_TO_CLIENT && !_riv.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
                                 {
                                     Log.LogError("Packet check failed. Disconnecting client");
-                                    this.Socket.Close();
+                                    Socket.Close();
                                 }
                                 socketInfo.State = SocketInfo.StateEnum.Content;
                                 socketInfo.DataBuffer = new byte[packetLength];
@@ -178,31 +168,36 @@ namespace MapleLib.PacketLib
                             }
                             break;
                         case SocketInfo.StateEnum.Content:
-                            byte[] data = socketInfo.DataBuffer;
-                            if (socketInfo.NoEncryption)
+                            var data = socketInfo.DataBuffer;
+
+                            if (socketInfo.IsNoEncryption)
                             {
-                                socketInfo.NoEncryption = false;
-                                PacketReader reader = new PacketReader(data);
-                                short version = reader.ReadShort();
-                                string unknown = reader.ReadMapleString();
-                                mSIV = new MapleCrypto(reader.ReadBytes(4), version);
-                                mRIV = new MapleCrypto(reader.ReadBytes(4), version);
-                                byte serverType = reader.ReadByte();
-                                if (mType == SessionType.CLIENT_TO_SERVER)
+                                socketInfo.IsNoEncryption = false;
+                                var reader = new PacketReader(data);
+                                var version = reader.ReadShort();
+                                var unknown = reader.ReadMapleString();
+                                _siv = new MapleCrypto(reader.ReadBytes(4), version);
+                                _riv = new MapleCrypto(reader.ReadBytes(4), version);
+                                var serverType = reader.ReadByte();
+
+                                if (_type == SessionType.CLIENT_TO_SERVER)
                                 {
                                     OnInitPacketReceived(version, serverType);
                                 }
+
                                 OnPacketReceived(new PacketReader(data), true);
                                 WaitForData();
                             }
                             else
                             {
-                                mRIV.Crypt(data);
+                                _riv.Crypt(data);
                                 MapleCustomEncryption.Decrypt(data);
+
                                 if (data.Length != 0 && OnPacketReceived != null)
                                 {
                                     OnPacketReceived(new PacketReader(data), false);
                                 }
+
                                 WaitForData();
                             }
                             break;
@@ -231,15 +226,15 @@ namespace MapleLib.PacketLib
             }
         }
 
-        public void SendInitialPacket(int pVersion, string pPatchLoc, byte[] pRIV, byte[] pSIV, byte pServerType)
+        public void SendInitialPacket(int version, string patchLoc, byte[] riv, byte[] siv, byte serverType)
         {
             PacketWriter writer = new PacketWriter();
-            writer.WriteShort(pPatchLoc == "" ? 0x0D : 0x0E);
-            writer.WriteShort(pVersion);
-            writer.WriteMapleString(pPatchLoc);
-            writer.WriteBytes(pRIV);
-            writer.WriteBytes(pSIV);
-            writer.WriteByte(pServerType);
+            writer.WriteShort(patchLoc == "" ? 0x0D : 0x0E);
+            writer.WriteShort(version);
+            writer.WriteMapleString(patchLoc);
+            writer.WriteBytes(riv);
+            writer.WriteBytes(siv);
+            writer.WriteByte(serverType);
             SendRawPacket(writer);
         }
 
@@ -247,26 +242,23 @@ namespace MapleLib.PacketLib
         /// Encrypts the packet then send it to the client.
         /// </summary>
         /// <param name="pPacket">The PacketWrtier object to be sent.</param>
-        public void SendPacket(PacketWriter pPacket)
-        {
-            SendPacket(pPacket.ToArray());
-        }
+        public void SendPacket(PacketWriter pPacket) => SendPacket(pPacket.ToArray());
 
         /// <summary>
         /// Encrypts the packet then send it to the client.
         /// </summary>
-        /// <param name="pInput">The byte array to be sent.</param>
-        public void SendPacket(byte[] pInput)
+        /// <param name="input">The byte array to be sent.</param>
+        public void SendPacket(byte[] input)
         {
-            byte[] cryptData = pInput;
-            byte[] sendData = new byte[cryptData.Length + 4];
-            byte[] header = mType == SessionType.SERVER_TO_CLIENT ? mSIV.GetHeaderToClient(cryptData.Length) : mSIV.GetHeaderToServer(cryptData.Length);
+            var cryptData = input;
+            var sendData = new byte[cryptData.Length + 4];
+            var header = _type == SessionType.SERVER_TO_CLIENT ? _siv.GetHeaderToClient(cryptData.Length) : _siv.GetHeaderToServer(cryptData.Length);
 
             MapleCustomEncryption.Encrypt(cryptData);
-            mSIV.Crypt(cryptData);
+            _siv.Crypt(cryptData);
 
-            System.Buffer.BlockCopy(header, 0, sendData, 0, 4);
-            System.Buffer.BlockCopy(cryptData, 0, sendData, 4, cryptData.Length);
+            Buffer.BlockCopy(header, 0, sendData, 0, 4);
+            Buffer.BlockCopy(cryptData, 0, sendData, 4, cryptData.Length);
             SendRawPacket(sendData);
         }
 
@@ -274,19 +266,12 @@ namespace MapleLib.PacketLib
         /// Sends a raw packet to the client
         /// </summary>
         /// <param name="pPacket">The PacketWriter</param>
-        public void SendRawPacket(PacketWriter pPacket)
-        {
-            SendRawPacket(pPacket.ToArray());
-        }
+        public void SendRawPacket(PacketWriter pPacket) => SendRawPacket(pPacket.ToArray());
 
         /// <summary>
         /// Sends a raw buffer to the client.
         /// </summary>
-        /// <param name="pBuffer">The buffer to be sent.</param>
-        public void SendRawPacket(byte[] pBuffer)
-        {
-            //_socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, ar => _socket.EndSend(ar), null);//async
-            mSocket.Send(pBuffer);//sync
-        }
+        /// <param name="buffer">The buffer to be sent.</param>
+        public void SendRawPacket(byte[] buffer) => _socket.Send(buffer);
     }
 }

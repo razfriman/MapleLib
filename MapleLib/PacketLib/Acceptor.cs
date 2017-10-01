@@ -15,62 +15,58 @@ namespace MapleLib.PacketLib
 
         public static ILogger Log = LogManager.Log;
 
+        public const int BACKLOG_SIZE = 15;
+
 		/// <summary>
 		/// The listener socket
 		/// </summary>
-		private readonly Socket mListener;
+        private readonly Socket _listener;
 
 		/// <summary>
 		/// Method called when a client is connected
 		/// </summary>
-		public delegate void ClientConnectedHandler(Session pSession);
+        public delegate void ClientConnectedHandler(Session session);
 
 		/// <summary>
 		/// Client connected event
 		/// </summary>
 		public event ClientConnectedHandler OnClientConnected;
 
-		/// <summary>
-		/// Creates a new instance of Acceptor
-		/// </summary>
-		public Acceptor()
-		{
-			mListener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		}
+        /// <summary>
+        /// Creates a new instance of Acceptor
+        /// </summary>
+        public Acceptor() => _listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
 		/// <summary>
 		/// Starts listening and accepting connections
 		/// </summary>
-		/// <param name="pPort">Port to listen to</param>
-		public void StartListening(int pPort)
+		/// <param name="port">Port to listen to</param>
+        public void StartListening(int port)
 		{
-			mListener.Bind(new IPEndPoint(IPAddress.Any, pPort));
-			mListener.Listen(15);
-			mListener.BeginAccept(new AsyncCallback(OnClientConnect), null);
+			_listener.Bind(new IPEndPoint(IPAddress.Any, port));
+			_listener.Listen(BACKLOG_SIZE);
+			_listener.BeginAccept(new AsyncCallback(OnClientConnect), null);
 		}
 
         /// <summary>
         /// Stops listening for connections
         /// </summary>
-        public void StopListening()
-        {
-            mListener.Disconnect(true);
-        }
+        public void StopListening() => _listener.Disconnect(true);
 
 		/// <summary>
 		/// Client connected handler
 		/// </summary>
-		/// <param name="pIAR">The IAsyncResult</param>
-		private void OnClientConnect(IAsyncResult pIAR)
+		/// <param name="iar">The IAsyncResult</param>
+        private void OnClientConnect(IAsyncResult iar)
 		{
 			try
 			{
-				Socket socket = mListener.EndAccept(pIAR);
-				Session session = new Session(socket, SessionType.SERVER_TO_CLIENT);
+				var socket = _listener.EndAccept(iar);
+				var session = new Session(socket, SessionType.SERVER_TO_CLIENT);
 
                 OnClientConnected?.Invoke(session);
 				session.WaitForData();
-				mListener.BeginAccept(new AsyncCallback(OnClientConnect), null);
+				_listener.BeginAccept(new AsyncCallback(OnClientConnect), null);
 			}
 			catch (ObjectDisposedException e)
 			{

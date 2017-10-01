@@ -14,32 +14,27 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// The Monitor socket
 		/// </summary>
-		private readonly Socket mSocket;
+        private readonly Socket _socket;
 
 		/// <summary>
 		/// The Recieved packet crypto manager
 		/// </summary>
-		private MapleCrypto mRIV;
+        private MapleCrypto _riv;
 
 		/// <summary>
 		/// The Sent packet crypto manager
 		/// </summary>
-		private MapleCrypto mSIV;
+        private MapleCrypto _siv;
 
 		/// <summary>
 		/// Method to handle packets received
 		/// </summary>
-		public delegate void PacketReceivedHandler(PacketReader pPacket);
-
-		/// <summary>
-		/// Packet received event
-		/// </summary>
-		//public event PacketReceivedHandler OnPacketReceived;//Unused
+        public delegate void PacketReceivedHandler(PacketReader packet);
 
 		/// <summary>
 		/// Method to handle client disconnected
 		/// </summary>
-		public delegate void ClientDisconnectedHandler(Monitor pMonitor);
+        public delegate void ClientDisconnectedHandler(Monitor monitor);
 
 		/// <summary>
 		/// Client disconnected event
@@ -51,8 +46,8 @@ namespace MapleLib.PacketLib
 		/// </summary>
 		public MapleCrypto RIV
 		{
-			get { return mRIV; }
-			set { mRIV = value; }
+            get => _riv;
+			set => _riv = value;
 		}
 
 		/// <summary>
@@ -60,40 +55,32 @@ namespace MapleLib.PacketLib
 		/// </summary>
 		public MapleCrypto SIV
 		{
-			get { return mSIV; }
-			set { mSIV = value; }
+			get => _siv;
+			set => _siv = value;
 		}
 
-		/// <summary>
-		/// The Monitor's socket
-		/// </summary>
-		public Socket Socket
-		{
-			get { return mSocket; }
-		}
+        /// <summary>
+        /// The Monitor's socket
+        /// </summary>
+        public Socket Socket => _socket;
 
 		/// <summary>
 		/// Creates a new instance of Monitor
 		/// </summary>
-		public Monitor()
-		{
-			mSocket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
-		}
+		public Monitor() => _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 
 		/// <summary>
 		/// Starts listening and accepting connections
 		/// </summary>
 		public void StartMonitoring(IPAddress pIP)
 		{
-
-			mSocket.Bind(new IPEndPoint(pIP, 0));
-
-			mSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);//??
+			_socket.Bind(new IPEndPoint(pIP, 0));
+			_socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);//??
 
 			byte[] byIn = { 1, 0, 0, 0 };
 			byte[] byOut = null;
 
-			mSocket.IOControl(IOControlCode.ReceiveAll, byIn, byOut);
+			_socket.IOControl(IOControlCode.ReceiveAll, byIn, byOut);
 
 			WaitForData();
 		}
@@ -101,10 +88,7 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Waits for more data to arrive
 		/// </summary>
-		public void WaitForData()
-		{
-			WaitForData(new SocketInfo(mSocket, short.MaxValue));
-		}
+		public void WaitForData() => WaitForData(new SocketInfo(_socket, short.MaxValue));
 
 		/// <summary>
 		/// Waits for more data to arrive
@@ -114,7 +98,7 @@ namespace MapleLib.PacketLib
 		{
 			try
 			{
-				mSocket.BeginReceive(pSocketInfo.DataBuffer,
+				_socket.BeginReceive(pSocketInfo.DataBuffer,
 					pSocketInfo.Index,
 					pSocketInfo.DataBuffer.Length - pSocketInfo.Index,
 					SocketFlags.None,
@@ -129,10 +113,10 @@ namespace MapleLib.PacketLib
 
 		private void OnDataReceived(IAsyncResult pIAR)
 		{
-			SocketInfo socketInfo = (SocketInfo)pIAR.AsyncState;
+			var socketInfo = (SocketInfo)pIAR.AsyncState;
 			try
 			{
-				int received = socketInfo.Socket.EndReceive(pIAR);
+				var received = socketInfo.Socket.EndReceive(pIAR);
 				if (received == 0)
 				{
                     OnClientDisconnected?.Invoke(this);
@@ -142,44 +126,13 @@ namespace MapleLib.PacketLib
 				socketInfo.Index += received;
 
 
-				byte[] dataa = new byte[received];
-				Buffer.BlockCopy(socketInfo.DataBuffer, 0, dataa, 0, received);
+                var data = new byte[received];
+				Buffer.BlockCopy(socketInfo.DataBuffer, 0, data, 0, received);
 
-                Log.LogInformation(BitConverter.ToString(dataa));
-				Log.LogInformation(HexEncoding.ToStringFromAscii(dataa));
-				WaitForData();
-				/*if (socketInfo.Index == socketInfo.DataBuffer.Length) {
-					switch (socketInfo.State) {
-						case SocketInfo.StateEnum.Header:
-							PacketReader headerReader = new PacketReader(socketInfo.DataBuffer);
-							byte[] packetHeaderB = headerReader.ToArray();
-							int packetHeader = headerReader.ReadInt();
-							short packetLength = (short)MapleCrypto.getPacketLength(packetHeader);
-							if (!_RIV.checkPacket(packetHeader)) {
-								Console.WriteLine("[Error] Packet check failed. Disconnecting client.");
-								this.Socket.Close();
-								}
-							socketInfo.State = SocketInfo.StateEnum.Content;
-							socketInfo.DataBuffer = new byte[packetLength];
-							socketInfo.Index = 0;
-							WaitForData(socketInfo);
-							break;
-						case SocketInfo.StateEnum.Content:
-							byte[] data = socketInfo.DataBuffer;
-
-							_RIV.crypt(data);
-							MapleCustomEncryption.Decrypt(data);
-
-							if (data.Length != 0 && OnPacketReceived != null) {
-								OnPacketReceived(new PacketReader(data));
-								}
-							WaitForData();
-							break;
-						}
-					} else {
-					Console.WriteLine("[Warning] Not enough data");
-					WaitForData(socketInfo);
-					}*/
+                Log.LogInformation(BitConverter.ToString(data));
+				Log.LogInformation(HexEncoding.ToStringFromAscii(data));
+				
+                WaitForData();
 			}
 			catch (ObjectDisposedException e)
 			{

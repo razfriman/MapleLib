@@ -20,10 +20,17 @@ namespace MapleLib.PacketLib
             int num1 = Convert.ToInt32('0');
             pChar = Char.ToUpper(pChar);
             numChar = Convert.ToInt32(pChar);
+
             if (numChar >= numA && numChar < (numA + 6))
+            {
                 return true;
+            }
+
             if (numChar >= num1 && numChar < (num1 + 10))
+            {
                 return true;
+            }
+
             return false;
         }
 
@@ -35,7 +42,10 @@ namespace MapleLib.PacketLib
         private static byte HexToByte(string pHex)
         {
             if (pHex.Length > 2 || pHex.Length <= 0)
+            {
                 throw new ArgumentException("hex must be 1 or 2 characters in length");
+            }
+
             byte newByte = byte.Parse(pHex, System.Globalization.NumberStyles.HexNumber);
             return newByte;
         }
@@ -43,60 +53,65 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// Convert a hex string to a byte array
 		/// </summary>
-		/// <param name="pHexString">byte array as a hex string</param>
+		/// <param name="hexString">byte array as a hex string</param>
 		/// <returns>Byte array representation of the string</returns>
-		public static byte[] GetBytes(string pHexString)
+        public static byte[] GetBytes(string hexString)
         {
             string newString = string.Empty;
             char c;
 
             // remove all none A-F, 0-9, characters
-            for (int i = 0; i < pHexString.Length; i++)
+            for (var i = 0; i < hexString.Length; i++)
             {
-                c = pHexString[i];
+                c = hexString[i];
                 if (IsHexDigit(c))
+                {
                     newString += c;
+                }
             }
+
             // if odd number of characters, discard last character
             if (newString.Length % 2 != 0)
             {
                 newString = newString.Substring(0, newString.Length - 1);
             }
 
-            int byteLength = newString.Length / 2;
-            byte[] bytes = new byte[byteLength];
+            var byteLength = newString.Length / 2;
+            var bytes = new byte[byteLength];
             string hex;
             int j = 0;
+
             for (int i = 0; i < bytes.Length; i++)
             {
                 hex = new String(new Char[] { newString[j], newString[j + 1] });
                 bytes[i] = HexToByte(hex);
                 j = j + 2;
             }
+
             return bytes;
         }
 
         /// <summary>
         /// Convert byte array to ASCII
         /// </summary>
-        /// <param name="pBytes">Bytes to convert to ASCII</param>
+        /// <param name="bytes">Bytes to convert to ASCII</param>
         /// <returns>The byte array as an ASCII string</returns>
-        public static String ToStringFromAscii(byte[] pBytes)
+        public static string ToStringFromAscii(byte[] bytes)
         {
-            char[] ret = new char[pBytes.Length];
-            for (int x = 0; x < pBytes.Length; x++)
+            var ret = new char[bytes.Length];
+            for (var x = 0; x < bytes.Length; x++)
             {
-                if (pBytes[x] < 32 && pBytes[x] >= 0)
+                if (bytes[x] < 32 && bytes[x] >= 0)
                 {
                     ret[x] = '.';
                 }
                 else
                 {
-                    int chr = pBytes[x] & 0xFF;
+                    var chr = bytes[x] & 0xFF;
                     ret[x] = (char)chr;
                 }
             }
-            return new String(ret);
+            return new string(ret);
         }
     }
 }
