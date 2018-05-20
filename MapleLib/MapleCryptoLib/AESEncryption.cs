@@ -40,9 +40,9 @@ namespace MapleLib.MapleCryptoLib
                 Mode = CipherMode.ECB // Should be OFB, but this works too
             };
 
-            using (MemoryStream memStream = new MemoryStream())
+            using (var memStream = new MemoryStream())
             {
-                using (CryptoStream cryptoStream = new CryptoStream(memStream, crypto.CreateEncryptor(), CryptoStreamMode.Write))
+                using (var cryptoStream = new CryptoStream(memStream, crypto.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     var remaining = length;
                     var llength = 0x5B0;

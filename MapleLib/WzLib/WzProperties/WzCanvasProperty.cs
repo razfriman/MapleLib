@@ -2,7 +2,7 @@
 using System.IO;
 using MapleLib.WzLib.Util;
 using System;
-using System.Drawing;
+using System.DrawingCore;
 
 namespace MapleLib.WzLib.WzProperties
 {

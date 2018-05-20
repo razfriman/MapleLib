@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MapleLib.WzLib.WzProperties;
 using MapleLib.WzLib.WzStructure.Data;
-using System.Drawing;
+using System.DrawingCore;
 using Microsoft.Extensions.Logging;
 using MapleLib.Helper;
 

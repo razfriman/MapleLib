@@ -3,7 +3,7 @@
 using System.IO;
 using System.Collections.Generic;
 using MapleLib.WzLib.Util;
-using System.Drawing;
+using System.DrawingCore;
 using Microsoft.Extensions.Logging;
 using MapleLib.Helper;
 
@@ -215,7 +215,7 @@ namespace MapleLib.WzLib.WzProperties
             return LinkValue.GetString();
         }
 
-        public override Point GetPoint()
+        public override System.Drawing.Point GetPoint()
         {
             return LinkValue.GetPoint();
         }
