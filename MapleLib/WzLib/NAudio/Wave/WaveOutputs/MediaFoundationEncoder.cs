@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using MapleLib.WzLib.NAudio.MediaFoundation;
+using MapleLib.WzLib.NAudio.Utils;
 using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
