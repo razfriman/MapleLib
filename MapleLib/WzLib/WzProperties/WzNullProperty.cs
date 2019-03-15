@@ -53,13 +53,13 @@ namespace MapleLib.WzLib.WzProperties
 		/// </summary>
 		public override WzObjectType ObjectType => WzObjectType.Property;
 
-		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
+		public override void WriteValue(WzBinaryWriter writer)
 		{
 			writer.Write((byte)0);
 		}
 		public override void ExportXml(StreamWriter writer, int level)
 		{
-			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedTag("WzNull", this.Name));
+			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedTag("WzNull", Name));
 		}
 		/// <summary>
 		/// Disposes the object

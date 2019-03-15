@@ -34,7 +34,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// </summary>
         public void SetWaveFormat(int sampleRate, int channels)
         {
-            this.waveFormat = new WaveFormat(sampleRate, 16, channels);
+            waveFormat = new WaveFormat(sampleRate, 16, channels);
         }
 
         /// <summary>

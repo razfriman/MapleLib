@@ -57,10 +57,10 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         {
             this.outStream = outStream;
             this.format = format;
-            this.writer = new BinaryWriter(outStream, System.Text.Encoding.UTF8);
-            this.writer.Write(System.Text.Encoding.UTF8.GetBytes("FORM"));
-            this.writer.Write((int)0); // placeholder
-            this.writer.Write(System.Text.Encoding.UTF8.GetBytes("AIFF"));
+            writer = new BinaryWriter(outStream, System.Text.Encoding.UTF8);
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("FORM"));
+            writer.Write((int)0); // placeholder
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("AIFF"));
 
             CreateCommChunk();
             WriteSsndChunkHeader();
@@ -79,11 +79,11 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 
         private void WriteSsndChunkHeader()
         {
-            this.writer.Write(System.Text.Encoding.UTF8.GetBytes("SSND"));
-            dataSizePos = this.outStream.Position;
-            this.writer.Write((int)0);  // placeholder
-            this.writer.Write((int)0);  // zero offset
-            this.writer.Write(SwapEndian((int)format.BlockAlign));
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("SSND"));
+            dataSizePos = outStream.Position;
+            writer.Write((int)0);  // placeholder
+            writer.Write((int)0);  // zero offset
+            writer.Write(SwapEndian((int)format.BlockAlign));
         }
 
         private byte[] SwapEndian(short n)
@@ -98,13 +98,13 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 
         private void CreateCommChunk()
         {
-            this.writer.Write(System.Text.Encoding.UTF8.GetBytes("COMM"));
-            this.writer.Write(SwapEndian((int)18));
-            this.writer.Write(SwapEndian((short)format.Channels));
-            commSampleCountPos = this.outStream.Position; ;
-            this.writer.Write((int)0);  // placeholder for total number of samples
-            this.writer.Write(SwapEndian((short)format.BitsPerSample));
-            this.writer.Write(IEEE.ConvertToIeeeExtended(format.SampleRate));
+            writer.Write(System.Text.Encoding.UTF8.GetBytes("COMM"));
+            writer.Write(SwapEndian((int)18));
+            writer.Write(SwapEndian((short)format.Channels));
+            commSampleCountPos = outStream.Position; ;
+            writer.Write((int)0);  // placeholder for total number of samples
+            writer.Write(SwapEndian((short)format.BitsPerSample));
+            writer.Write(IEEE.ConvertToIeeeExtended(format.SampleRate));
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// </summary>
         protected virtual void UpdateHeader(BinaryWriter writer)
         {
-            this.Flush();
+            Flush();
             writer.Seek(4, SeekOrigin.Begin);
             writer.Write(SwapEndian((int)(outStream.Length - 8)));
             UpdateCommChunk(writer);

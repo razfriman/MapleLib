@@ -38,8 +38,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         public NoteEvent(long absoluteTime, int channel, MidiCommandCode commandCode, int noteNumber, int velocity)
             : base(absoluteTime, channel, commandCode)
         {
-            this.NoteNumber = noteNumber;
-            this.Velocity = velocity;
+            NoteNumber = noteNumber;
+            Velocity = velocity;
         }
 
         private static readonly string[] NoteNames = new string[] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
@@ -161,8 +161,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         {
             return String.Format("{0} {1} Vel:{2}",
                 base.ToString(),
-                this.NoteName,
-                this.Velocity);
+                NoteName,
+                Velocity);
         }
 
         /// <summary>

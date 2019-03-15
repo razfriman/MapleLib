@@ -34,7 +34,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
             waveFormat = new WaveFormat(sourceProvider.WaveFormat.SampleRate, 16, sourceProvider.WaveFormat.Channels);
 
             this.sourceProvider = sourceProvider;
-            this.volume = 1.0f;
+            volume = 1.0f;
         }
 
         /// <summary>

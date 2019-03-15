@@ -39,17 +39,17 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
         {
             waveFormatTag = WaveFormatEncoding.MpegLayer3;
             this.channels = (short)channels;
-            this.averageBytesPerSecond = bitRate / 8;
-            this.bitsPerSample = 0; // must be zero
-            this.blockAlign = 1; // must be 1
+            averageBytesPerSecond = bitRate / 8;
+            bitsPerSample = 0; // must be zero
+            blockAlign = 1; // must be 1
             this.sampleRate = sampleRate;
 
-            this.extraSize = Mp3WaveFormatExtraBytes;
-            this.id = Mp3WaveFormatId.Mpeg;
-            this.flags = Mp3WaveFormatFlags.PaddingIso;
+            extraSize = Mp3WaveFormatExtraBytes;
+            id = Mp3WaveFormatId.Mpeg;
+            flags = Mp3WaveFormatFlags.PaddingIso;
             this.blockSize = (ushort)blockSize;
-            this.framesPerBlock = 1;
-            this.codecDelay = 0;
+            framesPerBlock = 1;
+            codecDelay = 0;
         }
     }
 

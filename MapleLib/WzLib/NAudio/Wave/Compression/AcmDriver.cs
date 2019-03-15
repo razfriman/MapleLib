@@ -170,7 +170,7 @@ namespace MapleLib.WzLib.NAudio.Wave.Compression
         /// <returns>The driver, or null if not found</returns>
         public static AcmDriver FindByShortName(string shortName)
         {
-            foreach (var driver in AcmDriver.EnumerateAcmDrivers())
+            foreach (var driver in EnumerateAcmDrivers())
             {
                 if (driver.ShortName == shortName)
                 {
@@ -250,7 +250,7 @@ namespace MapleLib.WzLib.NAudio.Wave.Compression
                     formatTags = new List<AcmFormatTag>();
                     var formatTagDetails = new AcmFormatTagDetails();
                     formatTagDetails.structureSize = Marshal.SizeOf(formatTagDetails);
-                    MmException.Try(AcmInterop.acmFormatTagEnum(this.driverHandle, ref formatTagDetails, AcmFormatTagEnumCallback, IntPtr.Zero, 0), "acmFormatTagEnum");
+                    MmException.Try(AcmInterop.acmFormatTagEnum(driverHandle, ref formatTagDetails, AcmFormatTagEnumCallback, IntPtr.Zero, 0), "acmFormatTagEnum");
                 }
                 return formatTags;
             }

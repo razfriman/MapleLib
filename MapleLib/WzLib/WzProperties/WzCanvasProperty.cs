@@ -148,14 +148,14 @@ namespace MapleLib.WzLib.WzProperties
             }
             return ret;
         }
-        public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
+        public override void WriteValue(WzBinaryWriter writer)
         {
             writer.WriteStringValue("Canvas", 0x73, 0x1B);
             writer.Write((byte)0);
             if (properties.Count > 0)
             {
                 writer.Write((byte)1);
-                WzImageProperty.WritePropertyList(writer, properties);
+                WritePropertyList(writer, properties);
             }
             else
             {
@@ -173,10 +173,10 @@ namespace MapleLib.WzLib.WzProperties
         }
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzCanvas", this.Name, false, false) +
+            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzCanvas", Name, false, false) +
             XmlUtil.Attrib("width", PngProperty.Width.ToString()) +
             XmlUtil.Attrib("height", PngProperty.Height.ToString(), true, false));
-            WzImageProperty.DumpPropertyList(writer, level, this.WzProperties);
+            DumpPropertyList(writer, level, WzProperties);
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzCanvas"));
         }
         /// <summary>

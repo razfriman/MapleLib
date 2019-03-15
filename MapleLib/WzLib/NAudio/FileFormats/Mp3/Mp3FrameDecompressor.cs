@@ -19,7 +19,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
         /// <param name="sourceFormat">The MP3 source format</param>
         public AcmMp3FrameDecompressor(WaveFormat sourceFormat)
         {
-            this.pcmFormat = AcmStream.SuggestPcmFormat(sourceFormat);
+            pcmFormat = AcmStream.SuggestPcmFormat(sourceFormat);
             try
             {
                 conversionStream = new AcmStream(sourceFormat, pcmFormat);

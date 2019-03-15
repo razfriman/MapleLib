@@ -43,7 +43,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 
         private WaveFileReader(Stream inputStream, bool ownInput)
         {
-            this.waveStream = inputStream;
+            waveStream = inputStream;
             var chunkReader = new WaveFileChunkReader();
             try
             {

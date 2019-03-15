@@ -36,7 +36,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <param name="deviceNo">The device number</param>
         public MidiOut(int deviceNo) 
         {
-            this.callback = new MidiInterop.MidiOutCallback(Callback);
+            callback = new MidiInterop.MidiOutCallback(Callback);
             MmException.Try(MidiInterop.midiOutOpen(out hMidiOut, (IntPtr)deviceNo, callback, IntPtr.Zero, MidiInterop.CALLBACK_FUNCTION), "midiOutOpen");
         }
         
@@ -107,7 +107,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <param name="disposing">True if called from Dispose</param>
         protected virtual void Dispose(bool disposing) 
         {
-            if(!this.disposed) 
+            if(!disposed) 
             {
                 //if(disposing) Components.Dispose();
                 MidiInterop.midiOutClose(hMidiOut);
@@ -132,11 +132,11 @@ namespace MapleLib.WzLib.NAudio.Midi
             header.dwBufferLength = byteBuffer.Length;
             header.dwBytesRecorded = byteBuffer.Length;
             var size = Marshal.SizeOf(header);
-            MidiInterop.midiOutPrepareHeader(this.hMidiOut, ref header, size);
-            var errcode = MidiInterop.midiOutLongMsg(this.hMidiOut, ref header, size);
+            MidiInterop.midiOutPrepareHeader(hMidiOut, ref header, size);
+            var errcode = MidiInterop.midiOutLongMsg(hMidiOut, ref header, size);
             if (errcode != MmResult.NoError)
             {
-                MidiInterop.midiOutUnprepareHeader(this.hMidiOut, ref header, size);
+                MidiInterop.midiOutUnprepareHeader(hMidiOut, ref header, size);
             }
             Marshal.FreeHGlobal(header.lpData);
         }

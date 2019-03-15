@@ -36,7 +36,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// </summary>
         public void SetWaveFormat(int sampleRate, int channels)
         {
-            this.waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
+            waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
         }
 
         /// <summary>

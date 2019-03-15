@@ -88,11 +88,11 @@ namespace MapleLib.WzLib.NAudio.Dmo
             //    bufferPointerPointer,validDataLengthPointer));
             if (bufferPointerPointer != IntPtr.Zero)
             {
-                Marshal.WriteIntPtr(bufferPointerPointer, this.buffer);
+                Marshal.WriteIntPtr(bufferPointerPointer, buffer);
             }
             if (validDataLengthPointer != IntPtr.Zero)
             {
-                Marshal.WriteInt32(validDataLengthPointer, this.length);
+                Marshal.WriteInt32(validDataLengthPointer, length);
 
             }
             //System.Diagnostics.Debug.WriteLine("Finished Getting Buffer and Length");
@@ -125,7 +125,7 @@ namespace MapleLib.WzLib.NAudio.Dmo
         /// <param name="bytes">Number of bytes to load</param>
         public void LoadData(byte[] data, int bytes)
         {
-            this.Length = bytes;
+            Length = bytes;
             Marshal.Copy(data, 0, buffer, bytes);
         }
 

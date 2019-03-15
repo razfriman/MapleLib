@@ -177,13 +177,13 @@ namespace MapleLib.WzLib.NAudio.Mixer
             {
                 throw new ArgumentOutOfRangeException("sourceIndex");
             }
-            return new MixerLine(mixerHandle, mixerLine.dwDestination, sourceIndex, this.mixerHandleType);			
+            return new MixerLine(mixerHandle, mixerLine.dwDestination, sourceIndex, mixerHandleType);			
         }
 
         /// <summary>
         /// Enumerator for the controls on this Mixer Limne
         /// </summary>
-        public IEnumerable<MixerControl> Controls => MixerControl.GetMixerControls(this.mixerHandle, this, this.mixerHandleType);
+        public IEnumerable<MixerControl> Controls => MixerControl.GetMixerControls(mixerHandle, this, mixerHandleType);
 
         /// <summary>
         /// Enumerator for the sources on this Mixer Line

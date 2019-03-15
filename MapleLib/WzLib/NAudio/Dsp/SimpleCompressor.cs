@@ -15,19 +15,19 @@ namespace MapleLib.WzLib.NAudio.Dsp
         public SimpleCompressor(double attackTime, double releaseTime, double sampleRate)
             : base(attackTime, releaseTime, sampleRate)
         {
-            this.Threshold = 0.0;
-            this.Ratio = 1.0;
-            this.MakeUpGain = 0.0;
-            this.envdB = DC_OFFSET;
+            Threshold = 0.0;
+            Ratio = 1.0;
+            MakeUpGain = 0.0;
+            envdB = DC_OFFSET;
         }
 
         public SimpleCompressor()
             : base(10.0, 10.0, 44100.0)
         {
-            this.Threshold = 0.0;
-            this.Ratio = 1.0;
-            this.MakeUpGain = 0.0;
-            this.envdB = DC_OFFSET;
+            Threshold = 0.0;
+            Ratio = 1.0;
+            MakeUpGain = 0.0;
+            envdB = DC_OFFSET;
         }
 
         public double MakeUpGain { get; set; }
@@ -39,7 +39,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
         // call before runtime (in resume())
         public void InitRuntime()
         {
-            this.envdB = DC_OFFSET;
+            envdB = DC_OFFSET;
         }
     
         // // compressor runtime process

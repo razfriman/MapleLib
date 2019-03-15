@@ -47,10 +47,10 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
         public AdpcmWaveFormat(int sampleRate, int channels) :
             base(sampleRate,0,channels)
         {
-            this.waveFormatTag = WaveFormatEncoding.Adpcm;
+            waveFormatTag = WaveFormatEncoding.Adpcm;
             
             // TODO: validate sampleRate, bitsPerSample
-            this.extraSize = 32;
+            extraSize = 32;
             switch(this.sampleRate)
             {
                 case 8000: 
@@ -66,10 +66,10 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
                     break;
             }
 
-            this.bitsPerSample = 4;
-            this.samplesPerBlock = (short) ((((blockAlign - (7 * channels)) * 8) / (bitsPerSample * channels)) + 2);
-            this.averageBytesPerSecond =
-                ((this.SampleRate * blockAlign) / samplesPerBlock);
+            bitsPerSample = 4;
+            samplesPerBlock = (short) ((((blockAlign - (7 * channels)) * 8) / (bitsPerSample * channels)) + 2);
+            averageBytesPerSecond =
+                ((SampleRate * blockAlign) / samplesPerBlock);
 
             // samplesPerBlock = blockAlign - (7 * channels)) * (2 / channels) + 2;
 
@@ -101,7 +101,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
         public override string ToString()
         {
             return String.Format("Microsoft ADPCM {0} Hz {1} channels {2} bits per sample {3} samples per block",
-                this.SampleRate, this.channels, this.bitsPerSample, this.samplesPerBlock);
+                SampleRate, channels, bitsPerSample, samplesPerBlock);
         }
     }
 }

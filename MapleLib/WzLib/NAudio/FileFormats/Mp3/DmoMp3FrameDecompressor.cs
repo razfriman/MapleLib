@@ -22,7 +22,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
         /// <param name="sourceFormat"></param>
         public DmoMp3FrameDecompressor(WaveFormat sourceFormat)
         {
-            this.mp3Decoder = new WindowsMediaMp3Decoder();
+            mp3Decoder = new WindowsMediaMp3Decoder();
             if (!mp3Decoder.MediaObject.SupportsInputWaveFormat(0, sourceFormat))
             {
                 throw new ArgumentException("Unsupported input format");

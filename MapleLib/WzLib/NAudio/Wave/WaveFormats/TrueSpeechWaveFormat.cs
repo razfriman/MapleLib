@@ -17,17 +17,17 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
         /// </summary>
         public TrueSpeechWaveFormat()
         {
-            this.waveFormatTag = WaveFormatEncoding.DspGroupTrueSpeech;
-            this.channels = 1;
-            this.averageBytesPerSecond = 1067;
-            this.bitsPerSample = 1;
-            this.blockAlign = 32;
-            this.sampleRate = 8000;
+            waveFormatTag = WaveFormatEncoding.DspGroupTrueSpeech;
+            channels = 1;
+            averageBytesPerSecond = 1067;
+            bitsPerSample = 1;
+            blockAlign = 32;
+            sampleRate = 8000;
 
-            this.extraSize = 32;
-            this.unknown = new short[16];
-            this.unknown[0] = 1;
-            this.unknown[1] = 0xF0;
+            extraSize = 32;
+            unknown = new short[16];
+            unknown[0] = 1;
+            unknown[1] = 0xF0;
         }
 
         /// <summary>

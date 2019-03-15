@@ -40,7 +40,7 @@ namespace MapleLib.WzLib.NAudio.MediaFoundation
         /// <param name="outputFormat">The desired output format</param>
         public MediaFoundationTransform(IWaveProvider sourceProvider, WaveFormat outputFormat)
         {
-            this.outputWaveFormat = outputFormat;
+            outputWaveFormat = outputFormat;
             this.sourceProvider = sourceProvider;
             sourceBuffer = new byte[sourceProvider.WaveFormat.AverageBytesPerSecond];
             outputBuffer = new byte[outputWaveFormat.AverageBytesPerSecond + outputWaveFormat.BlockAlign]; // we will grow this buffer if needed, but try to make something big enough

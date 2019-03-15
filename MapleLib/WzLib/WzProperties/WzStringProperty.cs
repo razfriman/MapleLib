@@ -49,14 +49,14 @@ namespace MapleLib.WzLib.WzProperties
 		public override string Name { get => name;
 			set => name = value;
 		}
-		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
+		public override void WriteValue(WzBinaryWriter writer)
 		{
 			writer.Write((byte)8);
 			writer.WriteStringValue(Value, 0, 1);
 		}
 		public override void ExportXml(StreamWriter writer, int level)
 		{
-			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzString", this.Name, this.Value));
+			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzString", Name, Value));
 		}
 		/// <summary>
 		/// Disposes the object
@@ -95,7 +95,7 @@ namespace MapleLib.WzLib.WzProperties
 		public WzStringProperty(string name, string value)
 		{
 			this.name = name;
-			this.val = value;
+			val = value;
 		}
 		#endregion
 

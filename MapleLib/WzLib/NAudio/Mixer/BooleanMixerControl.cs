@@ -19,7 +19,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
             this.mixerHandle = mixerHandle;
             this.mixerHandleType = mixerHandleType;
 			this.nChannels = nChannels;
-			this.mixerControlDetails = new MixerInterop.MIXERCONTROLDETAILS();
+			mixerControlDetails = new MixerInterop.MIXERCONTROLDETAILS();
 			
 			GetControlDetails();
 

@@ -37,7 +37,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 
         internal void ReadExtraData(BinaryReader reader)
         {
-            if (this.extraSize > 0)
+            if (extraSize > 0)
             {
                 reader.Read(extraData, 0, extraSize);
             }

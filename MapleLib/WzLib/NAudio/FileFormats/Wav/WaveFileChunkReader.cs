@@ -27,14 +27,14 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Wav
 
         public void ReadWaveHeader(Stream stream)
         {
-            this.dataChunkPosition = -1;
-            this.waveFormat = null;
-            this.riffChunks = new List<RiffChunk>();
-            this.dataChunkLength = 0;
+            dataChunkPosition = -1;
+            waveFormat = null;
+            riffChunks = new List<RiffChunk>();
+            dataChunkLength = 0;
 
             var br = new BinaryReader(stream);
             ReadRiffHeader(br);
-            this.riffSize = br.ReadUInt32(); // read the file size (minus 8 bytes)
+            riffSize = br.ReadUInt32(); // read the file size (minus 8 bytes)
 
             if (br.ReadInt32() != ChunkIdentifier.ChunkIdentifierToInt32("WAVE"))
             {
@@ -124,8 +124,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Wav
                 throw new FormatException("Invalid RF64 WAV file - No ds64 chunk found");
             }
             var chunkSize = reader.ReadInt32();
-            this.riffSize = reader.ReadInt64();
-            this.dataChunkLength = reader.ReadInt64();
+            riffSize = reader.ReadInt64();
+            dataChunkLength = reader.ReadInt64();
             var sampleCount = reader.ReadInt64(); // replaces the value in the fact chunk
             reader.ReadBytes(chunkSize - 24); // get to the end of this chunk (should parse extra stuff later)
         }
@@ -140,7 +140,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Wav
             var header = br.ReadInt32();
             if (header == ChunkIdentifier.ChunkIdentifierToInt32("RF64"))
             {
-                this.isRf64 = true;
+                isRf64 = true;
             }
             else if (header != ChunkIdentifier.ChunkIdentifierToInt32("RIFF"))
             {
@@ -151,21 +151,21 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Wav
         /// <summary>
         /// WaveFormat
         /// </summary>
-        public WaveFormat WaveFormat => this.waveFormat;
+        public WaveFormat WaveFormat => waveFormat;
 
         /// <summary>
         /// Data Chunk Position
         /// </summary>
-        public long DataChunkPosition => this.dataChunkPosition;
+        public long DataChunkPosition => dataChunkPosition;
 
         /// <summary>
         /// Data Chunk Length
         /// </summary>
-        public long DataChunkLength => this.dataChunkLength;
+        public long DataChunkLength => dataChunkLength;
 
         /// <summary>
         /// Riff Chunks
         /// </summary>
-        public List<RiffChunk> RiffChunks => this.riffChunks;
+        public List<RiffChunk> RiffChunks => riffChunks;
     }
 }

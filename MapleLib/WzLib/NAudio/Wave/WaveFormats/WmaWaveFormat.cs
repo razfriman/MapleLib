@@ -30,7 +30,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
             }
 
             // WMAUDIO3 is Pro
-            this.waveFormatTag = WaveFormatEncoding.WindowsMediaAudio;
+            waveFormatTag = WaveFormatEncoding.WindowsMediaAudio;
         }
     }
 }

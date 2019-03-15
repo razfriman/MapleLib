@@ -102,7 +102,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return ((WzImageProperty)Parent)[path.Substring(name.IndexOf('/') + 1)];
@@ -127,7 +127,7 @@ namespace MapleLib.WzLib.WzProperties
             }
             return ret;
         }
-        public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
+        public override void WriteValue(WzBinaryWriter writer)
         {
             var extendedProps = new List<WzExtended>(properties.Count);
             foreach (var prop in properties)
@@ -147,8 +147,8 @@ namespace MapleLib.WzLib.WzProperties
         }
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzConvex", this.Name, true));
-            WzImageProperty.DumpPropertyList(writer, level, WzProperties);
+            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzConvex", Name, true));
+            DumpPropertyList(writer, level, WzProperties);
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzConvex"));
         }
         public override void Dispose()

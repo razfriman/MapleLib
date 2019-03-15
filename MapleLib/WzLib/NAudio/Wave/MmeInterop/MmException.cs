@@ -16,7 +16,7 @@ namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
         /// <param name="result">The result returned by the Windows API call</param>
         /// <param name="function">The name of the Windows API that failed</param>
         public MmException(MmResult result, string function)
-            : base(MmException.ErrorMessage(result, function))
+            : base(ErrorMessage(result, function))
         {
             this.result = result;
             this.function = function;

@@ -46,12 +46,12 @@ namespace MapleLib.WzLib.NAudio.Midi
         {
             get 
             { 
-                Encoding byteEncoding = NAudio.Utils.ByteEncoding.Instance;
+                Encoding byteEncoding = Utils.ByteEncoding.Instance;
                 return byteEncoding.GetString(data); 
             }
             set
             {
-                Encoding byteEncoding = NAudio.Utils.ByteEncoding.Instance;
+                Encoding byteEncoding = Utils.ByteEncoding.Instance;
                 data = byteEncoding.GetBytes(value);
                 metaDataLength = data.Length;
             }

@@ -58,7 +58,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         public int Read(byte[] buffer, int offset, int count)
         {
             var sourceBytesRequired = count / 2;
-            sourceBuffer = BufferHelpers.Ensure(this.sourceBuffer, sourceBytesRequired);
+            sourceBuffer = BufferHelpers.Ensure(sourceBuffer, sourceBytesRequired);
             var sourceWaveBuffer = new WaveBuffer(sourceBuffer);
             var destWaveBuffer = new WaveBuffer(buffer);
 

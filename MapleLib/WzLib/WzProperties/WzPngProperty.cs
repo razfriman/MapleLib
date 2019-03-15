@@ -240,7 +240,7 @@ namespace MapleLib.WzLib.WzProperties
             memStream.Close();
             memStream.Dispose();
             zip.Dispose();
-            System.Buffer.BlockCopy(new byte[] { 0x78, 0x9C }, 0, buffer, 0, 2);
+            Buffer.BlockCopy(new byte[] { 0x78, 0x9C }, 0, buffer, 0, 2);
             return buffer;
         }
         internal void ParsePng()

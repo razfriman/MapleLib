@@ -14,11 +14,11 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <param name="timestamp"></param>
         public MidiInMessageEventArgs(int message, int timestamp)
         {
-            this.RawMessage = message;
-            this.Timestamp = timestamp;
+            RawMessage = message;
+            Timestamp = timestamp;
             try
             {
-                this.MidiEvent = MidiEvent.FromRawMessage(message);
+                MidiEvent = MidiEvent.FromRawMessage(message);
             }
             catch (Exception)
             {

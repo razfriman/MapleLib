@@ -59,7 +59,7 @@ namespace MapleLib.WzLib.WzProperties
 		/// </summary>
 		public override WzPropertyType PropertyType => WzPropertyType.Vector;
 
-		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
+		public override void WriteValue(WzBinaryWriter writer)
 		{
 			writer.WriteStringValue("Shape2D#Vector2D", 0x73, 0x1B);
 			writer.WriteCompressedInt(X.Value);
@@ -67,8 +67,8 @@ namespace MapleLib.WzLib.WzProperties
 		}
 		public override void ExportXml(StreamWriter writer, int level)
 		{
-			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzVector", this.Name, false, false) +
-				XmlUtil.Attrib("X", this.X.Value.ToString()) + XmlUtil.Attrib("Y", this.Y.Value.ToString(), true, true));
+			writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzVector", Name, false, false) +
+				XmlUtil.Attrib("X", X.Value.ToString()) + XmlUtil.Attrib("Y", Y.Value.ToString(), true, true));
 		}
 		/// <summary>
 		/// Disposes the object

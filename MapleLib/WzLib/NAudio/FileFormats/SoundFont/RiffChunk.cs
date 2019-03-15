@@ -45,9 +45,9 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
  		private void ReadChunk() 
 		{
-			this.chunkID = ReadChunkID();
-			this.chunkSize = riffFile.ReadUInt32(); //(uint) IPAddress.NetworkToHostOrder(riffFile.ReadUInt32());
-			this.dataOffset = riffFile.BaseStream.Position;
+			chunkID = ReadChunkID();
+			chunkSize = riffFile.ReadUInt32(); //(uint) IPAddress.NetworkToHostOrder(riffFile.ReadUInt32());
+			dataOffset = riffFile.BaseStream.Position;
 		}
 		
 		/// <summary>

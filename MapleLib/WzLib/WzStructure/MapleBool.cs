@@ -24,13 +24,13 @@ namespace MapleLib.WzLib.WzStructure
         {
             return new MapleBool
             {
-                val = value == null ? MapleBool.NotExist : (bool)value ? MapleBool.True : MapleBool.False
+                val = value == null ? NotExist : (bool)value ? True : False
             };
         }
 
         public static implicit operator bool(MapleBool value)
         {
-            return value == MapleBool.True;
+            return value == True;
         }
 
         public static implicit operator byte(MapleBool value)
@@ -55,7 +55,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static bool operator ==(MapleBool a, bool b)
         {
-            return (b && (a.val == MapleBool.True)) || (!b && (a.val == MapleBool.False));
+            return (b && (a.val == True)) || (!b && (a.val == False));
         }
 
         public static bool operator !=(MapleBool a, MapleBool b)
@@ -65,7 +65,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static bool operator !=(MapleBool a, bool b)
         {
-            return (b && (a.val != MapleBool.True)) || (!b && (a.val != MapleBool.False));
+            return (b && (a.val != True)) || (!b && (a.val != False));
         }
 
         public bool HasValue => val != NotExist;

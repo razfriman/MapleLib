@@ -41,7 +41,7 @@ namespace MapleLib.WzLib.NAudio.CoreAudioApi
         public MMDeviceEnumerator()
         {
 #if !NETFX_CORE
-            if (System.Environment.OSVersion.Version.Major < 6)
+            if (Environment.OSVersion.Version.Major < 6)
             {
                 throw new NotSupportedException("This functionality is only supported on Windows Vista or newer.");
             }

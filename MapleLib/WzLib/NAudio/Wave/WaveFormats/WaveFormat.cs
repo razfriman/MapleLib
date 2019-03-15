@@ -124,7 +124,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
             extraSize = 0;
 
             blockAlign = (short)(channels * (bits / 8));
-            averageBytesPerSecond = this.sampleRate * this.blockAlign;
+            averageBytesPerSecond = sampleRate * blockAlign;
         }
 
         /// <summary>

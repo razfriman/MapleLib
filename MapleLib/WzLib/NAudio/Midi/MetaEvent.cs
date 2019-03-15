@@ -32,7 +32,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         public MetaEvent(MetaEventType metaEventType, int metaDataLength, long absoluteTime)
             : base(absoluteTime,1,MidiCommandCode.MetaEvent)
         {
-            this.metaEvent = metaEventType;
+            metaEvent = metaEventType;
             this.metaDataLength = metaDataLength;
         }
 

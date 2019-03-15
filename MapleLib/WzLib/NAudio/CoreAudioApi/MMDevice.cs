@@ -282,8 +282,8 @@ namespace MapleLib.WzLib.NAudio.CoreAudioApi
         /// </summary>
         public void Dispose()
         {
-            this.audioEndpointVolume?.Dispose();
-            this.audioSessionManager?.Dispose();
+            audioEndpointVolume?.Dispose();
+            audioSessionManager?.Dispose();
             GC.SuppressFinalize(this);
         }
         

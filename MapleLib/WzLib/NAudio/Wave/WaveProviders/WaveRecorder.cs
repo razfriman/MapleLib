@@ -21,7 +21,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         public WaveRecorder(IWaveProvider source, string destination)
         {
             this.source = source;
-            this.writer = new WaveFileWriter(destination, source.WaveFormat);
+            writer = new WaveFileWriter(destination, source.WaveFormat);
         }
 
         /// <summary>

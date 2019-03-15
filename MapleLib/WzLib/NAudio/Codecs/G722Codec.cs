@@ -603,21 +603,21 @@ namespace MapleLib.WzLib.NAudio.Codecs
         /// <param name="options">Special options</param>
         public G722CodecState(int rate, G722Flags options)
         {
-            this.Band = new Band[2] { new Band(), new Band() };
-            this.QmfSignalHistory = new int[24];
-            this.ItuTestMode = false;
+            Band = new Band[2] { new Band(), new Band() };
+            QmfSignalHistory = new int[24];
+            ItuTestMode = false;
 
             if (rate == 48000)
             {
-                this.BitsPerSample = 6;
+                BitsPerSample = 6;
             }
             else if (rate == 56000)
             {
-                this.BitsPerSample = 7;
+                BitsPerSample = 7;
             }
             else if (rate == 64000)
             {
-                this.BitsPerSample = 8;
+                BitsPerSample = 8;
             }
             else
             {
@@ -626,20 +626,20 @@ namespace MapleLib.WzLib.NAudio.Codecs
 
             if ((options & G722Flags.SampleRate8000) == G722Flags.SampleRate8000)
             {
-                this.EncodeFrom8000Hz = true;
+                EncodeFrom8000Hz = true;
             }
 
-            if (((options & G722Flags.Packed) == G722Flags.Packed) && this.BitsPerSample != 8)
+            if (((options & G722Flags.Packed) == G722Flags.Packed) && BitsPerSample != 8)
             {
-                this.Packed = true;
+                Packed = true;
             }
             else
             {
-                this.Packed = false;
+                Packed = false;
             }
 
-            this.Band[0].det = 32;
-            this.Band[1].det = 8;
+            Band[0].det = 32;
+            Band[1].det = 8;
         }
     }
 

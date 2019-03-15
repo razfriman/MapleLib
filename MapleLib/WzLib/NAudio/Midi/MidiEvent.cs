@@ -91,7 +91,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <returns>A new MidiEvent</returns>
         public static MidiEvent ReadNextEvent(BinaryReader br, MidiEvent previous) 
         {
-            var deltaTime = MidiEvent.ReadVarInt(br);
+            var deltaTime = ReadVarInt(br);
             MidiCommandCode commandCode;
             var channel = 1;
             var b = br.ReadByte();
@@ -186,7 +186,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         public MidiEvent(long absoluteTime, int channel, MidiCommandCode commandCode)
         {
             this.absoluteTime = absoluteTime;
-            this.Channel = channel;
+            Channel = channel;
             this.commandCode = commandCode;
         }
 

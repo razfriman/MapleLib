@@ -34,8 +34,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <param name="deviceNo">The device number</param>
         public MidiIn(int deviceNo) 
         {
-            this.callback = new MidiInterop.MidiInCallback(Callback);
-            MmException.Try(MidiInterop.midiInOpen(out hMidiIn, (IntPtr) deviceNo,this.callback,IntPtr.Zero,MidiInterop.CALLBACK_FUNCTION),"midiInOpen");
+            callback = new MidiInterop.MidiInCallback(Callback);
+            MmException.Try(MidiInterop.midiInOpen(out hMidiIn, (IntPtr) deviceNo,callback,IntPtr.Zero,MidiInterop.CALLBACK_FUNCTION),"midiInOpen");
         }
         
         /// <summary>
@@ -137,7 +137,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <param name="disposing">True if called from Dispose</param>
         protected virtual void Dispose(bool disposing) 
         {
-            if(!this.disposed) 
+            if(!disposed) 
             {
                 //if(disposing) Components.Dispose();
                 MidiInterop.midiInClose(hMidiIn);

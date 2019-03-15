@@ -39,7 +39,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
         /// <returns>A new ID3v2 tag</returns>
         public static Id3v2Tag Create(IEnumerable<KeyValuePair<string, string>> tags)
         {
-            return Id3v2Tag.ReadTag(CreateId3v2TagStream(tags));
+            return ReadTag(CreateId3v2TagStream(tags));
         }
 
         /// <summary>

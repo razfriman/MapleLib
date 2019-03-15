@@ -18,7 +18,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// <param name="sourceProvider">Source provider, must be 16 bit PCM</param>
         public VolumeWaveProvider16(IWaveProvider sourceProvider)
         {
-            this.Volume = 1.0f;
+            Volume = 1.0f;
             this.sourceProvider = sourceProvider;
             if (sourceProvider.WaveFormat.Encoding != WaveFormatEncoding.Pcm)
             {
@@ -57,22 +57,22 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         {
             // always read from the source
             var bytesRead = sourceProvider.Read(buffer, offset, count);
-            if (this.volume == 0.0f)
+            if (volume == 0.0f)
             {
                 for (var n = 0; n < bytesRead; n++)
                 {
                     buffer[offset++] = 0;
                 }
             }
-            else if (this.volume != 1.0f)
+            else if (volume != 1.0f)
             {
                 for (var n = 0; n < bytesRead; n += 2)
                 {
                     var sample = (short)((buffer[offset + 1] << 8) | buffer[offset]);
-                    var newSample = sample * this.volume;
+                    var newSample = sample * volume;
                     sample = (short)newSample;
                     // clip if necessary
-                    if (this.Volume > 1.0f)
+                    if (Volume > 1.0f)
                     {
                         if (newSample > Int16.MaxValue)
                         {

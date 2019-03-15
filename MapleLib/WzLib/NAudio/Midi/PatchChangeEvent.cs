@@ -62,7 +62,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         public PatchChangeEvent(long absoluteTime, int channel, int patchNumber)
             : base(absoluteTime, channel, MidiCommandCode.PatchChange)
         {
-            this.Patch = patchNumber;
+            Patch = patchNumber;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         {
             return String.Format("{0} {1}",
                 base.ToString(),
-                GetPatchName(this.patch));
+                GetPatchName(patch));
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <returns>short message</returns>
         public override int GetAsShortMessage()
         {
-            return base.GetAsShortMessage() + (this.patch << 8);
+            return base.GetAsShortMessage() + (patch << 8);
         }
 
         /// <summary>

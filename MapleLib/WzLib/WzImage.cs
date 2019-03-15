@@ -215,7 +215,7 @@ namespace MapleLib.WzLib
                 }
             }
 
-            var segments = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return null;

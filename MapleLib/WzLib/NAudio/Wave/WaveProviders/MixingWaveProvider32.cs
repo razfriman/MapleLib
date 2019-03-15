@@ -22,9 +22,9 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// </summary>
         public MixingWaveProvider32()
         {
-            this.waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
-            this.bytesPerSample = 4;
-            this.inputs = new List<IWaveProvider>();
+            waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+            bytesPerSample = 4;
+            inputs = new List<IWaveProvider>();
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
                 // first one - set the format
                 var sampleRate = waveProvider.WaveFormat.SampleRate;
                 var channels = waveProvider.WaveFormat.Channels;
-                this.waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
+                waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 
             lock (inputs)
             {
-                this.inputs.Add(waveProvider);
+                inputs.Add(waveProvider);
             }
         }
 
@@ -87,14 +87,14 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         {
             lock (inputs)
             {
-                this.inputs.Remove(waveProvider);
+                inputs.Remove(waveProvider);
             }
         }
 
         /// <summary>
         /// The number of inputs to this mixer
         /// </summary>
-        public int InputCount => this.inputs.Count;
+        public int InputCount => inputs.Count;
 
         /// <summary>
         /// Reads bytes from this wave stream
@@ -154,6 +154,6 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// <summary>
         /// <see cref="WaveStream.WaveFormat"/>
         /// </summary>
-        public WaveFormat WaveFormat => this.waveFormat;
+        public WaveFormat WaveFormat => waveFormat;
     }
 }

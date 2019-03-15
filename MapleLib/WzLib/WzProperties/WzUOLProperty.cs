@@ -83,7 +83,7 @@ namespace MapleLib.WzLib.WzProperties
         /// </summary>
         public override WzPropertyType PropertyType => WzPropertyType.UOL;
 
-        public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
+        public override void WriteValue(WzBinaryWriter writer)
         {
             writer.WriteStringValue("UOL", 0x73, 0x1B);
             writer.Write((byte)0);
@@ -92,7 +92,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzUOL", this.Name, this.Value));
+            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzUOL", Name, Value));
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace MapleLib.WzLib.WzProperties
                 if (linkVal == null)
                 {
                     var paths = val.Split('/');
-                    linkVal = this.parent;
+                    linkVal = parent;
                     var asdf = parent.FullPath;
                     foreach (var path in paths)
                     {
@@ -178,7 +178,7 @@ namespace MapleLib.WzLib.WzProperties
         public WzUOLProperty(string name, string value)
         {
             this.name = name;
-            this.val = value;
+            val = value;
         }
         #endregion
 

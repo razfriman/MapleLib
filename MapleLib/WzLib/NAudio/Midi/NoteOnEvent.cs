@@ -31,7 +31,7 @@ namespace MapleLib.WzLib.NAudio.Midi
             int velocity, int duration)
             : base(absoluteTime, channel, MidiCommandCode.NoteOn, noteNumber, velocity)
         {
-            this.OffEvent = new NoteEvent(absoluteTime, channel, MidiCommandCode.NoteOff,
+            OffEvent = new NoteEvent(absoluteTime, channel, MidiCommandCode.NoteOff,
                 noteNumber, 0);
             NoteLength = duration;
         }
@@ -49,15 +49,15 @@ namespace MapleLib.WzLib.NAudio.Midi
             get => offEvent;
             set
             {
-                if (!MidiEvent.IsNoteOff(value))
+                if (!IsNoteOff(value))
                 {
                     throw new ArgumentException("OffEvent must be a valid MIDI note off event");
                 }
-                if (value.NoteNumber != this.NoteNumber)
+                if (value.NoteNumber != NoteNumber)
                 {
                     throw new ArgumentException("Note Off Event must be for the same note number");
                 }
-                if (value.Channel != this.Channel)
+                if (value.Channel != Channel)
                 {
                     throw new ArgumentException("Note Off Event must be for the same channel");
                 }
@@ -106,14 +106,14 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </remarks>
         public int NoteLength
         {
-            get => (int)(offEvent.AbsoluteTime - this.AbsoluteTime);
+            get => (int)(offEvent.AbsoluteTime - AbsoluteTime);
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentException("NoteLength must be 0 or greater");
                 }
-                offEvent.AbsoluteTime = this.AbsoluteTime + value;
+                offEvent.AbsoluteTime = AbsoluteTime + value;
             }
         }
 
@@ -124,14 +124,14 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public override string ToString()
         {
-            if ((this.Velocity == 0) && (OffEvent == null))
+            if ((Velocity == 0) && (OffEvent == null))
             {
                 return String.Format("{0} (Note Off)",
                     base.ToString());
             }
             return String.Format("{0} Len: {1}",
                 base.ToString(),
-                (this.OffEvent == null) ? "?" : this.NoteLength.ToString());
+                (OffEvent == null) ? "?" : NoteLength.ToString());
         }
     }
 }

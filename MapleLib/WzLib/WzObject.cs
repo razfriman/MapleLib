@@ -64,7 +64,7 @@ namespace MapleLib.WzLib
                     return ((WzFile)this).WzDirectory.Name;
                 }
 
-                var result = this.Name;
+                var result = Name;
                 var currObj = this;
                 while (currObj.Parent != null)
                 {

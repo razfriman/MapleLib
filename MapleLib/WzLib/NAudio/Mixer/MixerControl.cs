@@ -115,23 +115,23 @@ namespace MapleLib.WzLib.NAudio.Mixer
             mc = (MixerInterop.MIXERCONTROL) Marshal.PtrToStructure(mlc.pamxctrl, typeof (MixerInterop.MIXERCONTROL));
             Marshal.FreeCoTaskMem(pMixerControl);
 
-            if (MixerControl.IsControlBoolean(mc.dwControlType))
+            if (IsControlBoolean(mc.dwControlType))
             {
                 return new BooleanMixerControl(mc, mixerHandle, mixerFlags, nChannels);
             }
-            else if (MixerControl.IsControlSigned(mc.dwControlType))
+            else if (IsControlSigned(mc.dwControlType))
             {
                 return new SignedMixerControl(mc, mixerHandle, mixerFlags, nChannels);
             }
-            else if (MixerControl.IsControlUnsigned(mc.dwControlType))
+            else if (IsControlUnsigned(mc.dwControlType))
             {
                 return new UnsignedMixerControl(mc, mixerHandle, mixerFlags, nChannels);
             }
-            else if (MixerControl.IsControlListText(mc.dwControlType))
+            else if (IsControlListText(mc.dwControlType))
             {
                 return new ListTextMixerControl(mc, mixerHandle, mixerFlags, nChannels);
             }
-            else if (MixerControl.IsControlCustom(mc.dwControlType))
+            else if (IsControlCustom(mc.dwControlType))
             {
                 return new CustomMixerControl(mc, mixerHandle, mixerFlags, nChannels);
             }
@@ -265,7 +265,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
         /// <summary>
         /// Is this a boolean control
         /// </summary>
-        public bool IsBoolean => MixerControl.IsControlBoolean(mixerControl.dwControlType);
+        public bool IsBoolean => IsControlBoolean(mixerControl.dwControlType);
 
         /// <summary>
         /// Determines whether a specified mixer control type is a list text control
@@ -288,7 +288,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
         /// <summary>
         /// True if this is a list text control
         /// </summary>
-        public bool IsListText => MixerControl.IsControlListText(mixerControl.dwControlType);
+        public bool IsListText => IsControlListText(mixerControl.dwControlType);
 
         private static bool IsControlSigned(MixerControlType controlType)
         {
@@ -310,7 +310,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
         /// <summary>
         /// True if this is a signed control
         /// </summary>
-        public bool IsSigned => MixerControl.IsControlSigned(mixerControl.dwControlType);
+        public bool IsSigned => IsControlSigned(mixerControl.dwControlType);
 
         private static bool IsControlUnsigned(MixerControlType controlType)
         {
@@ -335,7 +335,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
         /// <summary>
         /// True if this is an unsigned control
         /// </summary>
-        public bool IsUnsigned => MixerControl.IsControlUnsigned(mixerControl.dwControlType);
+        public bool IsUnsigned => IsControlUnsigned(mixerControl.dwControlType);
 
         private static bool IsControlCustom(MixerControlType controlType)
         {
@@ -345,7 +345,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
         /// <summary>
         /// True if this is a custom control
         /// </summary>
-        public bool IsCustom => MixerControl.IsControlCustom(mixerControl.dwControlType);
+        public bool IsCustom => IsControlCustom(mixerControl.dwControlType);
 
         /// <summary>
         /// String representation for debug purposes

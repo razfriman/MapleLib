@@ -41,8 +41,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         public ControlChangeEvent(long absoluteTime, int channel, MidiController controller, int controllerValue)
             : base(absoluteTime,channel,MidiCommandCode.ControlChange)
         {
-            this.Controller = controller;
-            this.ControllerValue = controllerValue;
+            Controller = controller;
+            ControllerValue = controllerValue;
         }
         
         /// <summary>
@@ -53,8 +53,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         {
             return String.Format("{0} Controller {1} Value {2}",
                 base.ToString(),
-                this.controller,
-                this.controllerValue);
+                controller,
+                controllerValue);
         }
 
         /// <summary>

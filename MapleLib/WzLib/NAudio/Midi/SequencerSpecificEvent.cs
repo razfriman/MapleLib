@@ -17,7 +17,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <param name="length">The data length</param>
         public SequencerSpecificEvent(BinaryReader br, int length)
         {
-            this.data = br.ReadBytes(length);
+            data = br.ReadBytes(length);
         }
 
         /// <summary>
@@ -41,11 +41,11 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public byte[] Data
         {
-            get => this.data;
+            get => data;
             set
             {
-                this.data = value;
-                this.metaDataLength = this.data.Length;
+                data = value;
+                metaDataLength = data.Length;
             }
         }
 

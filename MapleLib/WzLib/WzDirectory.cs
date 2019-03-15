@@ -167,8 +167,8 @@ namespace MapleLib.WzLib
 		internal WzDirectory(WzBinaryReader reader, string dirName, uint verHash, byte[] WzIv, WzFile wzFile)
 		{
 			this.reader = reader;
-			this.name = dirName;
-			this.hash = verHash;
+			name = dirName;
+			hash = verHash;
 			this.WzIv = WzIv;
             this.wzFile = wzFile;
 		}
@@ -289,7 +289,7 @@ namespace MapleLib.WzLib
                 if (img.Changed)
                 {
                     memStream = new MemoryStream();
-                    imgWriter = new WzBinaryWriter(memStream, this.WzIv);
+                    imgWriter = new WzBinaryWriter(memStream, WzIv);
                     img.SaveImage(imgWriter);
                     img.checksum = 0;
                     foreach (var b in memStream.ToArray())
@@ -408,7 +408,7 @@ namespace MapleLib.WzLib
 			{
 				if (isDirectory)
 				{
-					writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzDirectory", this.name, true));
+					writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzDirectory", name, true));
 				}
 				foreach (var subDir in WzDirectories)
 				{
@@ -443,7 +443,7 @@ namespace MapleLib.WzLib
 
 		internal void SetHash(uint newHash)
 		{
-			this.hash = newHash;
+			hash = newHash;
 			foreach (var dir in subDirs)
 			{
 				dir.SetHash(newHash);

@@ -26,8 +26,8 @@ namespace MapleLib.WzLib.NAudio.Mixer
 			}
 			caps = new MixerInterop.MIXERCAPS();
 			MmException.Try(MixerInterop.mixerGetDevCaps((IntPtr)mixerIndex,ref caps,Marshal.SizeOf(caps)),"mixerGetDevCaps");
-            this.mixerHandle = (IntPtr)mixerIndex;
-            this.mixerHandleType = MixerFlags.Mixer;
+            mixerHandle = (IntPtr)mixerIndex;
+            mixerHandleType = MixerFlags.Mixer;
 			
 			// TODO: optionally support really opening the mixer device
             //MmException.Try(MixerInterop.mixerOpen(out mixerHandle, mixerIndex, IntPtr.Zero, IntPtr.Zero, 0), "mixerOpen");
@@ -78,7 +78,7 @@ namespace MapleLib.WzLib.NAudio.Mixer
         {
             get
             {
-                for (var device = 0; device < Mixer.NumberOfDevices; device++)
+                for (var device = 0; device < NumberOfDevices; device++)
                 {
                     yield return new Mixer(device);
                 }

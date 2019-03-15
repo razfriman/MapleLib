@@ -116,8 +116,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
                 device = DSDEVID_DefaultPlayback;
             }
             this.device = device;
-            this.desiredLatency = latency;
-            this.syncContext = SynchronizationContext.Current;
+            desiredLatency = latency;
+            syncContext = SynchronizationContext.Current;
         }
 
         /// <summary>
@@ -231,14 +231,14 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <param name="waveProvider">The waveprovider to be played</param>
         public void Init(IWaveProvider waveProvider)
         {
-            this.waveStream = waveProvider;
-            this.waveFormat = waveProvider.WaveFormat;
+            waveStream = waveProvider;
+            waveFormat = waveProvider.WaveFormat;
         }
 
         private void InitializeDirectSound()
         {
             // Open DirectSound
-            lock (this.m_LockObject)
+            lock (m_LockObject)
             {
                 directSound = null;
                 DirectSoundCreate(ref device, out directSound, IntPtr.Zero);
@@ -304,7 +304,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
                     nextSamplesWriteIndex = 0;
                     samplesTotalSize = dsbCaps.dwBufferBytes;
                     samples = new byte[samplesTotalSize];
-                    System.Diagnostics.Debug.Assert(samplesTotalSize == (2 * samplesFrameSize), "Invalid SamplesTotalSize vs SamplesFrameSize");
+                    Debug.Assert(samplesTotalSize == (2 * samplesFrameSize), "Invalid SamplesTotalSize vs SamplesFrameSize");
 
                     // -------------------------------------------------------------------------------------
                     // Create double buffering notification.
@@ -526,7 +526,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
             var handler = PlaybackStopped;
             if (handler != null)
             {
-                if (this.syncContext == null)
+                if (syncContext == null)
                 {
                     handler(this, new StoppedEventArgs(e));
                 }
@@ -543,7 +543,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// </summary>
         private void StopPlayback()
         {
-            lock (this.m_LockObject)
+            lock (m_LockObject)
             {
                 if (secondaryBuffer != null)
                 {

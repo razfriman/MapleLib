@@ -26,7 +26,7 @@ namespace MapleLib.WzLib.Util
         {
             WzKey = WzKeyGenerator.GenerateWzKey(WzIv);
             StringCache = new Hashtable();
-            this.LeaveOpen = leaveOpen;
+            LeaveOpen = leaveOpen;
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace MapleLib.WzLib.Util
             else
             {
                 Write((byte)withoutOffset);
-                var sOffset = (int)this.BaseStream.Position;
+                var sOffset = (int)BaseStream.Position;
                 Write(s);
                 if (!StringCache.ContainsKey(s))
                 {
@@ -60,7 +60,7 @@ namespace MapleLib.WzLib.Util
             }
             else
             {
-                var sOffset = (int)(this.BaseStream.Position - Header.FStart);
+                var sOffset = (int)(BaseStream.Position - Header.FStart);
                 Write(type);
                 Write(s);
                 if (!StringCache.ContainsKey(storeName))

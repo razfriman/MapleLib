@@ -49,12 +49,12 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
             {
                 if (provider.Supports(sourceStream.WaveFormat))
                 {
-                    this.sampleProvider = provider;
+                    sampleProvider = provider;
                     break;
                 }
             }
 
-            if (this.sampleProvider == null)
+            if (sampleProvider == null)
             {
                 throw new ArgumentException("Unsupported sourceStream format");
             }
@@ -158,7 +158,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
                     float left, right;
 
                     var outIndex = (offset/4) + bytesWritten/4;
-                    while (this.sampleProvider.GetNextSample(out left, out right) && bytesWritten < numBytes)
+                    while (sampleProvider.GetNextSample(out left, out right) && bytesWritten < numBytes)
                     {
                         // implement better panning laws. 
                         left = (pan <= 0) ? left : (left*(1 - pan)/2.0f);

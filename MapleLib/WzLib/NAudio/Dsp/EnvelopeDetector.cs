@@ -29,7 +29,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
             set 
             {
                 System.Diagnostics.Debug.Assert( value > 0.0 );
-                this.ms = value;
+                ms = value;
                 SetCoef();
             }
         }
@@ -40,7 +40,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
             set
             {
                 System.Diagnostics.Debug.Assert( value > 0.0 );
-                this.sampleRate = value;
+                sampleRate = value;
                 SetCoef();
             }
         }

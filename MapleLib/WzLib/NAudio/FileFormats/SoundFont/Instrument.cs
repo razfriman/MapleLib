@@ -35,7 +35,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public override string ToString() 
 		{
-			return this.name;
+			return name;
 		}
 	}
 }

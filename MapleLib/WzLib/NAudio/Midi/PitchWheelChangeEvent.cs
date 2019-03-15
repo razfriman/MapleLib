@@ -51,8 +51,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         {
             return String.Format("{0} Pitch {1} ({2})",
                 base.ToString(),
-                this.pitch,
-                this.pitch - 0x2000);
+                pitch,
+                pitch - 0x2000);
         }
 
         /// <summary>
