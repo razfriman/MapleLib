@@ -1,30 +1,31 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MapleLib.WzLib.WzStructure.Data
 {
-
     public static class Tables
     {
-        public static Dictionary<string, string> PortalTypeNames = new Dictionary<string, string> { 
-            { "sp", "Start Point"},
-            { "pi", "Invisible" },
-            { "pv", "Visible" },
-            { "pc", "Collision" },
-            { "pg", "Changable" },
-            { "pgi", "Changable Invisible" },
-            { "tp", "Town Portal" },
-            { "ps", "Script" },
-            { "psi", "Script Invisible" },
-            { "pcs", "Script Collision" },
-            { "ph", "Hidden" },
-            { "psh", "Script Hidden" },
-            { "pcj", "Vertical Spring" },
-            { "pci", "Custom Impact Spring" },
-            { "pcig", "Unknown (PCIG)" }};
+        public static Dictionary<string, string> PortalTypeNames = new Dictionary<string, string>
+        {
+            {"sp", "Start Point"},
+            {"pi", "Invisible"},
+            {"pv", "Visible"},
+            {"pc", "Collision"},
+            {"pg", "Changable"},
+            {"pgi", "Changable Invisible"},
+            {"tp", "Town Portal"},
+            {"ps", "Script"},
+            {"psi", "Script Invisible"},
+            {"pcs", "Script Collision"},
+            {"ph", "Hidden"},
+            {"psh", "Script Hidden"},
+            {"pcj", "Vertical Spring"},
+            {"pci", "Custom Impact Spring"},
+            {"pcig", "Unknown (PCIG)"}
+        };
 
-        public static string[] BackgroundTypeNames = {
+        public static string[] BackgroundTypeNames =
+        {
             "Regular",
             "Horizontal Copies",
             "Vertical Copies",
@@ -48,5 +49,4 @@ namespace MapleLib.WzLib.WzStructure.Data
         InProgress = 1,
         Completed = 2
     }
-    
 }

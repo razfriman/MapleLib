@@ -10,13 +10,17 @@ namespace MapleLib.WzLib.WzProperties
     public class WzIntProperty : WzImageProperty
     {
         #region Fields
+
         internal string name;
         internal int val;
+
         internal WzObject parent;
         //internal WzImage imgParent;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
             val = System.Convert.ToInt32(value);
@@ -33,9 +37,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -48,18 +55,24 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         public override void WriteValue(WzBinaryWriter writer)
         {
-            writer.Write((byte)3);
+            writer.Write((byte) 3);
             writer.WriteCompressedInt(Value);
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzCompressedInt", Name, Value.ToString()));
+            writer.WriteLine(XmlUtil.Indentation(level) +
+                             XmlUtil.EmptyNamedValuePair("WzCompressedInt", Name, Value.ToString()));
         }
+
         /// <summary>
         /// Dispose the object
         /// </summary>
@@ -67,19 +80,27 @@ namespace MapleLib.WzLib.WzProperties
         {
             name = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// The value of the property
         /// </summary>
-        public int Value { get => val;
+        public int Value
+        {
+            get => val;
             set => val = value;
         }
+
         /// <summary>
         /// Creates a blank WzCompressedIntProperty
         /// </summary>
-        public WzIntProperty() { }
+        public WzIntProperty()
+        {
+        }
+
         /// <summary>
         /// Creates a WzCompressedIntProperty with the specified name
         /// </summary>
@@ -88,6 +109,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             this.name = name;
         }
+
         /// <summary>
         /// Creates a WzCompressedIntProperty with the specified name and value
         /// </summary>
@@ -98,9 +120,11 @@ namespace MapleLib.WzLib.WzProperties
             this.name = name;
             val = value;
         }
+
         #endregion
 
         #region Cast Values
+
         public override float GetFloat()
         {
             return val;
@@ -118,7 +142,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override short GetShort()
         {
-            return (short)val;
+            return (short) val;
         }
 
         public override long GetLong()
@@ -130,6 +154,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             return val.ToString();
         }
+
         #endregion
     }
 }

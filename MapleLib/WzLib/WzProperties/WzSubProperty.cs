@@ -10,13 +10,17 @@ namespace MapleLib.WzLib.WzProperties
     public class WzSubProperty : WzExtended, IPropertyContainer
     {
         #region Fields
+
         internal List<WzImageProperty> properties = new List<WzImageProperty>();
         internal string name;
+
         internal WzObject parent;
         //internal WzImage imgParent;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
             throw new System.NotImplementedException();
@@ -36,9 +40,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /*		/// <summary>
                 /// The image that this property is contained in
                 /// </summary>
@@ -56,9 +63,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         /// <summary>
         /// Gets a wz property by it's name
         /// </summary>
@@ -68,7 +78,6 @@ namespace MapleLib.WzLib.WzProperties
         {
             get
             {
-
                 foreach (var iwp in properties)
                 {
                     if (iwp.Name.ToLower() == name.ToLower())
@@ -97,11 +106,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] {'/'}, System.StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
-                return ((WzImageProperty)Parent)[path.Substring(name.IndexOf('/') + 1)];
+                return ((WzImageProperty) Parent)[path.Substring(name.IndexOf('/') + 1)];
             }
+
             WzImageProperty ret = this;
             for (var x = 0; x < segments.Length; x++)
             {
@@ -115,24 +125,29 @@ namespace MapleLib.WzLib.WzProperties
                         break;
                     }
                 }
+
                 if (!foundChild)
                 {
                     return null;
                 }
             }
+
             return ret;
         }
+
         public override void WriteValue(WzBinaryWriter writer)
         {
             writer.WriteStringValue("Property", 0x73, 0x1B);
             WritePropertyList(writer, properties);
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzSub", Name, true));
             DumpPropertyList(writer, level, WzProperties);
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzSub"));
         }
+
         /// <summary>
         /// Disposes the object
         /// </summary>
@@ -147,13 +162,18 @@ namespace MapleLib.WzLib.WzProperties
             properties.Clear();
             properties = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// Creates a blank WzSubProperty
         /// </summary>
-        public WzSubProperty() { }
+        public WzSubProperty()
+        {
+        }
+
         /// <summary>
         /// Creates a WzSubProperty with the specified name
         /// </summary>
@@ -162,6 +182,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             this.name = name;
         }
+
         /// <summary>
         /// Adds a property to the list
         /// </summary>
@@ -171,6 +192,7 @@ namespace MapleLib.WzLib.WzProperties
             prop.Parent = this;
             properties.Add(prop);
         }
+
         public void AddProperties(List<WzImageProperty> props)
         {
             foreach (var prop in props)
@@ -178,11 +200,13 @@ namespace MapleLib.WzLib.WzProperties
                 AddProperty(prop);
             }
         }
+
         public void RemoveProperty(WzImageProperty prop)
         {
             prop.Parent = null;
             properties.Remove(prop);
         }
+
         /// <summary>
         /// Clears the list of properties
         /// </summary>
@@ -195,6 +219,7 @@ namespace MapleLib.WzLib.WzProperties
 
             properties.Clear();
         }
+
         #endregion
     }
 }

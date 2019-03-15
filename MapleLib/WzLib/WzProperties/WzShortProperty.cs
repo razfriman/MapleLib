@@ -9,16 +9,20 @@ namespace MapleLib.WzLib.WzProperties
     public class WzShortProperty : WzImageProperty
     {
         #region Fields
+
         internal string name;
         internal short val;
+
         internal WzObject parent;
         //internal WzImage imgParent;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
-            val = (short)value;
+            val = (short) value;
         }
 
         public override WzImageProperty DeepClone()
@@ -32,9 +36,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -47,18 +54,24 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         public override void WriteValue(WzBinaryWriter writer)
         {
-            writer.Write((byte)2);
+            writer.Write((byte) 2);
             writer.Write(Value);
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzUnsignedShort", Name, Value.ToString()));
+            writer.WriteLine(XmlUtil.Indentation(level) +
+                             XmlUtil.EmptyNamedValuePair("WzUnsignedShort", Name, Value.ToString()));
         }
+
         /// <summary>
         /// Disposes the object
         /// </summary>
@@ -66,19 +79,27 @@ namespace MapleLib.WzLib.WzProperties
         {
             name = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// The value of the property
         /// </summary>
-        public short Value { get => val;
+        public short Value
+        {
+            get => val;
             set => val = value;
         }
+
         /// <summary>
         /// Creates a blank WzUnsignedShortProperty
         /// </summary>
-        public WzShortProperty() { }
+        public WzShortProperty()
+        {
+        }
+
         /// <summary>
         /// Creates a WzUnsignedShortProperty with the specified name
         /// </summary>
@@ -87,6 +108,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             this.name = name;
         }
+
         /// <summary>
         /// Creates a WzUnsignedShortProperty with the specified name and value
         /// </summary>
@@ -97,9 +119,11 @@ namespace MapleLib.WzLib.WzProperties
             this.name = name;
             val = value;
         }
+
         #endregion
 
         #region Cast Values
+
         public override float GetFloat()
         {
             return val;
@@ -129,6 +153,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             return val.ToString();
         }
+
         #endregion
     }
 }

@@ -18,25 +18,32 @@ namespace MapleLib.WzLib.WzProperties
         public static ILogger Log = LogManager.Log;
 
         #region Fields
+
         internal string name;
         internal byte[] mp3bytes;
         internal WzObject parent;
         internal int len_ms;
+
         internal byte[] header;
+
         //internal WzImage imgParent;
         internal WzBinaryReader wzReader;
         internal bool headerEncrypted;
         internal long offs;
         internal int soundDataLen;
-        public static readonly byte[] soundHeader = {
+
+        public static readonly byte[] soundHeader =
+        {
             0x02,
             0x83, 0xEB, 0x36, 0xE4, 0x4F, 0x52, 0xCE, 0x11, 0x9F, 0x53, 0x00, 0x20, 0xAF, 0x0B, 0xA7, 0x70,
             0x8B, 0xEB, 0x36, 0xE4, 0x4F, 0x52, 0xCE, 0x11, 0x9F, 0x53, 0x00, 0x20, 0xAF, 0x0B, 0xA7, 0x70,
             0x00,
             0x01,
-            0x81, 0x9F, 0x58, 0x05, 0x56, 0xC3, 0xCE, 0x11, 0xBF, 0x01, 0x00, 0xAA, 0x00, 0x55, 0x59, 0x5A };
+            0x81, 0x9F, 0x58, 0x05, 0x56, 0xC3, 0xCE, 0x11, 0xBF, 0x01, 0x00, 0xAA, 0x00, 0x55, 0x59, 0x5A
+        };
 
         internal WaveFormat wavFormat;
+
         #endregion
 
         #region Inherited Members
@@ -53,12 +60,16 @@ namespace MapleLib.WzLib.WzProperties
         {
             return;
         }
+
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -66,9 +77,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
@@ -78,16 +92,18 @@ namespace MapleLib.WzLib.WzProperties
         {
             var data = GetBytes(false);
             writer.WriteStringValue("Sound_DX8", 0x73, 0x1B);
-            writer.Write((byte)0);
+            writer.Write((byte) 0);
             writer.WriteCompressedInt(data.Length);
             writer.WriteCompressedInt(len_ms);
             writer.Write(header);
             writer.Write(data);
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedTag("WzSound", Name));
         }
+
         /// <summary>
         /// Disposes the object
         /// </summary>
@@ -96,21 +112,29 @@ namespace MapleLib.WzLib.WzProperties
             name = null;
             mp3bytes = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// The data of the mp3 header
         /// </summary>
-        public byte[] Header { get => header;
+        public byte[] Header
+        {
+            get => header;
             set => header = value;
         }
+
         /// <summary>
         /// Length of the mp3 file in milliseconds
         /// </summary>
-        public int Length { get => len_ms;
+        public int Length
+        {
+            get => len_ms;
             set => len_ms = value;
         }
+
         /// <summary>
         /// Frequency of the mp3 file in Hz
         /// </summary>
@@ -179,6 +203,7 @@ namespace MapleLib.WzLib.WzProperties
             mp3bytes = data;
             ParseHeader();
         }
+
         /// <summary>
         /// Creates a WzSoundProperty with the specified name from a file
         /// </summary>
@@ -189,7 +214,7 @@ namespace MapleLib.WzLib.WzProperties
             this.name = name;
             var reader = new Mp3FileReader(file);
             wavFormat = reader.Mp3WaveFormat;
-            len_ms = (int)(reader.Length * 1000d / reader.WaveFormat.AverageBytesPerSecond);
+            len_ms = (int) (reader.Length * 1000d / reader.WaveFormat.AverageBytesPerSecond);
             RebuildHeader();
             reader.Dispose();
             mp3bytes = File.ReadAllBytes(file);
@@ -204,6 +229,7 @@ namespace MapleLib.WzLib.WzProperties
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -231,9 +257,10 @@ namespace MapleLib.WzLib.WzProperties
                         wavHeader[i] ^= wzReader.WzKey[i];
                     }
                 }
-                bw.Write((byte)wavHeader.Length);
+
+                bw.Write((byte) wavHeader.Length);
                 bw.Write(wavHeader, 0, wavHeader.Length);
-                header = ((MemoryStream)bw.BaseStream).ToArray();
+                header = ((MemoryStream) bw.BaseStream).ToArray();
             }
         }
 
@@ -270,7 +297,7 @@ namespace MapleLib.WzLib.WzProperties
             var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                var obj = (T)FormatterServices.GetUninitializedObject(typeof(T));
+                var obj = (T) FormatterServices.GetUninitializedObject(typeof(T));
                 Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject(), obj);
                 return obj;
             }
@@ -299,6 +326,7 @@ namespace MapleLib.WzLib.WzProperties
                 {
                     wavHeader[i] ^= wzReader.WzKey[i];
                 }
+
                 wavFmt = BytesToStruct<WaveFormat>(wavHeader);
 
                 if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)
@@ -306,6 +334,7 @@ namespace MapleLib.WzLib.WzProperties
                     Log.LogCritical($"Failed to parse sound header");
                     return;
                 }
+
                 headerEncrypted = true;
             }
 
@@ -323,15 +352,18 @@ namespace MapleLib.WzLib.WzProperties
                 Log.LogError($"Unknown wave encoding: {wavFmt.Encoding}");
             }
         }
+
         #endregion
 
         #region Parsing Methods
+
         public byte[] GetBytes(bool saveInMemory)
         {
             if (mp3bytes != null)
             {
                 return mp3bytes;
             }
+
             if (wzReader == null)
             {
                 return null;
@@ -356,13 +388,16 @@ namespace MapleLib.WzLib.WzProperties
         {
             File.WriteAllBytes(file, GetBytes(false));
         }
+
         #endregion
 
         #region Cast Values
+
         public override byte[] GetBytes()
         {
             return GetBytes(false);
         }
+
         #endregion
     }
 }

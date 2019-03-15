@@ -1,28 +1,34 @@
 ﻿namespace MapleLib.WzLib
 {
-	public enum WzPropertyType
-	{
-		#region Regular
-		Null,
-		Short,
-		Int,
+    public enum WzPropertyType
+    {
+        #region Regular
+
+        Null,
+        Short,
+        Int,
         Long,
-		Float,
-		Double,
-		String,
-		#endregion
+        Float,
+        Double,
+        String,
 
-		#region Extended
-		SubProperty,
-		Canvas,
-		Vector,
-		Convex,
-		Sound,
-		UOL,
-		#endregion
+        #endregion
 
-		#region Png
-		PNG
-		#endregion
-	}
+        #region Extended
+
+        SubProperty,
+        Canvas,
+        Vector,
+        Convex,
+        Sound,
+        UOL,
+
+        #endregion
+
+        #region Png
+
+        PNG
+
+        #endregion
+    }
 }

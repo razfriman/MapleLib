@@ -12,14 +12,18 @@ namespace MapleLib.WzLib.WzProperties
     public class WzCanvasProperty : WzExtended, IPropertyContainer
     {
         #region Fields
+
         internal List<WzImageProperty> properties = new List<WzImageProperty>();
         internal WzPngProperty imageProp;
         internal string name;
+
         internal WzObject parent;
         //internal WzImage imgParent;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
             imageProp.SetValue(value);
@@ -33,7 +37,7 @@ namespace MapleLib.WzLib.WzProperties
                 clone.AddProperty(prop.DeepClone());
             }
 
-            clone.imageProp = (WzPngProperty)imageProp.DeepClone();
+            clone.imageProp = (WzPngProperty) imageProp.DeepClone();
             return clone;
         }
 
@@ -42,9 +46,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
@@ -58,9 +65,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         /// <summary>
         /// Gets a wz property by it's name
         /// </summary>
@@ -91,9 +101,10 @@ namespace MapleLib.WzLib.WzProperties
                 {
                     if (name == "PNG")
                     {
-                        imageProp = (WzPngProperty)value;
+                        imageProp = (WzPngProperty) value;
                         return;
                     }
+
                     value.Name = name;
                     AddProperty(value);
                 }
@@ -112,18 +123,20 @@ namespace MapleLib.WzLib.WzProperties
 
             return null;
         }
+
         /// <summary>
-		/// Gets a wz property by a path name
-		/// </summary>
-		/// <param name="path">path to property</param>
-		/// <returns>the wz property with the specified name</returns>
-		public override WzImageProperty GetFromPath(string path)
+        /// Gets a wz property by a path name
+        /// </summary>
+        /// <param name="path">path to property</param>
+        /// <returns>the wz property with the specified name</returns>
+        public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
-                return ((WzImageProperty)Parent)[path.Substring(name.IndexOf('/') + 1)];
+                return ((WzImageProperty) Parent)[path.Substring(name.IndexOf('/') + 1)];
             }
+
             WzImageProperty ret = this;
             for (var x = 0; x < segments.Length; x++)
             {
@@ -132,6 +145,7 @@ namespace MapleLib.WzLib.WzProperties
                 {
                     return imageProp;
                 }
+
                 foreach (var iwp in ret.WzProperties)
                 {
                     if (iwp.Name == segments[x])
@@ -141,44 +155,50 @@ namespace MapleLib.WzLib.WzProperties
                         break;
                     }
                 }
+
                 if (!foundChild)
                 {
                     return null;
                 }
             }
+
             return ret;
         }
+
         public override void WriteValue(WzBinaryWriter writer)
         {
             writer.WriteStringValue("Canvas", 0x73, 0x1B);
-            writer.Write((byte)0);
+            writer.Write((byte) 0);
             if (properties.Count > 0)
             {
-                writer.Write((byte)1);
+                writer.Write((byte) 1);
                 WritePropertyList(writer, properties);
             }
             else
             {
-                writer.Write((byte)0);
+                writer.Write((byte) 0);
             }
+
             writer.WriteCompressedInt(PngProperty.Width);
             writer.WriteCompressedInt(PngProperty.Height);
             writer.WriteCompressedInt(PngProperty.format);
-            writer.Write((byte)PngProperty.format2);
+            writer.Write((byte) PngProperty.format2);
             writer.Write(0);
             var bytes = PngProperty.GetCompressedBytes(false);
             writer.Write(bytes.Length + 1);
-            writer.Write((byte)0);
+            writer.Write((byte) 0);
             writer.Write(bytes);
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzCanvas", Name, false, false) +
-            XmlUtil.Attrib("width", PngProperty.Width.ToString()) +
-            XmlUtil.Attrib("height", PngProperty.Height.ToString(), true, false));
+                             XmlUtil.Attrib("width", PngProperty.Width.ToString()) +
+                             XmlUtil.Attrib("height", PngProperty.Height.ToString(), true, false));
             DumpPropertyList(writer, level, WzProperties);
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzCanvas"));
         }
+
         /// <summary>
         /// Dispose the object
         /// </summary>
@@ -191,22 +211,31 @@ namespace MapleLib.WzLib.WzProperties
             {
                 prop.Dispose();
             }
+
             properties.Clear();
             properties = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// The png image for this canvas property
         /// </summary>
-        public WzPngProperty PngProperty { get => imageProp;
+        public WzPngProperty PngProperty
+        {
+            get => imageProp;
             set => imageProp = value;
         }
+
         /// <summary>
         /// Creates a blank WzCanvasProperty
         /// </summary>
-        public WzCanvasProperty() { }
+        public WzCanvasProperty()
+        {
+        }
+
         /// <summary>
         /// Creates a WzCanvasProperty with the specified name
         /// </summary>
@@ -215,6 +244,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             this.name = name;
         }
+
         /// <summary>
         /// Adds a property to the property list of this property
         /// </summary>
@@ -224,6 +254,7 @@ namespace MapleLib.WzLib.WzProperties
             prop.Parent = this;
             properties.Add(prop);
         }
+
         public void AddProperties(List<WzImageProperty> props)
         {
             foreach (var prop in props)
@@ -231,6 +262,7 @@ namespace MapleLib.WzLib.WzProperties
                 AddProperty(prop);
             }
         }
+
         /// <summary>
         /// Remove a property
         /// </summary>
@@ -252,6 +284,7 @@ namespace MapleLib.WzLib.WzProperties
 
             properties.Clear();
         }
+
         #endregion
 
         #region Cast Values
@@ -260,6 +293,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             return imageProp.GetPNG(false);
         }
+
         #endregion
     }
 }

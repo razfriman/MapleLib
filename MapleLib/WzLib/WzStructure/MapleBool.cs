@@ -10,8 +10,8 @@ namespace MapleLib.WzLib.WzStructure
         public const byte False = 1;
         public const byte True = 2;
 
-        [DataMember]
-        private byte val { get; set; }
+        [DataMember] private byte val { get; set; }
+
         public static implicit operator MapleBool(byte value)
         {
             return new MapleBool
@@ -24,7 +24,7 @@ namespace MapleLib.WzLib.WzStructure
         {
             return new MapleBool
             {
-                val = value == null ? NotExist : (bool)value ? True : False
+                val = value == null ? NotExist : (bool) value ? True : False
             };
         }
 
@@ -40,7 +40,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public override bool Equals(object obj)
         {
-            return obj is MapleBool && ((MapleBool)obj).val.Equals(val);
+            return obj is MapleBool && ((MapleBool) obj).val.Equals(val);
         }
 
         public override int GetHashCode()

@@ -27,7 +27,10 @@ namespace MapleLib.WzLib.WzStructure
             this.strStreetName = strStreetName;
             this.strCategoryName = strCategoryName;
             var file = image.WzFileParent;
-            var loggerSuffix = ", map " + image.Name + ((file != null) ? (" of version " + Enum.GetName(typeof(WzMapleVersion), file.MapleVersion) + ", v" + file.Version.ToString()) : "");
+            var loggerSuffix = ", map " + image.Name + ((file != null)
+                                   ? (" of version " + Enum.GetName(typeof(WzMapleVersion), file.MapleVersion) + ", v" +
+                                      file.Version.ToString())
+                                   : "");
             foreach (var prop in image["info"].WzProperties)
             {
                 switch (prop.Name)
@@ -73,12 +76,13 @@ namespace MapleLib.WzLib.WzStructure
                         break;
                     case "fieldLimit":
                         var fl = InfoTool.GetInt(prop);
-                        if (fl >= (int)Math.Pow(2, 23))
+                        if (fl >= (int) Math.Pow(2, 23))
                         {
                             Log.LogError($"Invalid fieldlimit: {fl}");
-                            fl = fl & ((int)Math.Pow(2, 23) - 1);
+                            fl = fl & ((int) Math.Pow(2, 23) - 1);
                         }
-                        fieldLimit = (FieldLimit)fl;
+
+                        fieldLimit = (FieldLimit) fl;
                         break;
                     case "VRTop":
                     case "VRBottom":
@@ -116,7 +120,8 @@ namespace MapleLib.WzLib.WzStructure
                             Log.LogError($"Invalid fieldType: {ft}");
                             ft = 0;
                         }
-                        fieldType = (FieldType)ft;
+
+                        fieldType = (FieldType) ft;
                         break;
                     case "miniMapOnOff":
                         miniMapOnOff = InfoTool.GetBool(prop);
@@ -150,7 +155,7 @@ namespace MapleLib.WzLib.WzStructure
                         }
                         else
                         {
-                            timeMob = new TimeMob(startHour, endHour, (int)propId, message);
+                            timeMob = new TimeMob(startHour, endHour, (int) propId, message);
                         }
 
                         break;
@@ -183,7 +188,8 @@ namespace MapleLib.WzLib.WzStructure
                         }
                         else
                         {
-                            autoLieDetector = new AutoLieDetector((int)startHour, (int)endHour, (int)interval, (int)propInt);
+                            autoLieDetector = new AutoLieDetector((int) startHour, (int) endHour, (int) interval,
+                                (int) propInt);
                         }
 
                         break;
@@ -272,6 +278,7 @@ namespace MapleLib.WzLib.WzStructure
                 var bottom = InfoTool.GetInt(info["VRBottom"]);
                 result = new Rectangle(left, top, right - left, bottom - top);
             }
+
             return result;
         }
 
@@ -320,6 +327,7 @@ namespace MapleLib.WzLib.WzStructure
                 };
                 info["timeMob"] = prop;
             }
+
             info["help"] = InfoTool.SetOptionalString(help);
             info["snow"] = InfoTool.SetOptionalBool(snow);
             info["rain"] = InfoTool.SetOptionalBool(rain);
@@ -337,6 +345,7 @@ namespace MapleLib.WzLib.WzStructure
                 };
                 info["autoLieDetector"] = prop;
             }
+
             info["expeditionOnly"] = InfoTool.SetOptionalBool(expeditionOnly);
             info["fs"] = InfoTool.SetOptionalFloat(fs);
             info["protectItem"] = InfoTool.SetOptionalInt(protectItem);
@@ -351,8 +360,10 @@ namespace MapleLib.WzLib.WzStructure
                 {
                     prop[i.ToString()] = InfoTool.SetInt(allowedItem[i]);
                 }
+
                 info["allowedItem"] = prop;
             }
+
             info["recovery"] = InfoTool.SetOptionalFloat(recovery);
             info["blockPBossChange"] = InfoTool.SetOptionalBool(blockPBossChange);
             info["everlast"] = InfoTool.SetOptionalBool(everlast);
@@ -368,6 +379,7 @@ namespace MapleLib.WzLib.WzStructure
             {
                 info.AddProperty(prop);
             }
+
             if (VR.HasValue)
             {
                 info["VRLeft"] = InfoTool.SetInt(VR.Value.Left);
@@ -375,6 +387,7 @@ namespace MapleLib.WzLib.WzStructure
                 info["VRTop"] = InfoTool.SetInt(VR.Value.Top);
                 info["VRBottom"] = InfoTool.SetInt(VR.Value.Bottom);
             }
+
             dest["info"] = info;
         }
 

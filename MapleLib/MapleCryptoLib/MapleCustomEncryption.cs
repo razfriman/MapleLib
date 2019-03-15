@@ -5,7 +5,6 @@
     /// </summary>
     public static class MapleCustomEncryption
     {
-
         /// <summary>
         /// Encrypt data using MapleStory's Custom Encryption
         /// </summary>
@@ -23,7 +22,7 @@
                 {
                     c = data[size - j];
                     c = Rol(c, 3);
-                    c = (byte)(c + j);
+                    c = (byte) (c + j);
                     c ^= a;
                     a = c;
                     c = Ror(a, j);
@@ -31,12 +30,13 @@
                     c += 0x48;
                     data[size - j] = c;
                 }
+
                 a = 0;
                 for (j = data.Length; j > 0; j--)
                 {
                     c = data[j - 1];
                     c = Rol(c, 4);
-                    c = (byte)(c + j);
+                    c = (byte) (c + j);
                     c ^= a;
                     a = c;
                     c ^= 0x13;
@@ -67,11 +67,12 @@
                     c ^= 0x13;
                     a = c;
                     c ^= b;
-                    c = (byte)(c - j); // Guess this is supposed to be right?
+                    c = (byte) (c - j); // Guess this is supposed to be right?
                     c = Ror(c, 4);
                     b = a;
                     data[j - 1] = c;
                 }
+
                 a = 0;
                 b = 0;
                 for (j = size; j > 0; j--)
@@ -82,7 +83,7 @@
                     c = Rol(c, j);
                     a = c;
                     c ^= b;
-                    c = (byte)(c - j); // Guess this is supposed to be right?
+                    c = (byte) (c - j); // Guess this is supposed to be right?
                     c = Ror(c, 3);
                     b = a;
                     data[size - j] = c;
@@ -103,8 +104,9 @@
             {
                 highbit = ((val & 0x80) != 0 ? 1 : 0);
                 val <<= 1;
-                val |= (byte)highbit;
+                val |= (byte) highbit;
             }
+
             return val;
         }
 
@@ -121,8 +123,9 @@
             {
                 lowbit = ((val & 1) != 0 ? 1 : 0);
                 val >>= 1;
-                val |= (byte)(lowbit << 7);
+                val |= (byte) (lowbit << 7);
             }
+
             return val;
         }
     }

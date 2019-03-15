@@ -10,16 +10,16 @@ namespace MapleLib.Helper
         {
             get
             {
-				if (_log == null)
-				{
-					var factory = new LoggerFactory()
-						.AddConsole()
-						.AddDebug();
+                if (_log == null)
+                {
+                    var factory = new LoggerFactory()
+                        .AddConsole()
+                        .AddDebug();
 
-					_log = factory.CreateLogger("MapleLib");
-				}
+                    _log = factory.CreateLogger("MapleLib");
+                }
 
-				return _log;
+                return _log;
             }
         }
     }

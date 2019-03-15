@@ -10,16 +10,20 @@ namespace MapleLib.WzLib.WzProperties
     public class WzFloatProperty : WzImageProperty
     {
         #region Fields
+
         internal string name;
         internal float val;
+
         internal WzObject parent;
         //internal WzImage imgParent;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
-            val = (float)value;
+            val = (float) value;
         }
 
         public override WzImageProperty DeepClone()
@@ -33,9 +37,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -48,26 +55,32 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         public override void WriteValue(WzBinaryWriter writer)
         {
-            writer.Write((byte)4);
+            writer.Write((byte) 4);
             if (Value == 0f)
             {
-                writer.Write((byte)0);
+                writer.Write((byte) 0);
             }
             else
             {
-                writer.Write((byte)0x80);
+                writer.Write((byte) 0x80);
                 writer.Write(Value);
             }
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzByteFloat", Name, Value.ToString()));
+            writer.WriteLine(XmlUtil.Indentation(level) +
+                             XmlUtil.EmptyNamedValuePair("WzByteFloat", Name, Value.ToString()));
         }
+
         /// <summary>
         /// Dispose the object
         /// </summary>
@@ -75,9 +88,11 @@ namespace MapleLib.WzLib.WzProperties
         {
             name = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// The value of the property
         /// </summary>
@@ -86,7 +101,10 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// Creates a blank WzByteFloatProperty
         /// </summary>
-        public WzFloatProperty() { }
+        public WzFloatProperty()
+        {
+        }
+
         /// <summary>
         /// Creates a WzByteFloatProperty with the specified name
         /// </summary>
@@ -95,6 +113,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             this.name = name;
         }
+
         /// <summary>
         /// Creates a WzByteFloatProperty with the specified name and value
         /// </summary>
@@ -105,9 +124,11 @@ namespace MapleLib.WzLib.WzProperties
             this.name = name;
             val = value;
         }
+
         #endregion
 
         #region Cast Values
+
         public override float GetFloat()
         {
             return val;
@@ -120,23 +141,24 @@ namespace MapleLib.WzLib.WzProperties
 
         public override int GetInt()
         {
-            return (int)val;
+            return (int) val;
         }
 
         public override short GetShort()
         {
-            return (short)val;
+            return (short) val;
         }
 
         public override long GetLong()
         {
-            return (long)val;
+            return (long) val;
         }
 
         public override string ToString()
         {
             return val.ToString();
         }
+
         #endregion
     }
 }

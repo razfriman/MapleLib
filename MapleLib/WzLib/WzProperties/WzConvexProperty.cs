@@ -11,13 +11,17 @@ namespace MapleLib.WzLib.WzProperties
     public class WzConvexProperty : WzExtended, IPropertyContainer
     {
         #region Fields
+
         internal List<WzImageProperty> properties = new List<WzImageProperty>();
         internal string name;
+
         internal WzObject parent;
         //internal WzImage imgParent;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
             throw new NotImplementedException();
@@ -37,9 +41,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -57,9 +64,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of this property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         /// <summary>
         /// Gets a wz property by it's name
         /// </summary>
@@ -102,11 +112,12 @@ namespace MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
-                return ((WzImageProperty)Parent)[path.Substring(name.IndexOf('/') + 1)];
+                return ((WzImageProperty) Parent)[path.Substring(name.IndexOf('/') + 1)];
             }
+
             WzImageProperty ret = this;
             for (var x = 0; x < segments.Length; x++)
             {
@@ -120,13 +131,16 @@ namespace MapleLib.WzLib.WzProperties
                         break;
                     }
                 }
+
                 if (!foundChild)
                 {
                     return null;
                 }
             }
+
             return ret;
         }
+
         public override void WriteValue(WzBinaryWriter writer)
         {
             var extendedProps = new List<WzExtended>(properties.Count);
@@ -134,7 +148,7 @@ namespace MapleLib.WzLib.WzProperties
             {
                 if (prop is WzExtended)
                 {
-                    extendedProps.Add((WzExtended)prop);
+                    extendedProps.Add((WzExtended) prop);
                 }
             }
 
@@ -145,12 +159,14 @@ namespace MapleLib.WzLib.WzProperties
                 properties[i].WriteValue(writer);
             }
         }
+
         public override void ExportXml(StreamWriter writer, int level)
         {
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzConvex", Name, true));
             DumpPropertyList(writer, level, WzProperties);
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzConvex"));
         }
+
         public override void Dispose()
         {
             name = null;
@@ -162,13 +178,18 @@ namespace MapleLib.WzLib.WzProperties
             properties.Clear();
             properties = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// Creates a blank WzConvexProperty
         /// </summary>
-        public WzConvexProperty() { }
+        public WzConvexProperty()
+        {
+        }
+
         /// <summary>
         /// Creates a WzConvexProperty with the specified name
         /// </summary>
@@ -177,6 +198,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             this.name = name;
         }
+
         /// <summary>
         /// Adds a WzExtendedProperty to the list of properties
         /// </summary>
@@ -189,7 +211,7 @@ namespace MapleLib.WzLib.WzProperties
             }
 
             prop.Parent = this;
-            properties.Add((WzExtended)prop);
+            properties.Add((WzExtended) prop);
         }
 
         public void AddProperties(List<WzImageProperty> properties)

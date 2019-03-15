@@ -3,25 +3,28 @@ using System.DrawingCore;
 
 namespace MapleLib.WzLib
 {
-	/// <summary>
-	/// An abstract class for wz objects
-	/// </summary>
-	public abstract class WzObject : IDisposable
-	{
-	    public abstract void Dispose();
+    /// <summary>
+    /// An abstract class for wz objects
+    /// </summary>
+    public abstract class WzObject : IDisposable
+    {
+        public abstract void Dispose();
 
-		/// <summary>
-		/// The name of the object
-		/// </summary>
-		public abstract string Name { get; set; }
-		/// <summary>
-		/// The WzObjectType of the object
-		/// </summary>
-		public abstract WzObjectType ObjectType { get; }
-		/// <summary>
-		/// Returns the parent object
-		/// </summary>
-		public abstract WzObject Parent { get; internal set; }
+        /// <summary>
+        /// The name of the object
+        /// </summary>
+        public abstract string Name { get; set; }
+
+        /// <summary>
+        /// The WzObjectType of the object
+        /// </summary>
+        public abstract WzObjectType ObjectType { get; }
+
+        /// <summary>
+        /// Returns the parent object
+        /// </summary>
+        public abstract WzObject Parent { get; internal set; }
+
         /// <summary>
         /// Returns the parent WZ File
         /// </summary>
@@ -33,20 +36,24 @@ namespace MapleLib.WzLib
             {
                 if (this is WzFile)
                 {
-                    return ((WzFile)this)[name];
+                    return ((WzFile) this)[name];
                 }
+
                 if (this is WzDirectory)
                 {
-                    return ((WzDirectory)this)[name];
+                    return ((WzDirectory) this)[name];
                 }
+
                 if (this is WzImage)
                 {
-                    return ((WzImage)this)[name];
+                    return ((WzImage) this)[name];
                 }
+
                 if (this is WzImageProperty)
                 {
-                    return ((WzImageProperty)this)[name];
+                    return ((WzImageProperty) this)[name];
                 }
+
                 throw new NotImplementedException();
             }
         }
@@ -57,7 +64,7 @@ namespace MapleLib.WzLib
             {
                 if (this is WzFile)
                 {
-                    return ((WzFile)this).WzDirectory.Name;
+                    return ((WzFile) this).WzDirectory.Name;
                 }
 
                 var result = Name;
@@ -67,6 +74,7 @@ namespace MapleLib.WzLib
                     currObj = currObj.Parent;
                     result = currObj.Name + @"\" + result;
                 }
+
                 return result;
             }
         }
@@ -76,23 +84,25 @@ namespace MapleLib.WzLib
         /// </summary>
         public virtual object HCTag { get; set; }
 
-	    /// <summary>
+        /// <summary>
         /// Used in HaCreator's MapSimulator to save already parsed textures
         /// </summary>
         public virtual object MSTag { get; set; }
 
-	    /// <summary>
+        /// <summary>
         /// Used in HaRepacker to save WzNodes
         /// </summary>
         public virtual object HRTag { get; set; }
 
-	    public virtual object WzValue => null;
+        public virtual object WzValue => null;
 
-	    public abstract void Remove();
+        public abstract void Remove();
 
         //Credits to BluePoop for the idea of using cast overriding
         //2015 - That is the worst idea ever, removed and replaced with Get* methods
+
         #region Cast Values
+
         public virtual int GetInt()
         {
             throw new NotImplementedException();
@@ -137,7 +147,7 @@ namespace MapleLib.WzLib
         {
             throw new NotImplementedException();
         }
-        #endregion
 
-	}
+        #endregion
+    }
 }

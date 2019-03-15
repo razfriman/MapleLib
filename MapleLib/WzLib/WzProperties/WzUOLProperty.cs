@@ -17,16 +17,21 @@ namespace MapleLib.WzLib.WzProperties
         public static ILogger Log = LogManager.Log;
 
         #region Fields
+
         internal string name, val;
+
         internal WzObject parent;
+
         //internal WzImage imgParent;
         internal WzObject linkVal;
+
         #endregion
 
         #region Inherited Members
+
         public override void SetValue(object value)
         {
-            val = (string)value;
+            val = (string) value;
         }
 
         public override WzImageProperty DeepClone() => new WzUOLProperty(name, val) {linkVal = null};
@@ -42,10 +47,13 @@ namespace MapleLib.WzLib.WzProperties
 #endif
             }
         }
+
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get => parent;
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
 
@@ -57,7 +65,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
 
@@ -65,11 +75,15 @@ namespace MapleLib.WzLib.WzProperties
         public override List<WzImageProperty> WzProperties => (LinkValue as WzImageProperty)?.WzProperties;
 
 
-        public override WzImageProperty this[string name] => LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue)[name] : (LinkValue as WzImage)?[name];
+        public override WzImageProperty this[string name] => LinkValue is WzImageProperty
+            ? ((WzImageProperty) LinkValue)[name]
+            : (LinkValue as WzImage)?[name];
 
         public override WzImageProperty GetFromPath(string path)
         {
-            return LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue).GetFromPath(path) : (LinkValue as WzImage)?.GetFromPath(path);
+            return LinkValue is WzImageProperty
+                ? ((WzImageProperty) LinkValue).GetFromPath(path)
+                : (LinkValue as WzImage)?.GetFromPath(path);
         }
 #endif
 
@@ -81,7 +95,7 @@ namespace MapleLib.WzLib.WzProperties
         public override void WriteValue(WzBinaryWriter writer)
         {
             writer.WriteStringValue("UOL", 0x73, 0x1B);
-            writer.Write((byte)0);
+            writer.Write((byte) 0);
             writer.WriteStringValue(Value, 0, 1);
         }
 
@@ -98,13 +112,17 @@ namespace MapleLib.WzLib.WzProperties
             name = null;
             val = null;
         }
+
         #endregion
 
         #region Custom Members
+
         /// <summary>
         /// The value of the property
         /// </summary>
-        public string Value { get => val;
+        public string Value
+        {
+            get => val;
             set => val = value;
         }
 
@@ -128,15 +146,15 @@ namespace MapleLib.WzLib.WzProperties
                         {
                             if (linkVal is WzImageProperty)
                             {
-                                linkVal = ((WzImageProperty)linkVal)[path];
+                                linkVal = ((WzImageProperty) linkVal)[path];
                             }
                             else if (linkVal is WzImage)
                             {
-                                linkVal = ((WzImage)linkVal)[path];
+                                linkVal = ((WzImage) linkVal)[path];
                             }
                             else if (linkVal is WzDirectory)
                             {
-                                linkVal = ((WzDirectory)linkVal)[path];
+                                linkVal = ((WzDirectory) linkVal)[path];
                             }
                             else
                             {
@@ -146,6 +164,7 @@ namespace MapleLib.WzLib.WzProperties
                         }
                     }
                 }
+
                 return linkVal;
             }
         }
@@ -154,7 +173,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// Creates a blank WzUOLProperty
         /// </summary>
-        public WzUOLProperty() { }
+        public WzUOLProperty()
+        {
+        }
 
         /// <summary>
         /// Creates a WzUOLProperty with the specified name
@@ -175,9 +196,11 @@ namespace MapleLib.WzLib.WzProperties
             this.name = name;
             val = value;
         }
+
         #endregion
 
         #region Cast Values
+
 #if UOLRES
         public override int GetInt()
         {
@@ -233,6 +256,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             return val;
         }
+
         #endregion
     }
 }

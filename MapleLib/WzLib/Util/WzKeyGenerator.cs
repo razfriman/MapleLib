@@ -26,6 +26,7 @@ namespace MapleLib.WzLib.Util
                 zlzStream.Read(aes, i * 4, 4);
                 zlzStream.Seek(12, SeekOrigin.Current);
             }
+
             return aes;
         }
 
@@ -33,6 +34,7 @@ namespace MapleLib.WzLib.Util
         {
             return new WzMutableKey(WzIv, CryptoConstants.GetTrimmedUserKey());
         }
+
         #endregion
     }
 }

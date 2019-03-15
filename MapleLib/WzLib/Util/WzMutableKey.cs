@@ -26,6 +26,7 @@ namespace MapleLib.WzLib.Util
                 {
                     EnsureKeySize(index + 1);
                 }
+
                 return keys[index];
             }
         }
@@ -37,7 +38,7 @@ namespace MapleLib.WzLib.Util
                 return;
             }
 
-            size = (int)Math.Ceiling(1.0 * size / BatchSize) * BatchSize;
+            size = (int) Math.Ceiling(1.0 * size / BatchSize) * BatchSize;
             var newKeys = new byte[size];
 
             if (BitConverter.ToInt32(iv, 0) == 0)
@@ -71,6 +72,7 @@ namespace MapleLib.WzLib.Util
                     {
                         block[j] = iv[j % 4];
                     }
+
                     s.Write(block, 0, block.Length);
                 }
                 else

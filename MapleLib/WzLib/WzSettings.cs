@@ -58,25 +58,26 @@ namespace MapleLib.WzLib
                                 throw new InvalidDataException("XNA color detected, but XNA type activator is null");
                             }
 
-                            argb = BitConverter.GetBytes((uint)((WzDoubleProperty)settingProp).Value);
-                            fieldInfo.SetValue(null, Activator.CreateInstance(xnaColorType, argb[0], argb[1], argb[2], argb[3]));
+                            argb = BitConverter.GetBytes((uint) ((WzDoubleProperty) settingProp).Value);
+                            fieldInfo.SetValue(null,
+                                Activator.CreateInstance(xnaColorType, argb[0], argb[1], argb[2], argb[3]));
                             break;
                         case "System.Drawing.Color":
-                            argb = BitConverter.GetBytes((uint)((WzDoubleProperty)settingProp).Value);
+                            argb = BitConverter.GetBytes((uint) ((WzDoubleProperty) settingProp).Value);
                             fieldInfo.SetValue(null, System.Drawing.Color.FromArgb(argb[3], argb[2], argb[1], argb[0]));
                             break;
                         case "System.Int32":
                             fieldInfo.SetValue(null, InfoTool.GetInt(settingProp));
                             break;
                         case "System.Double":
-                            fieldInfo.SetValue(null, ((WzDoubleProperty)settingProp).Value);
+                            fieldInfo.SetValue(null, ((WzDoubleProperty) settingProp).Value);
                             break;
                         case "System.Boolean":
                             fieldInfo.SetValue(null, InfoTool.GetBool(settingProp));
                             //bool a = (bool)fieldInfo.GetValue(null);
                             break;
                         case "System.Single":
-                            fieldInfo.SetValue(null, ((WzFloatProperty)settingProp).Value);
+                            fieldInfo.SetValue(null, ((WzFloatProperty) settingProp).Value);
                             break;
                         /*case "WzMapleVersion":
                             fieldInfo.SetValue(null, (WzMapleVersion)InfoTool.GetInt(settingProp));
@@ -85,13 +86,15 @@ namespace MapleLib.WzLib
                             fieldInfo.SetValue(null, (ItemTypes)InfoTool.GetInt(settingProp));
                             break;*/
                         case "System.Drawing.Size":
-                            fieldInfo.SetValue(null, new System.Drawing.Size(((WzVectorProperty)settingProp).X.Value, ((WzVectorProperty)settingProp).Y.Value));
+                            fieldInfo.SetValue(null,
+                                new System.Drawing.Size(((WzVectorProperty) settingProp).X.Value,
+                                    ((WzVectorProperty) settingProp).Y.Value));
                             break;
                         case "System.String":
                             fieldInfo.SetValue(null, InfoTool.GetString(settingProp));
                             break;
                         case "System.Drawing.Bitmap":
-                            fieldInfo.SetValue(null, ((WzCanvasProperty)settingProp).PngProperty.GetPNG(false));
+                            fieldInfo.SetValue(null, ((WzCanvasProperty) settingProp).PngProperty.GetPNG(false));
                             break;
                         default:
                             throw new Exception("unrecognized setting type");
@@ -110,7 +113,7 @@ namespace MapleLib.WzLib
                     break;
                 case WzPropertyType.Canvas:
                     addedProp = new WzCanvasProperty(propName);
-                    ((WzCanvasProperty)addedProp).PngProperty = new WzPngProperty();
+                    ((WzCanvasProperty) addedProp).PngProperty = new WzPngProperty();
                     break;
                 case WzPropertyType.Int:
                     addedProp = new WzIntProperty(propName);
@@ -129,12 +132,13 @@ namespace MapleLib.WzLib
                     break;
                 case WzPropertyType.Vector:
                     addedProp = new WzVectorProperty(propName);
-                    ((WzVectorProperty)addedProp).X = new WzIntProperty("X");
-                    ((WzVectorProperty)addedProp).Y = new WzIntProperty("Y");
+                    ((WzVectorProperty) addedProp).X = new WzIntProperty("X");
+                    ((WzVectorProperty) addedProp).Y = new WzIntProperty("Y");
                     break;
                 default:
                     throw new NotSupportedException("not supported type");
             }
+
             addedProp.SetValue(value);
             parent.AddProperty(addedProp);
         }
@@ -171,6 +175,7 @@ namespace MapleLib.WzLib
             {
                 SaveField(settingsImage, fieldInfo);
             }
+
             settingsImage.Changed = true;
         }
 
@@ -190,10 +195,12 @@ namespace MapleLib.WzLib
                         var xnaColor = fieldInfo.GetValue(null);
                         //for some odd reason .NET requires casting the result to uint before it can be
                         //casted to double
-                        SetWzProperty(settingsImage, settingName, WzPropertyType.Double, (double)(uint)xnaColor.GetType().GetProperty("PackedValue").GetValue(xnaColor, null));
+                        SetWzProperty(settingsImage, settingName, WzPropertyType.Double,
+                            (double) (uint) xnaColor.GetType().GetProperty("PackedValue").GetValue(xnaColor, null));
                         break;
                     case "System.Drawing.Color":
-                        SetWzProperty(settingsImage, settingName, WzPropertyType.Double, (double)((System.Drawing.Color)fieldInfo.GetValue(null)).ToArgb());
+                        SetWzProperty(settingsImage, settingName, WzPropertyType.Double,
+                            (double) ((System.Drawing.Color) fieldInfo.GetValue(null)).ToArgb());
                         break;
                     case "System.Int32":
                         SetWzProperty(settingsImage, settingName, WzPropertyType.Int, fieldInfo.GetValue(null));
@@ -214,7 +221,8 @@ namespace MapleLib.WzLib
                         SetWzProperty(settingsImage, settingName, WzPropertyType.Canvas, fieldInfo.GetValue(null));
                         break;
                     case "System.Boolean":
-                        SetWzProperty(settingsImage, settingName, WzPropertyType.Int, (bool)fieldInfo.GetValue(null) ? 1 : 0);
+                        SetWzProperty(settingsImage, settingName, WzPropertyType.Int,
+                            (bool) fieldInfo.GetValue(null) ? 1 : 0);
                         break;
                 }
             }
@@ -228,8 +236,8 @@ namespace MapleLib.WzLib
                 try
                 {
                     wzFile.ParseWzFile();
-                    ExtractSettingsImage((WzImage)wzFile["UserSettings.img"], userSettingsType);
-                    ExtractSettingsImage((WzImage)wzFile["ApplicationSettings.img"], appSettingsType);
+                    ExtractSettingsImage((WzImage) wzFile["UserSettings.img"], userSettingsType);
+                    ExtractSettingsImage((WzImage) wzFile["ApplicationSettings.img"], appSettingsType);
                     wzFile.Dispose();
                 }
                 catch
@@ -260,13 +268,14 @@ namespace MapleLib.WzLib
                     }
                 };
                 wzFile.Header.RecalculateFileStart();
-                var US = new WzImage("UserSettings.img") { Changed = true, Parsed = true };
-                var AS = new WzImage("ApplicationSettings.img") { Changed = true, Parsed = true };
+                var US = new WzImage("UserSettings.img") {Changed = true, Parsed = true};
+                var AS = new WzImage("ApplicationSettings.img") {Changed = true, Parsed = true};
                 wzFile.WzDirectory.WzImages.Add(US);
                 wzFile.WzDirectory.WzImages.Add(AS);
             }
-            SaveSettingsImage((WzImage)wzFile["UserSettings.img"], userSettingsType);
-            SaveSettingsImage((WzImage)wzFile["ApplicationSettings.img"], appSettingsType);
+
+            SaveSettingsImage((WzImage) wzFile["UserSettings.img"], userSettingsType);
+            SaveSettingsImage((WzImage) wzFile["ApplicationSettings.img"], appSettingsType);
             if (settingsExist)
             {
                 var tempFile = Path.GetTempFileName();

@@ -18,6 +18,7 @@ namespace MapleLib.WzLib
         public static ILogger Log = LogManager.Log;
 
         #region Fields
+
         internal string path;
         internal WzDirectory wzDir;
         internal WzHeader header;
@@ -27,6 +28,7 @@ namespace MapleLib.WzLib
         internal short fileVersion;
         internal WzMapleVersion mapleVersion;
         internal byte[] WzIv;
+
         #endregion
 
         /// <summary>
@@ -55,22 +57,31 @@ namespace MapleLib.WzLib
         /// <returns>WzDirectory[name]</returns>
         public new WzObject this[string name] => WzDirectory[name];
 
-        public WzHeader Header { get => header;
+        public WzHeader Header
+        {
+            get => header;
             set => header = value;
         }
 
-        public short Version { get => fileVersion;
+        public short Version
+        {
+            get => fileVersion;
             set => fileVersion = value;
         }
 
         public string FilePath => path;
 
-        public WzMapleVersion MapleVersion { get => mapleVersion;
+        public WzMapleVersion MapleVersion
+        {
+            get => mapleVersion;
             set => mapleVersion = value;
         }
 
-        public override WzObject Parent { get => null;
-            internal set { } }
+        public override WzObject Parent
+        {
+            get => null;
+            internal set { }
+        }
 
         public override WzFile WzFileParent => this;
 
@@ -173,7 +184,7 @@ namespace MapleLib.WzLib
             {
                 {
                     throw new InvalidOperationException(
-                    "Cannot call ParseWzFile(byte[] generateKey) if WZ file type is not GENERATE");
+                        "Cannot call ParseWzFile(byte[] generateKey) if WZ file type is not GENERATE");
                 }
             }
 
@@ -200,14 +211,14 @@ namespace MapleLib.WzLib
                 FStart = reader.ReadUInt32(),
                 Copyright = reader.ReadNullTerminatedString()
             };
-            reader.ReadBytes((int)(Header.FStart - reader.BaseStream.Position));
+            reader.ReadBytes((int) (Header.FStart - reader.BaseStream.Position));
             reader.Header = Header;
             version = reader.ReadInt16();
             if (fileVersion == -1)
             {
                 for (var j = 0; j < short.MaxValue; j++)
                 {
-                    fileVersion = (short)j;
+                    fileVersion = (short) j;
                     versionHash = GetVersionHash(version, fileVersion);
                     if (versionHash != 0)
                     {
@@ -224,6 +235,7 @@ namespace MapleLib.WzLib
                             reader.BaseStream.Position = position;
                             continue;
                         }
+
                         var testImage = testDirectory.GetChildImages()[0];
 
                         try
@@ -236,13 +248,14 @@ namespace MapleLib.WzLib
                             {
                                 case 0x73:
                                 case 0x1b:
-                                    {
-                                        var directory = new WzDirectory(reader, name, versionHash, WzIv, this);
-                                        directory.ParseDirectory();
-                                        wzDir = directory;
-                                        return;
-                                    }
+                                {
+                                    var directory = new WzDirectory(reader, name, versionHash, WzIv, this);
+                                    directory.ParseDirectory();
+                                    wzDir = directory;
+                                    return;
+                                }
                             }
+
                             reader.BaseStream.Position = position;
                         }
                         catch
@@ -251,7 +264,9 @@ namespace MapleLib.WzLib
                         }
                     }
                 }
-                throw new Exception("Error with game version hash : The specified game version is incorrect and WzLib was unable to determine the version itself");
+
+                throw new Exception(
+                    "Error with game version hash : The specified game version is incorrect and WzLib was unable to determine the version itself");
             }
             else
             {
@@ -279,6 +294,7 @@ namespace MapleLib.WzLib
             {
                 VersionHash = (32 * VersionHash) + VersionNumberStr[i] + 1;
             }
+
             a = (VersionHash >> 24) & 0xFF;
             b = (VersionHash >> 16) & 0xFF;
             c = (VersionHash >> 8) & 0xFF;
@@ -293,13 +309,14 @@ namespace MapleLib.WzLib
             versionHash = 0;
             foreach (var ch in fileVersion.ToString())
             {
-                versionHash = (versionHash * 32) + (byte)ch + 1;
+                versionHash = (versionHash * 32) + (byte) ch + 1;
             }
+
             uint a = (versionHash >> 24) & 0xFF,
                 b = (versionHash >> 16) & 0xFF,
                 c = (versionHash >> 8) & 0xFF,
                 d = versionHash & 0xFF;
-            version = (byte)~(a ^ b ^ c ^ d);
+            version = (byte) ~(a ^ b ^ c ^ d);
         }
 
         /// <summary>
@@ -321,18 +338,19 @@ namespace MapleLib.WzLib
             for (var i = 0; i < 4; i++)
             {
                 {
-                    wzWriter.Write((byte)Header.Ident[i]);
+                    wzWriter.Write((byte) Header.Ident[i]);
                 }
             }
 
-            wzWriter.Write((long)Header.FSize);
+            wzWriter.Write((long) Header.FSize);
             wzWriter.Write(Header.FStart);
             wzWriter.WriteNullTerminatedString(Header.Copyright);
             var extraHeaderLength = Header.FStart - wzWriter.BaseStream.Position;
             if (extraHeaderLength > 0)
             {
-                wzWriter.Write(new byte[(int)extraHeaderLength]);
+                wzWriter.Write(new byte[(int) extraHeaderLength]);
             }
+
             wzWriter.Write(version);
             wzWriter.Header = Header;
             wzDir.SaveDirectory(wzWriter);
@@ -380,7 +398,7 @@ namespace MapleLib.WzLib
             if (path.ToLower() == name.ToLower())
             {
                 {
-                    return new List<WzObject> { WzDirectory };
+                    return new List<WzObject> {WzDirectory};
                 }
             }
 
@@ -397,7 +415,7 @@ namespace MapleLib.WzLib
             if (!path.Contains("*"))
             {
                 {
-                    return new List<WzObject> { GetObjectFromPath(path) };
+                    return new List<WzObject> {GetObjectFromPath(path)};
                 }
             }
 
@@ -454,7 +472,7 @@ namespace MapleLib.WzLib
             if (path.ToLower() == name.ToLower())
             {
                 {
-                    return new List<WzObject> { WzDirectory };
+                    return new List<WzObject> {WzDirectory};
                 }
             }
 
@@ -506,11 +524,13 @@ namespace MapleLib.WzLib
                 objList.Add(img);
                 objList.AddRange(GetObjectsFromImage(img));
             }
+
             foreach (var subdir in dir.WzDirectories)
             {
                 objList.Add(subdir);
                 objList.AddRange(GetObjectsFromDirectory(subdir));
             }
+
             return objList;
         }
 
@@ -522,6 +542,7 @@ namespace MapleLib.WzLib
                 objList.Add(prop);
                 objList.AddRange(GetObjectsFromProperty(prop));
             }
+
             return objList;
         }
 
@@ -531,17 +552,17 @@ namespace MapleLib.WzLib
             switch (prop.PropertyType)
             {
                 case WzPropertyType.Canvas:
-                    foreach (var canvasProp in ((WzCanvasProperty)prop).WzProperties)
+                    foreach (var canvasProp in ((WzCanvasProperty) prop).WzProperties)
                     {
                         {
                             objList.AddRange(GetObjectsFromProperty(canvasProp));
                         }
                     }
 
-                    objList.Add(((WzCanvasProperty)prop).PngProperty);
+                    objList.Add(((WzCanvasProperty) prop).PngProperty);
                     break;
                 case WzPropertyType.Convex:
-                    foreach (var exProp in ((WzConvexProperty)prop).WzProperties)
+                    foreach (var exProp in ((WzConvexProperty) prop).WzProperties)
                     {
                         {
                             objList.AddRange(GetObjectsFromProperty(exProp));
@@ -550,7 +571,7 @@ namespace MapleLib.WzLib
 
                     break;
                 case WzPropertyType.SubProperty:
-                    foreach (var subProp in ((WzSubProperty)prop).WzProperties)
+                    foreach (var subProp in ((WzSubProperty) prop).WzProperties)
                     {
                         {
                             objList.AddRange(GetObjectsFromProperty(subProp));
@@ -559,8 +580,8 @@ namespace MapleLib.WzLib
 
                     break;
                 case WzPropertyType.Vector:
-                    objList.Add(((WzVectorProperty)prop).X);
-                    objList.Add(((WzVectorProperty)prop).Y);
+                    objList.Add(((WzVectorProperty) prop).X);
+                    objList.Add(((WzVectorProperty) prop).Y);
                     break;
                 case WzPropertyType.Null:
                 case WzPropertyType.Short:
@@ -574,6 +595,7 @@ namespace MapleLib.WzLib
                 case WzPropertyType.PNG:
                     break;
             }
+
             return objList;
         }
 
@@ -586,11 +608,13 @@ namespace MapleLib.WzLib
 
                 objList.AddRange(GetPathsFromImage(img, curPath + "/" + img.Name));
             }
+
             foreach (var subdir in dir.WzDirectories)
             {
                 objList.Add(curPath + "/" + subdir.Name);
                 objList.AddRange(GetPathsFromDirectory(subdir, curPath + "/" + subdir.Name));
             }
+
             return objList;
         }
 
@@ -602,6 +626,7 @@ namespace MapleLib.WzLib
                 objList.Add(curPath + "/" + prop.Name);
                 objList.AddRange(GetPathsFromProperty(prop, curPath + "/" + prop.Name));
             }
+
             return objList;
         }
 
@@ -611,39 +636,44 @@ namespace MapleLib.WzLib
             switch (prop.PropertyType)
             {
                 case WzPropertyType.Canvas:
-                    foreach (var canvasProp in ((WzCanvasProperty)prop).WzProperties)
+                    foreach (var canvasProp in ((WzCanvasProperty) prop).WzProperties)
                     {
                         objList.Add(curPath + "/" + canvasProp.Name);
                         objList.AddRange(GetPathsFromProperty(canvasProp, curPath + "/" + canvasProp.Name));
                     }
+
                     objList.Add(curPath + "/PNG");
                     break;
                 case WzPropertyType.Convex:
-                    foreach (var exProp in ((WzConvexProperty)prop).WzProperties)
+                    foreach (var exProp in ((WzConvexProperty) prop).WzProperties)
                     {
                         objList.Add(curPath + "/" + exProp.Name);
                         objList.AddRange(GetPathsFromProperty(exProp, curPath + "/" + exProp.Name));
                     }
+
                     break;
                 case WzPropertyType.SubProperty:
-                    foreach (var subProp in ((WzSubProperty)prop).WzProperties)
+                    foreach (var subProp in ((WzSubProperty) prop).WzProperties)
                     {
                         objList.Add(curPath + "/" + subProp.Name);
                         objList.AddRange(GetPathsFromProperty(subProp, curPath + "/" + subProp.Name));
                     }
+
                     break;
                 case WzPropertyType.Vector:
                     objList.Add(curPath + "/X");
                     objList.Add(curPath + "/Y");
                     break;
             }
+
             return objList;
         }
 
         public WzObject GetObjectFromPath(string path)
         {
             var seperatedPath = path.Split("/".ToCharArray());
-            if (seperatedPath[0].ToLower() != wzDir.name.ToLower() && seperatedPath[0].ToLower() != wzDir.name.Substring(0, wzDir.name.Length - 3).ToLower())
+            if (seperatedPath[0].ToLower() != wzDir.name.ToLower() && seperatedPath[0].ToLower() !=
+                wzDir.name.Substring(0, wzDir.name.Length - 3).ToLower())
             {
                 {
                     return null;
@@ -664,35 +694,36 @@ namespace MapleLib.WzLib
                 {
                     return null;
                 }
+
                 switch (curObj.ObjectType)
                 {
                     case WzObjectType.Directory:
-                        curObj = ((WzDirectory)curObj)[seperatedPath[i]];
+                        curObj = ((WzDirectory) curObj)[seperatedPath[i]];
                         continue;
                     case WzObjectType.Image:
-                        curObj = ((WzImage)curObj)[seperatedPath[i]];
+                        curObj = ((WzImage) curObj)[seperatedPath[i]];
                         continue;
                     case WzObjectType.Property:
-                        switch (((WzImageProperty)curObj).PropertyType)
+                        switch (((WzImageProperty) curObj).PropertyType)
                         {
                             case WzPropertyType.Canvas:
-                                curObj = ((WzCanvasProperty)curObj)[seperatedPath[i]];
+                                curObj = ((WzCanvasProperty) curObj)[seperatedPath[i]];
                                 continue;
                             case WzPropertyType.Convex:
-                                curObj = ((WzConvexProperty)curObj)[seperatedPath[i]];
+                                curObj = ((WzConvexProperty) curObj)[seperatedPath[i]];
                                 continue;
                             case WzPropertyType.SubProperty:
-                                curObj = ((WzSubProperty)curObj)[seperatedPath[i]];
+                                curObj = ((WzSubProperty) curObj)[seperatedPath[i]];
                                 continue;
                             case WzPropertyType.Vector:
                                 if (seperatedPath[i] == "X")
                                 {
-                                    return ((WzVectorProperty)curObj).X;
+                                    return ((WzVectorProperty) curObj).X;
                                 }
 
                                 if (seperatedPath[i] == "Y")
                                 {
-                                    return ((WzVectorProperty)curObj).Y;
+                                    return ((WzVectorProperty) curObj).Y;
                                 }
 
                                 return null;
@@ -724,7 +755,8 @@ namespace MapleLib.WzLib
 
             if (strWildCard[0] == '*' && strWildCard.Length > 1)
             {
-                return strCompare.Where((t, index) => StrMatch(strWildCard.Substring(1), strCompare.Substring(index))).Any();
+                return strCompare.Where((t, index) => StrMatch(strWildCard.Substring(1), strCompare.Substring(index)))
+                    .Any();
             }
             else if (strWildCard[0] == '*')
             {
