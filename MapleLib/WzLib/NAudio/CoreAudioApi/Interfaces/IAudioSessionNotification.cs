@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// Windows CoreAudio IAudioSessionNotification interface

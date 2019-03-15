@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
-using NAudio.Wave;
 using System.Runtime.InteropServices.ComTypes;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Main interface for using Media Foundation with NAudio
@@ -25,7 +24,9 @@ namespace NAudio.MediaFoundation
 #if !NETFX_CORE
                 var os = Environment.OSVersion;
                 if (os.Version.Major == 6 && os.Version.Minor == 0)
+                {
                     sdkVersion = 1;
+                }
 #endif
                 MediaFoundationInterop.MFStartup((sdkVersion << 16) | MediaFoundationInterop.MF_API_VERSION, 0);
                 initialized = true;

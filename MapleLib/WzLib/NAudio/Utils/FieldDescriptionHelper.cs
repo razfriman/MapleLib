@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// Helper to get descriptions

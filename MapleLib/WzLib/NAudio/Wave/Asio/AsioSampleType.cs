@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NAudio.Wave.Asio
+﻿namespace MapleLib.WzLib.NAudio.Wave.Asio
 {
     /// <summary>
     /// ASIO Sample Type

@@ -1,4 +1,4 @@
-﻿namespace NAudio.Utils
+﻿namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// Helper methods for working with audio buffers

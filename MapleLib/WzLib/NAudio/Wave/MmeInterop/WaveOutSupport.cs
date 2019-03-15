@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
 {
 	/// <summary>
 	/// Flags indicating what features this WaveOut device supports

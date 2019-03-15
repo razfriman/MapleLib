@@ -1,4 +1,4 @@
-namespace NAudio.Midi 
+namespace MapleLib.WzLib.NAudio.Midi 
 {
     /// <summary>
     /// MIDI command codes

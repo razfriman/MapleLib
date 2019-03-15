@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Allows any number of inputs to be patched to outputs

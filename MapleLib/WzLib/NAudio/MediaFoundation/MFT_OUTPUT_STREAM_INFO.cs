@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Contains information about an output stream on a Media Foundation transform (MFT).

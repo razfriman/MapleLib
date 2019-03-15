@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// Support for Marshal Methods in both UWP and .NET 3.5

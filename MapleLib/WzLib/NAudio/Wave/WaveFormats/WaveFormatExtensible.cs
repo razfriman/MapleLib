@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
-using NAudio.Dmo;
+using MapleLib.WzLib.NAudio.Dmo;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// WaveFormatExtensible
@@ -59,9 +57,15 @@ namespace NAudio.Wave
         public WaveFormat ToStandardWaveFormat()
         {
             if (subFormat == AudioMediaSubtypes.MEDIASUBTYPE_IEEE_FLOAT && bitsPerSample == 32)
+            {
                 return CreateIeeeFloatWaveFormat(sampleRate, channels);
+            }
+
             if (subFormat == AudioMediaSubtypes.MEDIASUBTYPE_PCM)
+            {
                 return new WaveFormat(sampleRate,bitsPerSample,channels);
+            }
+
             return this;
             //throw new InvalidOperationException("Not a recognised PCM or IEEE float format");
         }

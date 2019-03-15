@@ -1,7 +1,8 @@
 using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// Represents the interface to a device that can play a WaveFile
@@ -60,7 +61,7 @@ namespace NAudio.Wave
         long GetPosition();
 
         /// <summary>
-        /// Gets a <see cref="Wave.WaveFormat"/> instance indicating the format the hardware is using.
+        /// Gets a <see cref="WaveFormat"/> instance indicating the format the hardware is using.
         /// </summary>
         WaveFormat OutputWaveFormat { get; }
     }

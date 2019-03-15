@@ -2,12 +2,13 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
-using NAudio.MediaFoundation;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.CoreAudioApi;
+using MapleLib.WzLib.NAudio.MediaFoundation;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Class for reading any file that Media Foundation can play
@@ -122,9 +123,15 @@ namespace NAudio.Wave
             var sampleRate = outputMediaType.SampleRate;
 
             if (audioSubType == AudioSubtypes.MFAudioFormat_PCM)
+            {
                 return new WaveFormat(sampleRate, bits, channels);
+            }
+
             if (audioSubType == AudioSubtypes.MFAudioFormat_Float)
+            {
                 return WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
+            }
+
             var subTypeDescription = FieldDescriptionHelper.Describe(typeof (AudioSubtypes), audioSubType);
             throw new InvalidDataException(String.Format("Unsupported audio sub Type {0}", subTypeDescription));
         }
@@ -333,7 +340,10 @@ namespace NAudio.Wave
             set
             {
                 if (value < 0)
+                {
                     throw new ArgumentOutOfRangeException("value", "Position cannot be less than 0");
+                }
+
                 if (settings.RepositionInRead)
                 {
                     repositionTo = value;
@@ -386,7 +396,10 @@ namespace NAudio.Wave
         private void OnWaveFormatChanged()
         {
             var handler = WaveFormatChanged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
     }
 }

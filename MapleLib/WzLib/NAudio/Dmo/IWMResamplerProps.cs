@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// Windows Media Resampler Props

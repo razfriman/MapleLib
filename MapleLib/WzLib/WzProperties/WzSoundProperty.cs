@@ -6,7 +6,8 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using MapleLib.Helper;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveStreams;
 
 namespace MapleLib.WzLib.WzProperties
 {
@@ -140,9 +141,13 @@ namespace MapleLib.WzLib.WzProperties
             //sound file offs
             offs = reader.BaseStream.Position;
             if (parseNow)
+            {
                 mp3bytes = reader.ReadBytes(soundDataLen);
+            }
             else
+            {
                 reader.BaseStream.Position += soundDataLen;
+            }
         }
 
         /*public WzSoundProperty(string name)
@@ -200,7 +205,10 @@ namespace MapleLib.WzLib.WzProperties
         {
             var hex = new StringBuilder(ba.Length * 3);
             foreach (var b in ba)
+            {
                 hex.AppendFormat("{0:x2} ", b);
+            }
+
             return hex.ToString();
         }
 
@@ -272,7 +280,9 @@ namespace MapleLib.WzLib.WzProperties
             Buffer.BlockCopy(header, soundHeader.Length + 1, wavHeader, 0, wavHeader.Length);
 
             if (wavHeader.Length < Marshal.SizeOf<WaveFormat>())
+            {
                 return;
+            }
 
             var wavFmt = BytesToStruct<WaveFormat>(wavHeader);
 
@@ -316,7 +326,11 @@ namespace MapleLib.WzLib.WzProperties
             {
                 return mp3bytes;
             }
-            if (wzReader == null) return null;
+            if (wzReader == null)
+            {
+                return null;
+            }
+
             var currentPos = wzReader.BaseStream.Position;
             wzReader.BaseStream.Position = offs;
             mp3bytes = wzReader.ReadBytes(soundDataLen);

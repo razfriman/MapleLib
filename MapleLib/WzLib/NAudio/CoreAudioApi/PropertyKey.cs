@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// PROPERTYKEY is defined in wtypes.h

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     class MergeSort
     {

@@ -21,9 +21,10 @@
 */
 
 using System;
+
 // ReSharper disable InconsistentNaming
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     internal struct AudioVolumeNotificationDataStruct
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave.Compression
+namespace MapleLib.WzLib.NAudio.Wave.Compression
 {
     /// <summary>
     /// ACM Format

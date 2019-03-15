@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
 
-namespace NAudio.Midi 
+namespace MapleLib.WzLib.NAudio.Midi 
 {
     /// <summary>
     /// Represents a MIDI sysex message

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
 {
     /// <summary>
     /// Interface for MP3 frame by frame decoder

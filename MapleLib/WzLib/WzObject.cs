@@ -59,7 +59,11 @@ namespace MapleLib.WzLib
         {
             get
             {
-                if (this is WzFile) return ((WzFile)this).WzDirectory.Name;
+                if (this is WzFile)
+                {
+                    return ((WzFile)this).WzDirectory.Name;
+                }
+
                 var result = this.Name;
                 var currObj = this;
                 while (currObj.Parent != null)

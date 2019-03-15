@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace NAudio.Wave.Compression
+namespace MapleLib.WzLib.NAudio.Wave.Compression
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     struct AcmFormatTagDetails

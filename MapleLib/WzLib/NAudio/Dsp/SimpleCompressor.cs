@@ -1,8 +1,9 @@
 // based on SimpleComp v1.10 � 2006, ChunkWare Music Software, OPEN-SOURCE
-using System;
-using NAudio.Utils;
 
-namespace NAudio.Dsp
+using System;
+using MapleLib.WzLib.NAudio.Utils;
+
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     class SimpleCompressor : AttRelEnvelope
     {
@@ -61,7 +62,9 @@ namespace NAudio.Dsp
             // threshold
             var overdB = keydB - Threshold;	// delta over threshold
             if ( overdB < 0.0 )
+            {
                 overdB = 0.0;
+            }
 
             // attack/release
 

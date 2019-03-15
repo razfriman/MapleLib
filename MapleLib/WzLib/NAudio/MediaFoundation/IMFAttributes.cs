@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Provides a generic way to store key/value pairs on an object.

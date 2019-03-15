@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	/// <summary>
 	/// A SoundFont zone

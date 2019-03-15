@@ -1,6 +1,8 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Helper class for when you need to convert back to an IWaveProvider from

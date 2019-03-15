@@ -1,8 +1,10 @@
 ﻿using System;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// Provides a buffered store of samples

@@ -1,6 +1,4 @@
-using System;
-
-namespace NAudio.Midi
+namespace MapleLib.WzLib.NAudio.Midi
 {
     /// <summary>
     /// Represents the different types of technology used by a MIDI out device

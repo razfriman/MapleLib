@@ -1,9 +1,9 @@
 ﻿using System;
-using NAudio.CoreAudioApi.Interfaces;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Audio Clock Client
@@ -50,7 +50,11 @@ namespace NAudio.CoreAudioApi
         public bool GetPosition(out ulong position, out ulong qpcPosition)
         {
             var hr = audioClockClientInterface.GetPosition(out position, out qpcPosition);
-            if (hr == -1) return false;
+            if (hr == -1)
+            {
+                return false;
+            }
+
             Marshal.ThrowExceptionForHR(hr);
             return true;
         }

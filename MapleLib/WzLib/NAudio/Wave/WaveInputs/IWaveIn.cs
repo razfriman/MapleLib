@@ -1,7 +1,10 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveInputs
 {
     /// <summary>
     /// Generic interface for wave recording

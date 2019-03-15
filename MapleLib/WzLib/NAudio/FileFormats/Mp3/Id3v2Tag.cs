@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using NAudio.Utils;
+using System.Text;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
 {
     /// <summary>
     /// An ID3v2 Tag

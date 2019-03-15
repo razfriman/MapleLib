@@ -2,7 +2,7 @@ using System;
 using System.Text;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Holds information about a RIFF file chunk

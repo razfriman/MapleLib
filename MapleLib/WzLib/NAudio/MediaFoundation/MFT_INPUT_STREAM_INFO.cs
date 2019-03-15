@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Contains information about an input stream on a Media Foundation transform (MFT)

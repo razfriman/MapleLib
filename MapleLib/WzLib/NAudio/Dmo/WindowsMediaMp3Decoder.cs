@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     // http://msdn.microsoft.com/en-us/library/ff819509%28VS.85%29.aspx
     // CLSID_CMP3DecMediaObject

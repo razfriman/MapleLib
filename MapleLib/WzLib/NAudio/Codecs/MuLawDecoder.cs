@@ -1,4 +1,4 @@
-﻿namespace NAudio.Codecs
+﻿namespace MapleLib.WzLib.NAudio.Codecs
 {
     /// <summary>
     /// mu-law decoder

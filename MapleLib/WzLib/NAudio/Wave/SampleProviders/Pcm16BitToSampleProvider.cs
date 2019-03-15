@@ -1,6 +1,7 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Converts an IWaveProvider containing 16 bit PCM to an

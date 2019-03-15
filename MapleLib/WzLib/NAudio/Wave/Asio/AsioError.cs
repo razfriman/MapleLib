@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace NAudio.Wave.Asio
+namespace MapleLib.WzLib.NAudio.Wave.Asio
 {
     /// <summary>
     /// ASIO Error Codes

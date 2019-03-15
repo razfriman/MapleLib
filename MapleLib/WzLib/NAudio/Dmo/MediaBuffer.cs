@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// Attempting to implement the COM IMediaBuffer interface as a .NET object

@@ -1,8 +1,10 @@
 ﻿using System;
-using NAudio.Wave.SampleProviders;
+using MapleLib.WzLib.NAudio.Wave.SampleProviders;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// AudioFileReader simplifies opening an audio file in NAudio

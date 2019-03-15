@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// General purpose native methods for internal NAudio use

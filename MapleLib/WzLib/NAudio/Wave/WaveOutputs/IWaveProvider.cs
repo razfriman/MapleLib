@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// Generic interface for all WaveProviders.

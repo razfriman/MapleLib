@@ -1,6 +1,8 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Utility class for converting to SampleProvider
@@ -43,9 +45,13 @@ namespace NAudio.Wave.SampleProviders
             else if (waveProvider.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
             {
                 if (waveProvider.WaveFormat.BitsPerSample == 64)
+                {
                     sampleProvider = new WaveToSampleProvider64(waveProvider);
+                }
                 else
+                {
                     sampleProvider = new WaveToSampleProvider(waveProvider);
+                }
             }
             else
             {

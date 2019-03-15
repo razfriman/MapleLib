@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// WaveStream that can mix together multiple 32 bit input streams
@@ -55,9 +56,14 @@ namespace NAudio.Wave
         public void AddInputStream(WaveStream waveStream)
         {
             if (waveStream.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat)
+            {
                 throw new ArgumentException("Must be IEEE floating point", "waveStream");
+            }
+
             if (waveStream.WaveFormat.BitsPerSample != 32)
+            {
                 throw new ArgumentException("Only 32 bit audio currently supported", "waveStream");
+            }
 
             if (inputStreams.Count == 0)
             {
@@ -69,7 +75,9 @@ namespace NAudio.Wave
             else
             {
                 if (!waveStream.WaveFormat.Equals(waveFormat))
+                {
                     throw new ArgumentException("All incoming channels must have the same format", "waveStream");
+                }
             }
 
             lock (inputsLock)
@@ -125,7 +133,9 @@ namespace NAudio.Wave
             if (AutoStop)
             {
                 if (position + count > length)
+                {
                     count = (int)(length - position);
+                }
 
                 // was a bug here, should be fixed now
                 System.Diagnostics.Debug.Assert(count >= 0, "length and position mismatch");
@@ -133,7 +143,9 @@ namespace NAudio.Wave
 
 
             if (count % bytesPerSample != 0)
+            {
                 throw new ArgumentException("Must read an whole number of samples", "count");
+            }
 
             // blank the buffer
             Array.Clear(buffer, offset, count);
@@ -151,7 +163,9 @@ namespace NAudio.Wave
                         // don't worry if input stream returns less than we requested - may indicate we have got to the end
                         bytesRead = Math.Max(bytesRead, readFromThisStream);
                         if (readFromThisStream > 0)
+                        {
                             Sum32BitAudio(buffer, offset, readBuffer, readFromThisStream);
+                        }
                     }
                     else
                     {

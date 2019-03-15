@@ -2,8 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// Broadcast WAVE File Writer
@@ -43,7 +44,10 @@ namespace NAudio.Wave
             var codingHistory = Encoding.ASCII.GetBytes(bextChunkInfo.CodingHistory ?? "");
             var bextLength = 602 + codingHistory.Length;
             if (bextLength % 2 != 0)
+            {
                 bextLength++;
+            }
+
             writer.Write(bextLength); // bext size
             var bextStart = writer.BaseStream.Position;
             writer.Write(GetAsBytes(bextChunkInfo.Description, 256));
@@ -57,7 +61,10 @@ namespace NAudio.Wave
             writer.Write(bextChunkInfo.Reserved); // for version 1 this is 190 bytes
             writer.Write(codingHistory);
             if (codingHistory.Length % 2 != 0)
+            {
                 writer.Write((byte)0);
+            }
+
             Debug.Assert(writer.BaseStream.Position == bextStart + bextLength, "Invalid bext chunk size");
 
             // write the format chunk
@@ -75,7 +82,11 @@ namespace NAudio.Wave
         /// </summary>
         public void Write(byte[] buffer, int offset, int count)
         {
-            if (isDisposed) throw new ObjectDisposedException("This BWF Writer already disposed");
+            if (isDisposed)
+            {
+                throw new ObjectDisposedException("This BWF Writer already disposed");
+            }
+
             writer.Write(buffer, offset, count);
             dataLength += count;
         }
@@ -85,7 +96,11 @@ namespace NAudio.Wave
         /// </summary>
         public void Flush()
         {
-            if (isDisposed) throw new ObjectDisposedException("This BWF Writer already disposed");
+            if (isDisposed)
+            {
+                throw new ObjectDisposedException("This BWF Writer already disposed");
+            }
+
             writer.Flush();
             FixUpChunkSizes(true); // here to ensure WAV file created is always playable after Flush
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// A very basic circular buffer implementation

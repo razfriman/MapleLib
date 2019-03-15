@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     /// <summary>
     /// Summary description for FastFourierTransform.
@@ -19,7 +19,9 @@ namespace NAudio.Dsp
             // Calculate the number of points
             n = 1;
             for (i = 0; i < m; i++)
+            {
                 n *= 2;
+            }
 
             // Do the bit reversal
             i2 = n >> 1;
@@ -73,7 +75,10 @@ namespace NAudio.Dsp
                 }
                 c2 = (float)Math.Sqrt((1.0f - c1) / 2.0f);
                 if (forward)
+                {
                     c2 = -c2;
+                }
+
                 c1 = (float)Math.Sqrt((1.0f + c1) / 2.0f);
             }
 

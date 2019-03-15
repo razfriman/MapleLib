@@ -1,7 +1,8 @@
 ﻿using System;
+
 // ReSharper disable InconsistentNaming
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     class AudioMediaSubtypes
     {

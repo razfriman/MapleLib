@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
 {
     /// <summary>
     /// Represents a Xing VBR header
@@ -66,16 +64,24 @@ namespace NAudio.Wave
             if (frame.MpegVersion == MpegVersion.Version1)
             {
                 if (frame.ChannelMode != ChannelMode.Mono)
+                {
                     offset = 32 + 4;
+                }
                 else
+                {
                     offset = 17 + 4;
+                }
             }
             else if (frame.MpegVersion == MpegVersion.Version2)
             {
                 if (frame.ChannelMode != ChannelMode.Mono)
+                {
                     offset = 17 + 4;
+                }
                 else
+                {
                     offset = 9 + 4;
+                }
             }
             else
             {
@@ -137,14 +143,20 @@ namespace NAudio.Wave
         {
             get 
             { 
-                if(framesOffset == -1) 
+                if(framesOffset == -1)
+                {
                     return -1;
+                }
+
                 return ReadBigEndian(frame.RawData, framesOffset); 
             }
             set
             {
                 if (framesOffset == -1)
+                {
                     throw new InvalidOperationException("Frames flag is not set");
+                }
+
                 WriteBigEndian(frame.RawData, framesOffset, value);
             }
         }
@@ -156,14 +168,20 @@ namespace NAudio.Wave
         {
             get 
             { 
-                if(bytesOffset == -1) 
+                if(bytesOffset == -1)
+                {
                     return -1;
+                }
+
                 return ReadBigEndian(frame.RawData, bytesOffset); 
             }
             set
             {
                 if (framesOffset == -1)
+                {
                     throw new InvalidOperationException("Bytes flag is not set");
+                }
+
                 WriteBigEndian(frame.RawData, bytesOffset, value);
             }
         }

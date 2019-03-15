@@ -1,8 +1,8 @@
 // created on 13/12/2002 at 22:07
-using System;
-using System.Runtime.InteropServices;
 
-namespace NAudio.Mixer
+using System;
+
+namespace MapleLib.WzLib.NAudio.Mixer
 {
 	/// <summary>
 	/// Custom Mixer control

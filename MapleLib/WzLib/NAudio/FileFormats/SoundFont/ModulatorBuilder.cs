@@ -1,7 +1,6 @@
-using System;
 using System.IO;
 
-namespace NAudio.SoundFont {
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont {
 	class ModulatorBuilder : StructureBuilder<Modulator> {
         public override Modulator Read(BinaryReader br)
         {

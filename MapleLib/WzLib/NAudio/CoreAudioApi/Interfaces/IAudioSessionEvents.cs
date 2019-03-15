@@ -19,10 +19,10 @@
 // milligan22963 - ported to nAudio
 // -----------------------------------------
 
- using System;
+using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// Defines constants that indicate the current state of an audio session.

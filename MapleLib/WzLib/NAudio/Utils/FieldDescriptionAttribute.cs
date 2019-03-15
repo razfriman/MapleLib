@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// Allows us to add descriptions to interop members

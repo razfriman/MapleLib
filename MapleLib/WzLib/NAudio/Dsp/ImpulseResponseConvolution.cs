@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     /// <summary>
     /// Summary description for ImpulseResponseConvolution.
@@ -37,10 +37,17 @@ namespace NAudio.Dsp
         {
             float max = 0;
             for(var n = 0; n < data.Length; n++)
+            {
                 max = Math.Max(max,Math.Abs(data[n]));
+            }
+
             if(max > 1.0)
+            {
                 for(var n = 0; n < data.Length; n++)
+                {
                     data[n] /= max;
+                }
+            }
         }
     }
 }

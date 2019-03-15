@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave.Compression
+namespace MapleLib.WzLib.NAudio.Wave.Compression
 {
     /// <summary>
     /// Interop definitions for Windows ACM (Audio Compression Manager) API

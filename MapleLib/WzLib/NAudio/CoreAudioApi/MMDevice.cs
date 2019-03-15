@@ -23,10 +23,10 @@
 // milligan22963 - updated to include audio session manager
 
 using System;
-using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// MM Device
@@ -104,7 +104,9 @@ namespace NAudio.CoreAudioApi
             get
             {
                 if (audioMeterInformation == null)
+                {
                     GetAudioMeterInformation();
+                }
 
                 return audioMeterInformation;
             }
@@ -118,7 +120,9 @@ namespace NAudio.CoreAudioApi
             get
             {
                 if (audioEndpointVolume == null)
+                {
                     GetAudioEndpointVolume();
+                }
 
                 return audioEndpointVolume;
             }
@@ -147,7 +151,10 @@ namespace NAudio.CoreAudioApi
             get
             {
                 if (propertyStore == null)
+                {
                     GetPropertyInformation();
+                }
+
                 return propertyStore;
             }
         }
@@ -168,7 +175,9 @@ namespace NAudio.CoreAudioApi
                     return (string)propertyStore[PropertyKeys.PKEY_Device_FriendlyName].Value;
                 }
                 else
+                {
                     return "Unknown";
+                }
             }
         }
 

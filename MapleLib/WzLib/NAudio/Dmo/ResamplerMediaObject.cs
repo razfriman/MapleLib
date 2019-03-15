@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// From wmcodecsdp.h

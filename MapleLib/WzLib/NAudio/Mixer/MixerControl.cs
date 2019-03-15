@@ -1,9 +1,11 @@
 // created on 10/12/2002 at 21:11
-using System;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
-namespace NAudio.Mixer
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
+
+namespace MapleLib.WzLib.NAudio.Mixer
 {
     /// <summary>
     /// Represents a mixer control

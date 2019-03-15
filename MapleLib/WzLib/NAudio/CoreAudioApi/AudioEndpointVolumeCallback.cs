@@ -24,10 +24,10 @@
  */
 
 using System;
-using NAudio.CoreAudioApi.Interfaces;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     // This class implements the IAudioEndpointVolumeCallback interface,
     // it is implemented in this class because implementing it on AudioEndpointVolume 

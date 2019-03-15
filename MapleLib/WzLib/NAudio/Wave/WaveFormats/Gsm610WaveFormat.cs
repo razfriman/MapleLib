@@ -1,9 +1,8 @@
-﻿using System;
+﻿using System.IO;
 using System.Runtime.InteropServices;
-using System.IO;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// GSM 610

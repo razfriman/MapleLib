@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Contains flags for registering and enumeration Media Foundation transforms (MFTs).

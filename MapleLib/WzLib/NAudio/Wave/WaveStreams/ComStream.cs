@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Implementation of Com IStream
@@ -34,9 +34,15 @@ namespace NAudio.Wave
         internal ComStream(Stream stream, bool synchronizeStream)
         {
             if (stream == null)
+            {
                 throw new ArgumentNullException(nameof(stream));
+            }
+
             if (synchronizeStream)
+            {
                 stream = Synchronized(stream);
+            }
+
             this.stream = stream;
         }
 
@@ -61,10 +67,15 @@ namespace NAudio.Wave
         void IStream.Read(byte[] pv, int cb, IntPtr pcbRead)
         {
             if (!CanRead)
+            {
                 throw new InvalidOperationException("Stream is not readable.");
+            }
+
             var val = Read(pv, 0, cb);
             if (pcbRead != IntPtr.Zero)
+            {
                 Marshal.WriteInt32(pcbRead, val);
+            }
         }
 
         void IStream.Revert()
@@ -76,7 +87,9 @@ namespace NAudio.Wave
             var origin = (SeekOrigin) dwOrigin;
             var val = Seek(dlibMove, origin);
             if (plibNewPosition != IntPtr.Zero)
+            {
                 Marshal.WriteInt64(plibNewPosition, val);
+            }
         }
 
         void IStream.SetSize(long libNewSize)
@@ -93,13 +106,21 @@ namespace NAudio.Wave
             var tmp = new System.Runtime.InteropServices.ComTypes.STATSTG { type = 2, cbSize = Length, grfMode = 0 };
 
             if (CanWrite && CanRead)
+            {
                 tmp.grfMode |= STGM_READWRITE;
+            }
             else if (CanRead)
+            {
                 tmp.grfMode |= STGM_READ;
+            }
             else if (CanWrite)
+            {
                 tmp.grfMode |= STGM_WRITE;
+            }
             else
+            {
                 throw new ObjectDisposedException("Stream");
+            }
 
             pstatstg = tmp;
         }
@@ -111,10 +132,15 @@ namespace NAudio.Wave
         void IStream.Write(byte[] pv, int cb, IntPtr pcbWritten)
         {
             if (!CanWrite)
+            {
                 throw new InvalidOperationException("Stream is not writeable.");
+            }
+
             Write(pv, 0, cb);
             if (pcbWritten != IntPtr.Zero)
+            {
                 Marshal.WriteInt32(pcbWritten, cb);
+            }
         }
 
         public override void Flush()
@@ -146,7 +172,10 @@ namespace NAudio.Wave
         {
             base.Dispose(disposing);
             if (stream == null)
+            {
                 return;
+            }
+
             stream.Dispose();
             stream = null;
         }
@@ -155,7 +184,10 @@ namespace NAudio.Wave
         {
             base.Close();
             if (stream == null)
+            {
                 return;
+            }
+
             stream.Close();
             stream = null;
         }

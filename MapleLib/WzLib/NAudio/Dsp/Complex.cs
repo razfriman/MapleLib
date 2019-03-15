@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     /// <summary>
     /// Type to represent complex number

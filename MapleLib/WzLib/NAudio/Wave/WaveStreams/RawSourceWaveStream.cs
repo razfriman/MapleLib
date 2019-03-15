@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// WaveStream that simply passes on data from its source stream

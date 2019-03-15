@@ -26,7 +26,10 @@ namespace MapleLib.WzLib.WzProperties
         {
             var clone = new WzSubProperty(name);
             foreach (var prop in properties)
+            {
                 clone.AddProperty(prop.DeepClone());
+            }
+
             return clone;
         }
 
@@ -67,8 +70,13 @@ namespace MapleLib.WzLib.WzProperties
             {
 
                 foreach (var iwp in properties)
+                {
                     if (iwp.Name.ToLower() == name.ToLower())
+                    {
                         return iwp;
+                    }
+                }
+
                 //throw new KeyNotFoundException("A wz property with the specified name was not found");
                 return null;
             }
@@ -132,7 +140,10 @@ namespace MapleLib.WzLib.WzProperties
         {
             name = null;
             foreach (var prop in properties)
+            {
                 prop.Dispose();
+            }
+
             properties.Clear();
             properties = null;
         }
@@ -177,7 +188,11 @@ namespace MapleLib.WzLib.WzProperties
         /// </summary>
         public void ClearProperties()
         {
-            foreach (var prop in properties) prop.Parent = null;
+            foreach (var prop in properties)
+            {
+                prop.Parent = null;
+            }
+
             properties.Clear();
         }
         #endregion

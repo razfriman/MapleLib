@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// DMO Input Data Buffer Flags

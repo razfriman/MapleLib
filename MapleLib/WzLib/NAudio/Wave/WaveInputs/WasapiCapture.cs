@@ -1,11 +1,14 @@
 ﻿using System;
-using NAudio.Wave;
-using System.Threading;
 using System.Runtime.InteropServices;
+using System.Threading;
+using MapleLib.WzLib.NAudio.CoreAudioApi;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // for consistency this should be in NAudio.Wave namespace, but left as it is for backwards compatibility
 // ReSharper disable once CheckNamespace
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.Wave.WaveInputs
 {
     /// <summary>
     /// Represents state of a capture device
@@ -143,7 +146,9 @@ namespace NAudio.CoreAudioApi
         private void InitializeCaptureDevice()
         {
             if (initialized)
+            {
                 return;
+            }
 
             var requestedDuration = ReftimesPerMillisec * audioBufferMillisecondsLength;
 
@@ -225,7 +230,9 @@ namespace NAudio.CoreAudioApi
         public void StopRecording()
         {
             if (captureState != CaptureState.Stopped)
+            {
                 captureState = CaptureState.Stopping;
+            }
         }
 
         private void CaptureThread(AudioClient client)
@@ -275,7 +282,9 @@ namespace NAudio.CoreAudioApi
                     Thread.Sleep(sleepMilliseconds);
                 }
                 if (captureState != CaptureState.Capturing)
+                {
                     break;
+                }
 
                 // If still recording and notification is ok
                 if (readBuffer)
@@ -288,7 +297,11 @@ namespace NAudio.CoreAudioApi
         private void RaiseRecordingStopped(Exception e)
         {
             var handler = RecordingStopped;
-            if (handler == null) return;
+            if (handler == null)
+            {
+                return;
+            }
+
             if (syncContext == null)
             {
                 handler(this, new StoppedEventArgs(e));
@@ -318,7 +331,11 @@ namespace NAudio.CoreAudioApi
                 var spaceRemaining = Math.Max(0, recordBuffer.Length - recordBufferOffset);
                 if (spaceRemaining < bytesAvailable && recordBufferOffset > 0)
                 {
-                    if (DataAvailable != null) DataAvailable(this, new WaveInEventArgs(recordBuffer, recordBufferOffset));
+                    if (DataAvailable != null)
+                    {
+                        DataAvailable(this, new WaveInEventArgs(recordBuffer, recordBufferOffset));
+                    }
+
                     recordBufferOffset = 0;
                 }
 

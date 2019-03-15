@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
-using System.Collections.Generic;
-using System.Diagnostics;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// NativeDirectSoundOut using DirectSound COM interop.
@@ -192,7 +193,7 @@ namespace NAudio.Wave
         /// <returns>Position in bytes</returns>
         public long GetPosition()
         {
-            if (playbackState != Wave.PlaybackState.Stopped)
+            if (playbackState != PlaybackState.Stopped)
             {
                 var sbuf = secondaryBuffer;
                 if (sbuf != null)
@@ -508,7 +509,10 @@ namespace NAudio.Wave
                     {
                         Debug.WriteLine(e.ToString());
                         // don't overwrite the original reason we exited the playback loop
-                        if (exception == null) exception = e;
+                        if (exception == null)
+                        {
+                            exception = e;
+                        }
                     }
                 }
 
@@ -702,7 +706,7 @@ namespace NAudio.Wave
             DSSCL_WRITEPRIMARY = 0x00000004
         }
 
-        [FlagsAttribute]
+        [Flags]
         internal enum DirectSoundPlayFlags : uint
         {
             DSBPLAY_LOOPING = 0x00000001,
@@ -720,7 +724,7 @@ namespace NAudio.Wave
             EntireBuffer = 0x00000002
         }
 
-        [FlagsAttribute]
+        [Flags]
         internal enum DirectSoundBufferStatus : uint
         {
             DSBSTATUS_PLAYING = 0x00000001,
@@ -731,7 +735,7 @@ namespace NAudio.Wave
             DSBSTATUS_TERMINATED = 0x00000020
         }
 
-        [FlagsAttribute]
+        [Flags]
         internal enum DirectSoundBufferCaps : uint
         {
             DSBCAPS_PRIMARYBUFFER = 0x00000001,

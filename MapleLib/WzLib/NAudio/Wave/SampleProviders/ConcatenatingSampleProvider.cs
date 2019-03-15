@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Sample Provider to concatenate multiple sample providers together
@@ -18,11 +20,26 @@ namespace NAudio.Wave.SampleProviders
         /// <param name="providers">The source providers to play one after the other. Must all share the same sample rate and channel count</param>
         public ConcatenatingSampleProvider(IEnumerable<ISampleProvider> providers)
         {
-            if (providers == null) throw new ArgumentNullException(nameof(providers));
+            if (providers == null)
+            {
+                throw new ArgumentNullException(nameof(providers));
+            }
+
             this.providers = providers.ToArray();
-            if (this.providers.Length == 0) throw new ArgumentException("Must provide at least one input", nameof(providers));
-            if (this.providers.Any(p => p.WaveFormat.Channels != WaveFormat.Channels)) throw new ArgumentException("All inputs must have the same channel count", nameof(providers));
-            if (this.providers.Any(p => p.WaveFormat.SampleRate != WaveFormat.SampleRate)) throw new ArgumentException("All inputs must have the same sample rate", nameof(providers));
+            if (this.providers.Length == 0)
+            {
+                throw new ArgumentException("Must provide at least one input", nameof(providers));
+            }
+
+            if (this.providers.Any(p => p.WaveFormat.Channels != WaveFormat.Channels))
+            {
+                throw new ArgumentException("All inputs must have the same channel count", nameof(providers));
+            }
+
+            if (this.providers.Any(p => p.WaveFormat.SampleRate != WaveFormat.SampleRate))
+            {
+                throw new ArgumentException("All inputs must have the same sample rate", nameof(providers));
+            }
         }
 
         /// <summary>
@@ -41,7 +58,10 @@ namespace NAudio.Wave.SampleProviders
                 var needed = count - read;
                 var readThisTime = providers[currentProviderIndex].Read(buffer, read, needed);
                 read += readThisTime;
-                if (readThisTime == 0) currentProviderIndex++;
+                if (readThisTime == 0)
+                {
+                    currentProviderIndex++;
+                }
             }
             return read;
         }

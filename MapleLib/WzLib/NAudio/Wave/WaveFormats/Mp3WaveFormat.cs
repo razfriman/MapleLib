@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// MP3 WaveFormat, MPEGLAYER3WAVEFORMAT from mmreg.h

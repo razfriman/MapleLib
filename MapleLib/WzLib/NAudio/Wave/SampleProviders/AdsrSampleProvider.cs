@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Linq;
-using NAudio.Dsp;
+using MapleLib.WzLib.NAudio.Dsp;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// ADSR sample provider allowing you to specify attack, decay, sustain and release values
@@ -19,7 +20,11 @@ namespace NAudio.Wave.SampleProviders
         /// </summary>
         public AdsrSampleProvider(ISampleProvider source)
         {
-            if (source.WaveFormat.Channels > 1) throw new ArgumentException("Currently only supports mono inputs");
+            if (source.WaveFormat.Channels > 1)
+            {
+                throw new ArgumentException("Currently only supports mono inputs");
+            }
+
             this.source = source;
             adsr = new EnvelopeGenerator();
             AttackSeconds = 0.01f;
@@ -66,7 +71,11 @@ namespace NAudio.Wave.SampleProviders
         /// </summary>
         public int Read(float[] buffer, int offset, int count)
         {
-            if (adsr.State == EnvelopeGenerator.EnvelopeState.Idle) return 0; // we've finished
+            if (adsr.State == EnvelopeGenerator.EnvelopeState.Idle)
+            {
+                return 0; // we've finished
+            }
+
             var samples = source.Read(buffer, offset, count);
             for (var n = 0; n < samples; n++)
             {

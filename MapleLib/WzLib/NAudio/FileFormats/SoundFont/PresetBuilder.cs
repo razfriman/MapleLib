@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	class PresetBuilder : StructureBuilder<Preset>
 	{
@@ -23,7 +23,10 @@ namespace NAudio.SoundFont
 			p.genre = br.ReadUInt32();
 			p.morphology = br.ReadUInt32();			
 			if(lastPreset != null)
+			{
 				lastPreset.endPresetZoneIndex = (ushort) (p.startPresetZoneIndex - 1);
+			}
+
 			data.Add(p);
 			lastPreset = p;
 			return p;

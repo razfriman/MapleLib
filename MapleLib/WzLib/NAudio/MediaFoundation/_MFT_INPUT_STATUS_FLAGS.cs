@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Indicates the status of an input stream on a Media Foundation transform (MFT).

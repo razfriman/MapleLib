@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// Helper class allowing us to modify the volume of a 16 bit stream without converting to IEEE float
@@ -21,9 +21,14 @@ namespace NAudio.Wave
             this.Volume = 1.0f;
             this.sourceProvider = sourceProvider;
             if (sourceProvider.WaveFormat.Encoding != WaveFormatEncoding.Pcm)
+            {
                 throw new ArgumentException("Expecting PCM input");
+            }
+
             if (sourceProvider.WaveFormat.BitsPerSample != 16)
+            {
                 throw new ArgumentException("Expecting 16 bit");
+            }
         }
 
         /// <summary>
@@ -72,8 +77,14 @@ namespace NAudio.Wave
                     // clip if necessary
                     if (this.Volume > 1.0f)
                     {
-                        if (newSample > Int16.MaxValue) sample = Int16.MaxValue;
-                        else if (newSample < Int16.MinValue) sample = Int16.MinValue;
+                        if (newSample > Int16.MaxValue)
+                        {
+                            sample = Int16.MaxValue;
+                        }
+                        else if (newSample < Int16.MinValue)
+                        {
+                            sample = Int16.MinValue;
+                        }
                     }
 
                     buffer[offset++] = (byte)(sample & 0xFF);

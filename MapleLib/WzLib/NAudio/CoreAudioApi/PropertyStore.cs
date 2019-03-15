@@ -20,11 +20,11 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 // this version modified for NAudio from Ray Molenkamp's original
-using System;
-using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Property Store class, only supports reading properties at the moment.

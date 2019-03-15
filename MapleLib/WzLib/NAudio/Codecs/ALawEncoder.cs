@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NAudio.Codecs
+﻿namespace MapleLib.WzLib.NAudio.Codecs
 {
     /// <summary>
     /// A-law encoder
@@ -45,9 +41,15 @@ namespace NAudio.Codecs
 
             sign = ((~sample) >> 8) & 0x80;
             if (sign == 0)
+            {
                 sample = (short)-sample;
+            }
+
             if (sample > cClip)
+            {
                 sample = cClip;
+            }
+
             if (sample >= 256)
             {
                 exponent = (int)ALawCompressTable[(sample >> 8) & 0x7F];

@@ -1,8 +1,9 @@
 using System;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// WaveStream that converts 32 bit audio back down to 16 bit, clipping if necessary
@@ -30,9 +31,14 @@ namespace NAudio.Wave
         public Wave32To16Stream(WaveStream sourceStream)
         {
             if (sourceStream.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat)
+            {
                 throw new ArgumentException("Only 32 bit Floating point supported");
+            }
+
             if (sourceStream.WaveFormat.BitsPerSample != 32)
+            {
                 throw new ArgumentException("Only 32 bit Floating point supported");
+            }
 
             waveFormat = new WaveFormat(sourceStream.WaveFormat.SampleRate, 16, sourceStream.WaveFormat.Channels);
             volume = 1.0f;

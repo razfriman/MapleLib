@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveStreams;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// A wave file writer that adds cue support

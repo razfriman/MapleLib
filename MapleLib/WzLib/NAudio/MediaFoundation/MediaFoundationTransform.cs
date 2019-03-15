@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.Utils;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// An abstract base class for simplifying working with Media Foundation Transforms
@@ -238,7 +239,10 @@ namespace NAudio.MediaFoundation
         {
             // we always read a full second
             var bytesRead = sourceProvider.Read(sourceBuffer, 0, sourceBuffer.Length);
-            if (bytesRead == 0) return null;
+            if (bytesRead == 0)
+            {
+                return null;
+            }
 
             var mediaBuffer = MediaFoundationApi.CreateMemoryBuffer(bytesRead);
             IntPtr pBuffer;

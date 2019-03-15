@@ -1,8 +1,8 @@
 ﻿using System;
-using NAudio.Wave;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// http://msdn.microsoft.com/en-us/library/aa929922.aspx
@@ -133,7 +133,10 @@ namespace NAudio.Dmo
             bFixedSizeSamples = SubType == AudioMediaSubtypes.MEDIASUBTYPE_PCM || SubType == AudioMediaSubtypes.MEDIASUBTYPE_IEEE_FLOAT;
             formattype = DmoMediaTypeGuids.FORMAT_WaveFormatEx;
             if (cbFormat < Marshal.SizeOf(waveFormat))
+            {
                 throw new InvalidOperationException("Not enough memory assigned for a WaveFormat structure");
+            }
+
             //Debug.Assert(cbFormat >= ,"Not enough space");
             Marshal.StructureToPtr(waveFormat, pbFormat, false);
         }

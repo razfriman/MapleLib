@@ -20,11 +20,12 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 // updated for use in NAudio
+
 using System;
 using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
 
     /// <summary>

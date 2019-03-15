@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// Utility class to intercept audio from an IWaveProvider and

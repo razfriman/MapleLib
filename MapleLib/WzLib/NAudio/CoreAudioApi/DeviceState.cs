@@ -21,9 +21,10 @@
 */
 // adapted for NAudio,
 // updated to be in line with http://msdn.microsoft.com/en-us/library/dd370823%28v=vs.85%29.aspx
+
 using System;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Device State

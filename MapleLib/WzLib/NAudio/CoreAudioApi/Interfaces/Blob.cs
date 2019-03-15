@@ -20,9 +20,10 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 // Adapted for NAudio
+
 using System;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// Representation of binary large object container.

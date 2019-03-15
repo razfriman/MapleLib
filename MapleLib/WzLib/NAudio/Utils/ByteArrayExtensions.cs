@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {    
     /// <summary>
     /// these will become extension methods once we move to .NET 3.5
@@ -14,8 +14,13 @@ namespace NAudio.Utils
         public static bool IsEntirelyNull(byte[] buffer)
         {
             foreach (var b in buffer)
+            {
                 if (b != 0)
+                {
                     return false;
+                }
+            }
+
             return true;
         }
 
@@ -30,7 +35,9 @@ namespace NAudio.Utils
             {
                 sb.AppendFormat("{0:X2}{1}", b, separator);
                 if (++n % bytesPerLine == 0)
+                {
                     sb.Append("\r\n");
+                }
             }
             sb.Append("\r\n");
             return sb.ToString();
@@ -44,7 +51,9 @@ namespace NAudio.Utils
             for (var n = 0; n < length; n++)
             {
                 if (buffer[offset + n] == 0)
+                {
                     length = n;
+                }
             }
             return encoding.GetString(buffer, offset, length);
         }

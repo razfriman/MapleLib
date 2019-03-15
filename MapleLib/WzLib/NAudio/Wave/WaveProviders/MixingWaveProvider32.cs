@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
+using MapleLib.WzLib.NAudio.Wave.WaveStreams;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// WaveProvider that can mix together multiple 32 bit floating point input provider
@@ -47,9 +49,14 @@ namespace NAudio.Wave
         public void AddInputStream(IWaveProvider waveProvider)
         {
             if (waveProvider.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat)
+            {
                 throw new ArgumentException("Must be IEEE floating point", "waveProvider.WaveFormat");
+            }
+
             if (waveProvider.WaveFormat.BitsPerSample != 32)
+            {
                 throw new ArgumentException("Only 32 bit audio currently supported", "waveProvider.WaveFormat");
+            }
 
             if (inputs.Count == 0)
             {
@@ -61,7 +68,9 @@ namespace NAudio.Wave
             else
             {
                 if (!waveProvider.WaveFormat.Equals(waveFormat))
+                {
                     throw new ArgumentException("All incoming channels must have the same format", "waveProvider.WaveFormat");
+                }
             }
 
             lock (inputs)
@@ -101,7 +110,9 @@ namespace NAudio.Wave
         public int Read(byte[] buffer, int offset, int count)
         {
             if (count % bytesPerSample != 0)
+            {
                 throw new ArgumentException("Must read an whole number of samples", "count");
+            }
 
             // blank the buffer
             Array.Clear(buffer, offset, count);

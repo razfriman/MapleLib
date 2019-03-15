@@ -1,10 +1,12 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using MapleLib.WzLib.NAudio.FileFormats.Mp3;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     class Mp3Index
     {
@@ -89,8 +91,16 @@ namespace NAudio.Wave
 
         private Mp3FileReader(Stream inputStream, FrameDecompressorBuilder frameDecompressorBuilder, bool ownInputStream)
         {
-            if (inputStream == null) throw new ArgumentNullException(nameof(inputStream));
-            if (frameDecompressorBuilder == null) throw new ArgumentNullException(nameof(frameDecompressorBuilder));
+            if (inputStream == null)
+            {
+                throw new ArgumentNullException(nameof(inputStream));
+            }
+
+            if (frameDecompressorBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(frameDecompressorBuilder));
+            }
+
             this.ownInputStream = ownInputStream;
             try
             {
@@ -100,11 +110,17 @@ namespace NAudio.Wave
                 dataStartPosition = mp3Stream.Position;
                 var firstFrame = Mp3Frame.LoadFromStream(mp3Stream);
                 if (firstFrame == null)
+                {
                     throw new InvalidDataException("Invalid MP3 file - no MP3 Frames Detected");
+                }
+
                 double bitRate = firstFrame.BitRate;
                 xingHeader = XingHeader.LoadXingHeader(firstFrame);
                 // If the header exists, we can skip over it when decoding the rest of the file
-                if (xingHeader != null) dataStartPosition = mp3Stream.Position;
+                if (xingHeader != null)
+                {
+                    dataStartPosition = mp3Stream.Position;
+                }
 
                 // workaround for a longstanding issue with some files failing to load
                 // because they report a spurious sample rate change
@@ -162,7 +178,11 @@ namespace NAudio.Wave
             }
             catch (Exception)
             {
-                if (ownInputStream) inputStream.Dispose();
+                if (ownInputStream)
+                {
+                    inputStream.Dispose();
+                }
+
                 throw;
             }
         }
@@ -264,7 +284,11 @@ namespace NAudio.Wave
         public Mp3Frame ReadNextFrame()
         {
             var frame = ReadNextFrame(true);
-            if (frame != null) position += frame.SampleCount*bytesPerSample;
+            if (frame != null)
+            {
+                position += frame.SampleCount*bytesPerSample;
+            }
+
             return frame;
         }
 

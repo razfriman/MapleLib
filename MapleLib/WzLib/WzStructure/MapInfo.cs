@@ -151,7 +151,10 @@ namespace MapleLib.WzLib.WzStructure
                             Log.LogError("timeMob is missing data");
                         }
                         else
+                        {
                             timeMob = new TimeMob(startHour, endHour, (int)propId, message);
+                        }
+
                         break;
                     case "help":
                         help = InfoTool.GetString(prop);
@@ -181,7 +184,10 @@ namespace MapleLib.WzLib.WzStructure
                             Log.LogError($"Invalid structure: {autoLieDetector}");
                         }
                         else
+                        {
                             autoLieDetector = new AutoLieDetector((int)startHour, (int)endHour, (int)interval, (int)propInt);
+                        }
+
                         break;
                     case "expeditionOnly":
                         expeditionOnly = InfoTool.GetBool(prop);
@@ -207,8 +213,13 @@ namespace MapleLib.WzLib.WzStructure
                     case "allowedItem":
                         allowedItem = new List<int>();
                         if (prop.WzProperties != null && prop.WzProperties.Count > 0)
+                        {
                             foreach (var item in prop.WzProperties)
+                            {
                                 allowedItem.Add(item.GetInt());
+                            }
+                        }
+
                         break;
                     case "recovery":
                         recovery = InfoTool.GetFloat(prop);

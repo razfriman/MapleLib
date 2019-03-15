@@ -1,6 +1,4 @@
-using System;
-
-namespace NAudio
+namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
 {
     /// <summary>
     /// Windows multimedia error codes from mmsystem.h.

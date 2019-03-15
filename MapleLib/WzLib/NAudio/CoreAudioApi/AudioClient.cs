@@ -1,10 +1,10 @@
 ﻿using System;
-using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
-using NAudio.Utils;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Windows CoreAudio AudioClient

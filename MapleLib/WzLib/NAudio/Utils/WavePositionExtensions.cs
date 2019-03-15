@@ -1,7 +1,7 @@
 ﻿using System;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// WavePosition extension methods

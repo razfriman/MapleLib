@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NAudio.Wave
+﻿namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
 {
     /// <summary>
     /// Wave Callback Strategy

@@ -1,6 +1,8 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Allows you to:
@@ -222,7 +224,10 @@ namespace NAudio.Wave.SampleProviders
             {
                 var samplesRequired = count - samplesRead;
                 if (takeSamples != 0)
+                {
                     samplesRequired = Math.Min(samplesRequired, takeSamples - phasePos);
+                }
+
                 var read = sourceProvider.Read(buffer, offset + samplesRead, samplesRequired);
                 phasePos += read;
                 samplesRead += read;

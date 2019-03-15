@@ -1,8 +1,8 @@
 ﻿using System;
-using NAudio.CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Audio Render Client

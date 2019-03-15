@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 
-namespace NAudio.Midi
+namespace MapleLib.WzLib.NAudio.Midi
 {
     /// <summary>
     /// Represents a MIDI meta event with raw data
@@ -33,7 +33,10 @@ namespace NAudio.Midi
         {
             var sb = new StringBuilder().Append(base.ToString());
             foreach (var b in Data)
+            {
                 sb.AppendFormat(" {0:X2}", b);
+            }
+
             return sb.ToString();
         }
 
@@ -43,7 +46,11 @@ namespace NAudio.Midi
         public override void Export(ref long absoluteTime, BinaryWriter writer)
         {
             base.Export(ref absoluteTime, writer);
-            if (Data == null) return;
+            if (Data == null)
+            {
+                return;
+            }
+
             writer.Write(Data, 0, Data.Length);
         }
     }

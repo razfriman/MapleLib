@@ -1,7 +1,9 @@
 ﻿using System;
-using NAudio.Wave.SampleProviders;
+using MapleLib.WzLib.NAudio.Wave.SampleProviders;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave
 {
     /// <summary>
     /// Useful extension methods to make switching between WaveAndSampleProvider easier
@@ -117,7 +119,11 @@ namespace NAudio.Wave
         /// <returns>A mono SampleProvider</returns>
         public static ISampleProvider ToMono(this ISampleProvider sourceProvider, float leftVol = 0.5f, float rightVol = 0.5f)
         {
-            if(sourceProvider.WaveFormat.Channels == 1) return sourceProvider;
+            if(sourceProvider.WaveFormat.Channels == 1)
+            {
+                return sourceProvider;
+            }
+
             return new StereoToMonoSampleProvider(sourceProvider) {LeftVolume = leftVol, RightVolume = rightVol};
         }
 
@@ -130,7 +136,11 @@ namespace NAudio.Wave
         /// <returns></returns>
         public static ISampleProvider ToStereo(this ISampleProvider sourceProvider, float leftVol = 1.0f, float rightVol = 1.0f)
         {
-            if (sourceProvider.WaveFormat.Channels == 2) return sourceProvider;
+            if (sourceProvider.WaveFormat.Channels == 2)
+            {
+                return sourceProvider;
+            }
+
             return new MonoToStereoSampleProvider(sourceProvider) { LeftVolume = leftVol, RightVolume = rightVol };
         }
     }

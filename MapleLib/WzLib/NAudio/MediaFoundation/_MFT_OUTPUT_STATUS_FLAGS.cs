@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Indicates whether a Media Foundation transform (MFT) can produce output data.

@@ -1,7 +1,8 @@
 using System;
-using NAudio.Dsp;
+using MapleLib.WzLib.NAudio.Dsp;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// A simple compressor
@@ -233,7 +234,10 @@ namespace NAudio.Wave
                 if (Enabled)
                 {
                     if (sourceBuffer == null || sourceBuffer.Length < count)
+                    {
                         sourceBuffer = new byte[count];
+                    }
+
                     var sourceBytesRead = sourceStream.Read(sourceBuffer, 0, count);
                     var sampleCount = sourceBytesRead / (bytesPerSample * channels);
                     for (var sample = 0; sample < sampleCount; sample++)

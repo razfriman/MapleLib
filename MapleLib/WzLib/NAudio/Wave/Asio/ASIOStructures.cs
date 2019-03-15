@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Wave.Asio
+namespace MapleLib.WzLib.NAudio.Wave.Asio
 {
     // -------------------------------------------------------------------------------
     // Structures used by the AsioDriver and ASIODriverExt

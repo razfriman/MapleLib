@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using NAudio.Utils;
-using System.Runtime.InteropServices;
-using NAudio.Wave;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// Media Object

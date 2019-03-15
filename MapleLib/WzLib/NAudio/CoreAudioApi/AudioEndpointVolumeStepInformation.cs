@@ -19,11 +19,11 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
-using System;
-using NAudio.CoreAudioApi.Interfaces;
-using System.Runtime.InteropServices;
 
-namespace NAudio.CoreAudioApi
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Audio Endpoint Volume Step Information

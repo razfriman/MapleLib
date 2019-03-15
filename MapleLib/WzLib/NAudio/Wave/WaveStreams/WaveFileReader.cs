@@ -1,9 +1,10 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
-using NAudio.FileFormats.Wav;
+using System.IO;
+using MapleLib.WzLib.NAudio.FileFormats.Wav;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave 
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams 
 {
     /// <summary>This class supports the reading of WAV files,
     /// providing a repositionable WaveStream that returns the raw data
@@ -208,8 +209,16 @@ namespace NAudio.Wave
             var bytesToRead = waveFormat.Channels*(waveFormat.BitsPerSample/8);
             var raw = new byte[bytesToRead];
             var bytesRead = Read(raw, 0, bytesToRead);
-            if (bytesRead == 0) return null; // end of file
-            if (bytesRead < bytesToRead) throw new InvalidDataException("Unexpected end of file");
+            if (bytesRead == 0)
+            {
+                return null; // end of file
+            }
+
+            if (bytesRead < bytesToRead)
+            {
+                throw new InvalidDataException("Unexpected end of file");
+            }
+
             var offset = 0;
             for (var channel = 0; channel < waveFormat.Channels; channel++)
             {

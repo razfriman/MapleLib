@@ -5,9 +5,9 @@
 
 using System;
 using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// AudioSessionControl object for information
@@ -33,9 +33,14 @@ namespace NAudio.CoreAudioApi
             // ReSharper disable once SuspiciousTypeConversion.Global
             var volume = audioSessionControlInterface as ISimpleAudioVolume;
             if (meters != null)
+            {
                 AudioMeterInformation = new AudioMeterInformation(meters);
+            }
+
             if (volume != null)
+            {
                 SimpleAudioVolume = new SimpleAudioVolume(volume);
+            }
         }
 
         #region IDisposable Members
@@ -133,7 +138,11 @@ namespace NAudio.CoreAudioApi
         {
             get
             {
-                if (audioSessionControlInterface2 == null) throw new InvalidOperationException("Not supported on this version of Windows");
+                if (audioSessionControlInterface2 == null)
+                {
+                    throw new InvalidOperationException("Not supported on this version of Windows");
+                }
+
                 Marshal.ThrowExceptionForHR(audioSessionControlInterface2.GetSessionIdentifier(out var str));
                 return str;
             }
@@ -146,7 +155,11 @@ namespace NAudio.CoreAudioApi
         {
             get
             {
-                if (audioSessionControlInterface2 == null) throw new InvalidOperationException("Not supported on this version of Windows");
+                if (audioSessionControlInterface2 == null)
+                {
+                    throw new InvalidOperationException("Not supported on this version of Windows");
+                }
+
                 Marshal.ThrowExceptionForHR(audioSessionControlInterface2.GetSessionInstanceIdentifier(out var str));
                 return str;
             }
@@ -159,7 +172,11 @@ namespace NAudio.CoreAudioApi
         {
             get
             {
-                if (audioSessionControlInterface2 == null) throw new InvalidOperationException("Not supported on this version of Windows");
+                if (audioSessionControlInterface2 == null)
+                {
+                    throw new InvalidOperationException("Not supported on this version of Windows");
+                }
+
                 Marshal.ThrowExceptionForHR(audioSessionControlInterface2.GetProcessId(out var pid));
                 return pid;
             }
@@ -172,7 +189,11 @@ namespace NAudio.CoreAudioApi
         {
             get
             {
-                if (audioSessionControlInterface2 == null) throw new InvalidOperationException("Not supported on this version of Windows");
+                if (audioSessionControlInterface2 == null)
+                {
+                    throw new InvalidOperationException("Not supported on this version of Windows");
+                }
+
                 return (audioSessionControlInterface2.IsSystemSoundsSession() == 0);
             }
         }

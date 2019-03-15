@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	/// <summary>
 	/// Soundfont generator
@@ -125,11 +125,17 @@ namespace NAudio.SoundFont
 		public override string ToString()
 		{
 			if(generatorType == GeneratorEnum.Instrument)
+			{
 				return String.Format("Generator Instrument {0}",instrument.Name);
+			}
 			else if(generatorType == GeneratorEnum.SampleID)
+			{
 				return String.Format("Generator SampleID {0}",sampleHeader);
+			}
 			else
+			{
 				return String.Format("Generator {0} {1}",generatorType,rawAmount);
+			}
 		}
 
 	}

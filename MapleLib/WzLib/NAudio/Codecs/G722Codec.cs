@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NAudio.Codecs
+namespace MapleLib.WzLib.NAudio.Codecs
 {
     /// <summary>
     /// SpanDSP - a series of DSP components for telephony
@@ -36,9 +34,15 @@ namespace NAudio.Codecs
             // Hopefully this is optimised for the common case - not clipping
             amp16 = (short)amp;
             if (amp == amp16)
+            {
                 return amp16;
+            }
+
             if (amp > Int16.MaxValue)
+            {
                 return Int16.MaxValue;
+            }
+
             return Int16.MinValue;
         }
 
@@ -58,19 +62,30 @@ namespace NAudio.Codecs
 
             // Block 4, UPPOL2
             for (i = 0; i < 3; i++)
+            {
                 s.Band[band].sg[i] = s.Band[band].p[i] >> 15;
+            }
+
             wd1 = Saturate(s.Band[band].a[1] << 2);
 
             wd2 = (s.Band[band].sg[0] == s.Band[band].sg[1]) ? -wd1 : wd1;
             if (wd2 > 32767)
+            {
                 wd2 = 32767;
+            }
+
             wd3 = (s.Band[band].sg[0] == s.Band[band].sg[2]) ? 128 : -128;
             wd3 += (wd2 >> 7);
             wd3 += (s.Band[band].a[2] * 32512) >> 15;
             if (wd3 > 12288)
+            {
                 wd3 = 12288;
+            }
             else if (wd3 < -12288)
+            {
                 wd3 = -12288;
+            }
+
             s.Band[band].ap[2] = wd3;
 
             // Block 4, UPPOL1
@@ -82,9 +97,13 @@ namespace NAudio.Codecs
             s.Band[band].ap[1] = Saturate(wd1 + wd2);
             wd3 = Saturate(15360 - s.Band[band].ap[2]);
             if (s.Band[band].ap[1] > wd3)
+            {
                 s.Band[band].ap[1] = wd3;
+            }
             else if (s.Band[band].ap[1] < -wd3)
+            {
                 s.Band[band].ap[1] = -wd3;
+            }
 
             // Block 4, UPZERO
             wd1 = (d == 0) ? 0 : 128;
@@ -223,9 +242,13 @@ namespace NAudio.Codecs
                 
                 // Block 6L, LIMIT
                 if (rlow > 16383)
+                {
                     rlow = 16383;
+                }
                 else if (rlow < -16384)
+                {
                     rlow = -16384;
+                }
 
                 // Block 2L, INVQAL
                 wd2 = qm4[wd1];
@@ -236,9 +259,14 @@ namespace NAudio.Codecs
                 wd1 = (state.Band[0].nb * 127) >> 7;
                 wd1 += wl[wd2];
                 if (wd1 < 0)
+                {
                     wd1 = 0;
+                }
                 else if (wd1 > 18432)
+                {
                     wd1 = 18432;
+                }
+
                 state.Band[0].nb = wd1;
 
                 // Block 3L, SCALEL
@@ -260,18 +288,27 @@ namespace NAudio.Codecs
                     
                     // Block 6H, LIMIT
                     if (rhigh > 16383)
+                    {
                         rhigh = 16383;
+                    }
                     else if (rhigh < -16384)
+                    {
                         rhigh = -16384;
+                    }
 
                     // Block 2H, INVQAH
                     wd2 = rh2[ihigh];
                     wd1 = (state.Band[1].nb * 127) >> 7;
                     wd1 += wh[wd2];
                     if (wd1 < 0)
+                    {
                         wd1 = 0;
+                    }
                     else if (wd1 > 22528)
+                    {
                         wd1 = 22528;
+                    }
+
                     state.Band[1].nb = wd1;
 
                     // Block 3H, SCALEH
@@ -298,7 +335,10 @@ namespace NAudio.Codecs
                     {
                         // Apply the receive QMF
                         for (i = 0; i < 22; i++)
+                        {
                             state.QmfSignalHistory[i] = state.QmfSignalHistory[i + 2];
+                        }
+
                         state.QmfSignalHistory[22] = rlow + rhigh;
                         state.QmfSignalHistory[23] = rlow - rhigh;
 
@@ -372,7 +412,10 @@ namespace NAudio.Codecs
                         // Apply the transmit QMF
                         // Shuffle the buffer down
                         for (i = 0; i < 22; i++)
+                        {
                             state.QmfSignalHistory[i] = state.QmfSignalHistory[i + 2];
+                        }
+
                         state.QmfSignalHistory[22] = inputBuffer[j++];
                         state.QmfSignalHistory[23] = inputBuffer[j++];
 
@@ -398,7 +441,9 @@ namespace NAudio.Codecs
                 {
                     wd1 = (q6[i] * state.Band[0].det) >> 12;
                     if (wd < wd1)
+                    {
                         break;
+                    }
                 }
                 ilow = (el < 0) ? iln[i] : ilp[i];
 
@@ -412,9 +457,13 @@ namespace NAudio.Codecs
                 wd = (state.Band[0].nb * 127) >> 7;
                 state.Band[0].nb = wd + wl[il4];
                 if (state.Band[0].nb < 0)
+                {
                     state.Band[0].nb = 0;
+                }
                 else if (state.Band[0].nb > 18432)
+                {
                     state.Band[0].nb = 18432;
+                }
 
                 // Block 3L, SCALEL
                 wd1 = (state.Band[0].nb >> 6) & 31;
@@ -449,9 +498,13 @@ namespace NAudio.Codecs
                     wd = (state.Band[1].nb * 127) >> 7;
                     state.Band[1].nb = wd + wh[ih2];
                     if (state.Band[1].nb < 0)
+                    {
                         state.Band[1].nb = 0;
+                    }
                     else if (state.Band[1].nb > 22528)
+                    {
                         state.Band[1].nb = 22528;
+                    }
 
                     // Block 3H, SCALEH
                     wd1 = (state.Band[1].nb >> 6) & 31;
@@ -555,19 +608,36 @@ namespace NAudio.Codecs
             this.ItuTestMode = false;
 
             if (rate == 48000)
+            {
                 this.BitsPerSample = 6;
+            }
             else if (rate == 56000)
+            {
                 this.BitsPerSample = 7;
+            }
             else if (rate == 64000)
+            {
                 this.BitsPerSample = 8;
+            }
             else
+            {
                 throw new ArgumentException("Invalid rate, should be 48000, 56000 or 64000");
+            }
+
             if ((options & G722Flags.SampleRate8000) == G722Flags.SampleRate8000)
+            {
                 this.EncodeFrom8000Hz = true;
+            }
+
             if (((options & G722Flags.Packed) == G722Flags.Packed) && this.BitsPerSample != 8)
+            {
                 this.Packed = true;
+            }
             else
+            {
                 this.Packed = false;
+            }
+
             this.Band[0].det = 32;
             this.Band[1].det = 8;
         }

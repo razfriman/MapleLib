@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using MapleLib.WzLib.Util;
-using MapleLib.WzLib.WzProperties;
-using System.IO;
-using System.Globalization;
-using System.Xml;
 using System.DrawingCore;
 using System.DrawingCore.Imaging;
+using System.Globalization;
+using System.IO;
+using System.Xml;
+using MapleLib.WzLib.Util;
+using MapleLib.WzLib.WzProperties;
 
-namespace MapleLib.WzLib.Serialization
+namespace MapleLib.WzLib
 {
     public abstract class ProgressingWzSerializer
     {

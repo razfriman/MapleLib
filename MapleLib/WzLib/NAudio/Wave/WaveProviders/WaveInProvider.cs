@@ -1,4 +1,9 @@
-﻿namespace NAudio.Wave
+﻿using MapleLib.WzLib.NAudio.Wave.MmeInterop;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveInputs;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
+
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// Buffered WaveProvider taking source data from WaveIn

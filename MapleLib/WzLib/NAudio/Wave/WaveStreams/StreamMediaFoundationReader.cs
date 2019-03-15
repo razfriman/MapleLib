@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using NAudio.MediaFoundation;
+using MapleLib.WzLib.NAudio.MediaFoundation;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// MediaFoundationReader supporting reading from a stream

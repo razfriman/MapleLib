@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	class SampleDataChunk 
 	{

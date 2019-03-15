@@ -1,8 +1,9 @@
 ﻿using System;
-using NAudio.CoreAudioApi;
+using MapleLib.WzLib.NAudio.CoreAudioApi;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveInputs
 {
     /// <summary>
     /// WASAPI Loopback Capture

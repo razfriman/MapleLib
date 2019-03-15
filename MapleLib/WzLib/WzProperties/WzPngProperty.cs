@@ -32,8 +32,14 @@ namespace MapleLib.WzLib.WzProperties
         #region Inherited Members
         public override void SetValue(object value)
         {
-            if (value is Bitmap) SetPNG((Bitmap)value);
-            else compressedBytes = (byte[])value;
+            if (value is Bitmap)
+            {
+                SetPNG((Bitmap)value);
+            }
+            else
+            {
+                compressedBytes = (byte[])value;
+            }
         }
 
         public override WzImageProperty DeepClone()
@@ -137,8 +143,10 @@ namespace MapleLib.WzLib.WzProperties
                     compressedBytes = wzReader.ReadBytes(len);
                     ParsePng();
                 }
-                else 
+                else
+                {
                     reader.BaseStream.Position += len;
+                }
             }
             wzReader = reader;
         }
@@ -154,7 +162,10 @@ namespace MapleLib.WzLib.WzProperties
                 var len = wzReader.ReadInt32() - 1;
                 wzReader.BaseStream.Position += 1;
                 if (len > 0)
+                {
                     compressedBytes = wzReader.ReadBytes(len);
+                }
+
                 wzReader.BaseStream.Position = pos;
                 if (!saveInMemory)
                 {
@@ -182,7 +193,10 @@ namespace MapleLib.WzLib.WzProperties
                 var len = wzReader.ReadInt32() - 1;
                 wzReader.BaseStream.Position += 1;
                 if (len > 0)
+                {
                     compressedBytes = wzReader.ReadBytes(len);
+                }
+
                 ParsePng();
                 wzReader.BaseStream.Position = pos;
                 if (!saveInMemory)
@@ -431,7 +445,10 @@ namespace MapleLib.WzLib.WzProperties
                 }
                 writer.Write(compressedBytes.Length - 2);
                 for (var i = 2; i < compressedBytes.Length; i++)
+                {
                     writer.Write((byte)(compressedBytes[i] ^ writer.WzKey[i - 2]));
+                }
+
                 compressedBytes = memStream.GetBuffer();
                 writer.Close();
             }

@@ -1,9 +1,10 @@
 // created on 13/12/2002 at 22:04
+
 using System;
 using System.Runtime.InteropServices;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
 
-namespace NAudio.Mixer
+namespace MapleLib.WzLib.NAudio.Mixer
 {
 	/// <summary>
 	/// Represents an unsigned mixer control

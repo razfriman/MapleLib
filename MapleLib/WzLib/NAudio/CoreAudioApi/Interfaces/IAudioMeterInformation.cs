@@ -19,10 +19,11 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
+
 using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"),
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

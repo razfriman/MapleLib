@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NAudio.Dmo;
-using NAudio.Wave;
 using System.Diagnostics;
+using MapleLib.WzLib.NAudio.Dmo;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.FileFormats.Mp3
+namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
 {
     /// <summary>
     /// MP3 Frame decompressor using the Windows Media MP3 Decoder DMO object

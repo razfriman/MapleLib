@@ -1,10 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// Represents a Wave file format
@@ -210,7 +210,10 @@ namespace NAudio.Wave
         private void ReadWaveFormat(BinaryReader br, int formatChunkLength)
         {
             if (formatChunkLength < 16)
+            {
                 throw new InvalidDataException("Invalid WaveFormat Structure");
+            }
+
             waveFormatTag = (WaveFormatEncoding)br.ReadUInt16();
             channels = br.ReadInt16();
             sampleRate = br.ReadInt32();

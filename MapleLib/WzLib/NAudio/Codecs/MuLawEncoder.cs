@@ -1,4 +1,4 @@
-﻿namespace NAudio.Codecs
+﻿namespace MapleLib.WzLib.NAudio.Codecs
 {
     /// <summary>
     /// mu-law encoder
@@ -39,9 +39,15 @@
         {
             var sign = (sample >> 8) & 0x80;
             if (sign != 0)
+            {
                 sample = (short)-sample;
+            }
+
             if (sample > cClip)
+            {
                 sample = cClip;
+            }
+
             sample = (short)(sample + cBias);
             var exponent = (int)MuLawCompressTable[(sample >> 7) & 0xFF];
             var mantissa = (sample >> (exponent + 3)) & 0x0F;

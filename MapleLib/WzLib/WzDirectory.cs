@@ -50,9 +50,15 @@ namespace MapleLib.WzLib
 			name = null;
 			reader = null;
 			foreach (var img in images)
+			{
 				img.Dispose();
+			}
+
 			foreach (var dir in subDirs)
+			{
 				dir.Dispose();
+			}
+
 			images.Clear();
 			subDirs.Clear();
 			images = null;
@@ -91,11 +97,21 @@ namespace MapleLib.WzLib
 			get
 			{
 				foreach (var i in images)
+				{
 					if (i.Name.ToLower() == name.ToLower())
+					{
 						return i;
+					}
+				}
+
 				foreach (var d in subDirs)
+				{
 					if (d.Name.ToLower() == name.ToLower())
+					{
 						return d;
+					}
+				}
+
 				//throw new KeyNotFoundException("No wz image or directory was found with the specified name");
 				return null;
 			}
@@ -105,11 +121,17 @@ namespace MapleLib.WzLib
                 {
                     value.Name = name;
                     if (value is WzDirectory)
-                        AddDirectory((WzDirectory)value);
+                    {
+	                    AddDirectory((WzDirectory)value);
+                    }
                     else if (value is WzImage)
-                        AddImage((WzImage)value);
+                    {
+	                    AddImage((WzImage)value);
+                    }
                     else
-                        throw new ArgumentException("Value must be a Directory or Image");
+                    {
+	                    throw new ArgumentException("Value must be a Directory or Image");
+                    }
                 }
             }
 		}
@@ -232,7 +254,9 @@ namespace MapleLib.WzLib
                 }
 			}
 			foreach (var dir in subDirs)
+			{
 				dir.SaveImages(wzWriter, fs);
+			}
 		}
 		internal int GenerateDataFile(string fileName)
 		{
@@ -287,7 +311,9 @@ namespace MapleLib.WzLib
 				offsetSize += WzTool.GetCompressedIntLength(img.Checksum);
 				offsetSize += 4;
                 if (img.Changed)
-				    imgWriter.Close();
+                {
+	                imgWriter.Close();
+                }
 			}
 			fileWrite.Close();
 
@@ -333,10 +359,16 @@ namespace MapleLib.WzLib
 				writer.WriteOffset(dir.Offset);
 			}
 			foreach (var dir in subDirs)
+			{
 				if (dir.BlockSize > 0)
+				{
 					dir.SaveDirectory(writer);
+				}
 				else
+				{
 					writer.Write((byte)0);
+				}
+			}
 		}
 		internal uint GetOffsets(uint curOffset)
 		{
@@ -404,7 +436,9 @@ namespace MapleLib.WzLib
 		{
 			this.hash = newHash;
 			foreach (var dir in subDirs)
+			{
 				dir.SetHash(newHash);
+			}
 		}
 
 		/// <summary>
@@ -431,7 +465,11 @@ namespace MapleLib.WzLib
 		/// </summary>
 		public void ClearImages()
 		{
-            foreach (var img in images) img.Parent = null;
+            foreach (var img in images)
+            {
+	            img.Parent = null;
+            }
+
 			images.Clear();
 		}
 		/// <summary>
@@ -439,7 +477,11 @@ namespace MapleLib.WzLib
 		/// </summary>
 		public void ClearDirectories()
 		{
-            foreach (var dir in subDirs) dir.Parent = null;
+            foreach (var dir in subDirs)
+            {
+	            dir.Parent = null;
+            }
+
 			subDirs.Clear();
 		}
 		/// <summary>
@@ -450,8 +492,13 @@ namespace MapleLib.WzLib
 		public WzImage GetImageByName(string name)
 		{
 			foreach (var wzI in images)
+			{
 				if (wzI.Name.ToLower() == name.ToLower())
+				{
 					return wzI;
+				}
+			}
+
 			return null;
 		}
 		/// <summary>
@@ -462,8 +509,13 @@ namespace MapleLib.WzLib
 		public WzDirectory GetDirectoryByName(string name)
 		{
 			foreach (var dir in subDirs)
+			{
 				if (dir.Name.ToLower() == name.ToLower())
+				{
 					return dir;
+				}
+			}
+
 			return null;
 		}
 		/// <summary>
@@ -505,18 +557,27 @@ namespace MapleLib.WzLib
             result.WzDirectories.Clear();
             result.WzImages.Clear();
             foreach (var dir in WzDirectories)
-                result.WzDirectories.Add(dir.DeepClone());
-            foreach (var img in WzImages)
-                result.WzImages.Add(img.DeepClone());
-            return result;
+            {
+	            result.WzDirectories.Add(dir.DeepClone());
+            }
+
+	        foreach (var img in WzImages)
+	        {
+		        result.WzImages.Add(img.DeepClone());
+	        }
+
+	        return result;
         }
 
         public int CountImages()
         {
             var result = images.Count;
             foreach (var subdir in WzDirectories)
-                result += subdir.CountImages();
-            return result;
+            {
+	            result += subdir.CountImages();
+            }
+
+	        return result;
         }
         #endregion
 

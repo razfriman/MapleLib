@@ -1,9 +1,11 @@
 ﻿using System;
-using NAudio.Dmo;
 using System.Diagnostics;
+using MapleLib.WzLib.NAudio.Dmo;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Wave Stream for converting between sample rates

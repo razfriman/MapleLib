@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
 
-namespace NAudio.Midi 
+namespace MapleLib.WzLib.NAudio.Midi 
 {
     /// <summary>
     /// Represents a MIDI out device

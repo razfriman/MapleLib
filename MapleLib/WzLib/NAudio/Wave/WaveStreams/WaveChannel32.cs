@@ -1,7 +1,9 @@
 using System;
-using NAudio.Wave.SampleProviders;
+using MapleLib.WzLib.NAudio.Wave.SampleChunkConverters;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Represents Channel for the WaveMixerStream
@@ -149,7 +151,9 @@ namespace NAudio.Wave
                 {
                     bytesWritten = (int) Math.Min(numBytes, 0 - position);
                     for (var n = 0; n < bytesWritten; n++)
+                    {
                         destBuffer[n + offset] = 0;
+                    }
                 }
                 if (bytesWritten < numBytes)
                 {
@@ -167,7 +171,10 @@ namespace NAudio.Wave
                         destWaveBuffer.FloatBuffer[outIndex++] = left;
                         destWaveBuffer.FloatBuffer[outIndex++] = right;
                         bytesWritten += 8;
-                        if (Sample != null) RaiseSample(left, right);
+                        if (Sample != null)
+                        {
+                            RaiseSample(left, right);
+                        }
                     }
                 }
                 // 3. Fill out with zeroes
@@ -222,7 +229,10 @@ namespace NAudio.Wave
             if (sourceHasData)
             {
                 if (position + count < 0)
+                {
                     return false;
+                }
+
                 return (position < length) && (volume != 0);
             }
             return false;

@@ -1,6 +1,9 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
+using MapleLib.WzLib.NAudio.Wave.WaveStreams;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Simple class that raises an event on every sample

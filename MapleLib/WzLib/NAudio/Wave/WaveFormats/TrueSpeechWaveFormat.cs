@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.IO;
 using System.Runtime.InteropServices;
-using System.IO;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// DSP Group TrueSpeech

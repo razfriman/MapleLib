@@ -152,7 +152,10 @@ namespace MapleLib.WzLib.Util
         {
             var outputChars = new char[stringToDecrypt.Length];
             for (var i = 0; i < stringToDecrypt.Length; i++)
+            {
                 outputChars[i] = (char)(stringToDecrypt[i] ^ ((char)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
+            }
+
             return outputChars;
         }
 
@@ -160,7 +163,10 @@ namespace MapleLib.WzLib.Util
         {
             var outputChars = new char[stringToDecrypt.Length];
             for (var i = 0; i < stringToDecrypt.Length; i++)
+            {
                 outputChars[i] = (char)(stringToDecrypt[i] ^ WzKey[i]);
+            }
+
             return outputChars;
         }
 

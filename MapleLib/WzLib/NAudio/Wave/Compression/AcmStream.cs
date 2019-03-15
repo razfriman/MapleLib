@@ -1,7 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave.Compression
+namespace MapleLib.WzLib.NAudio.Wave.Compression
 {
     /// <summary>
     /// AcmStream encapsulates an Audio Compression Manager Stream
@@ -69,7 +71,10 @@ namespace NAudio.Wave.Compression
         public int SourceToDest(int source)
         {
             if (source == 0) // zero is an invalid parameter to acmStreamSize
+            {
                 return 0;
+            }
+
             int convertedBytes;
             var mmResult = AcmInterop.acmStreamSize(streamHandle, source, out convertedBytes, AcmStreamSizeFlags.Source);
             MmException.Try(mmResult, "acmStreamSize");
@@ -84,7 +89,10 @@ namespace NAudio.Wave.Compression
         public int DestToSource(int dest)
         {
             if (dest == 0) // zero is an invalid parameter to acmStreamSize
+            {
                 return 0;
+            }
+
             int convertedBytes;
             MmException.Try(AcmInterop.acmStreamSize(streamHandle, dest, out convertedBytes, AcmStreamSizeFlags.Destination), "acmStreamSize");
             return convertedBytes;

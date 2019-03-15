@@ -32,7 +32,10 @@ namespace MapleLib.WzLib
                 var len = wzParser.ReadInt32();
                 var strChrs = new char[len];
                 for (var i = 0; i < len; i++)
+                {
                     strChrs[i] = (char)wzParser.ReadInt16();
+                }
+
                 wzParser.ReadUInt16(); //encrypted null
                 var decryptedStr = wzParser.DecryptString(strChrs);
                 listEntries.Add(decryptedStr);
@@ -62,7 +65,9 @@ namespace MapleLib.WzLib
                 wzWriter.Write(s.Length);
                 var encryptedChars = wzWriter.EncryptString(s + (char)0);
                 for (var j = 0; j < encryptedChars.Length; j++)
+                {
                     wzWriter.Write((short)encryptedChars[j]);
+                }
             }
             listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "/";
         }

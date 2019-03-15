@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// interface to receive session related events

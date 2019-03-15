@@ -2,7 +2,7 @@ using System;
 using System.IO;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	/// <summary>
 	/// A soundfont info chunk

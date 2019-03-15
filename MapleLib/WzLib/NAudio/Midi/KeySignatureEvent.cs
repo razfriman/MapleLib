@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace NAudio.Midi
+namespace MapleLib.WzLib.NAudio.Midi
 {
     /// <summary>
     /// Represents a MIDI key signature event event

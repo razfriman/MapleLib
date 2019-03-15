@@ -19,11 +19,11 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
-using System;
-using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Audio Meter Information

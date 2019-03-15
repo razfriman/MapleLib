@@ -1,7 +1,9 @@
 ﻿using System;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Converts a sample provider to 16 bit PCM, optionally clipping and adjusting volume along the way
@@ -21,9 +23,14 @@ namespace NAudio.Wave.SampleProviders
         public SampleToWaveProvider16(ISampleProvider sourceProvider)
         {
             if (sourceProvider.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat)
+            {
                 throw new ArgumentException("Input source provider must be IEEE float", nameof(sourceProvider));
+            }
+
             if (sourceProvider.WaveFormat.BitsPerSample != 32)
+            {
                 throw new ArgumentException("Input source provider must be 32 bit", nameof(sourceProvider));
+            }
 
             waveFormat = new WaveFormat(sourceProvider.WaveFormat.SampleRate, 16, sourceProvider.WaveFormat.Channels);
 
@@ -52,9 +59,15 @@ namespace NAudio.Wave.SampleProviders
                 var sample32 = sourceBuffer[sample] * volume;
                 // clip
                 if (sample32 > 1.0f)
+                {
                     sample32 = 1.0f;
+                }
+
                 if (sample32 < -1.0f)
+                {
                     sample32 = -1.0f;
+                }
+
                 destWaveBuffer.ShortBuffer[destOffset++] = (short)(sample32 * 32767);
             }
 

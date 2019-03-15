@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// http://msdn.microsoft.com/en-gb/library/windows/desktop/ms702192%28v=vs.85%29.aspx

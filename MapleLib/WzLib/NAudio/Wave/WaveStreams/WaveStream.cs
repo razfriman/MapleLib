@@ -1,9 +1,12 @@
 // created on 27/12/2002 at 20:20
+
 using System;
 using System.IO;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave 
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams 
 {
     /// <summary>
     /// Base class for all WaveStream classes. Derives from stream.
@@ -48,11 +51,18 @@ namespace NAudio.Wave
         public override long Seek(long offset, SeekOrigin origin)
         {
             if (origin == SeekOrigin.Begin)
+            {
                 Position = offset;
+            }
             else if (origin == SeekOrigin.Current)
+            {
                 Position += offset;
+            }
             else
+            {
                 Position = Length + offset;
+            }
+
             return Position;
         }
 
@@ -87,11 +97,17 @@ namespace NAudio.Wave
         {
             var newPosition = Position + WaveFormat.AverageBytesPerSecond*seconds;
             if (newPosition > Length)
+            {
                 Position = Length;
+            }
             else if (newPosition < 0)
+            {
                 Position = 0;
+            }
             else
+            {
                 Position = newPosition;
+            }
         }
 
         /// <summary>

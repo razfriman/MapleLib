@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Media Foundation Transform Categories

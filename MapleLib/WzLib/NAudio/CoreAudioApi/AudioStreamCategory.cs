@@ -1,4 +1,4 @@
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Specifies the category of an audio stream.

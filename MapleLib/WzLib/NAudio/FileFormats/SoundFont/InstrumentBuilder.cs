@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	/// <summary>
 	/// Instrument Builder

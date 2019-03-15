@@ -1,8 +1,10 @@
 ﻿using System;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// Takes a stereo 16 bit input and turns it mono, allowing you to select left or right channel only or mix them together
@@ -70,8 +72,15 @@ namespace NAudio.Wave
                 var right = sourceWaveBuffer.ShortBuffer[sample+1];
                 var outSample = (left * LeftVolume) + (right * RightVolume);
                 // hard limiting
-                if (outSample > Int16.MaxValue) outSample = Int16.MaxValue;
-                if (outSample < Int16.MinValue) outSample = Int16.MinValue;
+                if (outSample > Int16.MaxValue)
+                {
+                    outSample = Int16.MaxValue;
+                }
+
+                if (outSample < Int16.MinValue)
+                {
+                    outSample = Int16.MinValue;
+                }
 
                 destWaveBuffer.ShortBuffer[destOffset++] = (short)outSample;
             }

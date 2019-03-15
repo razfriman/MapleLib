@@ -1,8 +1,7 @@
 using System;
 using System.IO;
-using System.Text;
 
-namespace NAudio.Midi 
+namespace MapleLib.WzLib.NAudio.Midi 
 {
     /// <summary>
     /// Represents an individual MIDI event
@@ -312,9 +311,13 @@ namespace NAudio.Midi
         public override string ToString() 
         {
             if(commandCode >= MidiCommandCode.Sysex)
+            {
                 return String.Format("{0} {1}",absoluteTime,commandCode);
+            }
             else
+            {
                 return String.Format("{0} {1} Ch: {2}", absoluteTime, commandCode, channel);
+            }
         }
         
         /// <summary>
@@ -367,9 +370,13 @@ namespace NAudio.Midi
             {
                 n--;
                 if(n > 0)
+                {
                     writer.Write((byte) (buffer[n] | 0x80));
-                else 
+                }
+                else
+                {
                     writer.Write(buffer[n]);
+                }
             }
         }
 

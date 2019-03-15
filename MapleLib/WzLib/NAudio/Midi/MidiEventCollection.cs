@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.Midi
+namespace MapleLib.WzLib.NAudio.Midi
 {
     /// <summary>
     /// A helper class to manage collection of MIDI events

@@ -1,4 +1,4 @@
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	/// <summary>
 	/// Sample Link Type

@@ -1,7 +1,6 @@
 ﻿using System;
 
-
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// Methods for converting between IEEE 80-bit extended double precision
@@ -111,7 +110,11 @@ namespace NAudio.Utils
         /// <returns>A C# double precision number that is a close representation of the IEEE extended number.</returns>
         public static double ConvertFromIeeeExtended(byte[] bytes)
         {
-            if (bytes.Length != 10) throw new Exception("Incorrect length for IEEE extended.");
+            if (bytes.Length != 10)
+            {
+                throw new Exception("Incorrect length for IEEE extended.");
+            }
+
             double f;
             int expon;
             uint hiMant, loMant;
@@ -138,8 +141,14 @@ namespace NAudio.Utils
                 }
             }
 
-            if ((bytes[0] & 0x80) == 0x80) return -f;
-            else return f;
+            if ((bytes[0] & 0x80) == 0x80)
+            {
+                return -f;
+            }
+            else
+            {
+                return f;
+            }
         }
         #endregion
     }

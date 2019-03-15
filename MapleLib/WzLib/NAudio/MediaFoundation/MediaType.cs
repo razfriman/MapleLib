@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.Utils;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Media Type helper class, simplifying working with IMFMediaType

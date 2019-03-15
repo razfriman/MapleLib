@@ -1,7 +1,8 @@
 ﻿using System;
-using NAudio.Wave.Compression;
+using MapleLib.WzLib.NAudio.Wave.Compression;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
 {
     /// <summary>
     /// MP3 Frame Decompressor using ACM
@@ -78,7 +79,10 @@ namespace NAudio.Wave
             {
                 disposed = true;
 				if(conversionStream != null)
-					conversionStream.Dispose();
+				{
+				    conversionStream.Dispose();
+				}
+
                 GC.SuppressFinalize(this);
             }
         }

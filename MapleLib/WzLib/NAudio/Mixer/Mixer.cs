@@ -1,9 +1,9 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using NAudio.Wave;
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
 
-namespace NAudio.Mixer
+namespace MapleLib.WzLib.NAudio.Mixer
 {
 	/// <summary>Represents a Windows mixer device</summary>
 	public class Mixer 

@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.Midi 
+namespace MapleLib.WzLib.NAudio.Midi 
 {
     /// <summary>
     /// Class able to read a MIDI file
@@ -106,12 +106,20 @@ namespace NAudio.Midi
                         }
                         catch (InvalidDataException)
                         {
-                            if (strictChecking) throw;
+                            if (strictChecking)
+                            {
+                                throw;
+                            }
+
                             continue;
                         }
                         catch (FormatException)
                         {
-                            if (strictChecking) throw;
+                            if (strictChecking)
+                            {
+                                throw;
+                            }
+
                             continue;
                         }
 
@@ -172,7 +180,9 @@ namespace NAudio.Midi
             finally
             {
                 if (ownInputStream)
+                {
                     br.Close();
+                }
             }
         }
 

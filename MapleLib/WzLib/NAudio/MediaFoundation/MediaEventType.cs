@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NAudio.MediaFoundation
+﻿namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// See mfobjects.h

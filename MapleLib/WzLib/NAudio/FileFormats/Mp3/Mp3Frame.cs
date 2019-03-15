@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
 {
 
     /// <summary>
@@ -149,7 +147,7 @@ namespace NAudio.Wave
                     // invalid index
                     return false;
                 }
-                var versionIndex = frame.MpegVersion == Wave.MpegVersion.Version1 ? 0 : 1;
+                var versionIndex = frame.MpegVersion == MpegVersion.Version1 ? 0 : 1;
                 frame.BitRate = bitRates[versionIndex, layerIndex, frame.BitRateIndex]*1000;
                 if (frame.BitRate == 0)
                 {

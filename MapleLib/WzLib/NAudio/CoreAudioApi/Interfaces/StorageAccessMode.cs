@@ -1,4 +1,4 @@
-﻿namespace NAudio.CoreAudioApi.Interfaces
+﻿namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// MMDevice STGM enumeration

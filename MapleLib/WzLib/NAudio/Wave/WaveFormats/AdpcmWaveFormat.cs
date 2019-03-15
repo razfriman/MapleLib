@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// Microsoft ADPCM

@@ -1,8 +1,10 @@
 // created on 10/12/2002 at 23:58
+
 using System;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.Wave.MmeInterop;
 
-namespace NAudio.Mixer 
+namespace MapleLib.WzLib.NAudio.Mixer 
 {
 	/// <summary>
 	/// Boolean mixer control

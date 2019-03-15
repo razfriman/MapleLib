@@ -1,6 +1,4 @@
-using System;
-
-namespace NAudio
+namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
 {
 	/// <summary>
 	/// Manufacturer codes from mmreg.h

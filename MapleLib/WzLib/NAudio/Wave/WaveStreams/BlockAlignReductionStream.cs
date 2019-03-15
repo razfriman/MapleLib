@@ -1,8 +1,9 @@
 ﻿using System;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Helper stream that lets us read from compressed audio files with large block alignment
@@ -81,7 +82,10 @@ namespace NAudio.Wave
                     if (position != value)
                     {
                         if (position % BlockAlign != 0)
+                        {
                             throw new ArgumentException("Position must be block aligned");
+                        }
+
                         var sourcePosition = value - (value % sourceStream.BlockAlign);
                         if (sourceStream.Position != sourcePosition)
                         {

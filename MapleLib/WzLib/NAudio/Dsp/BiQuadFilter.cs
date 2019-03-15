@@ -22,7 +22,7 @@
 
 using System;
 
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     /// <summary>
     /// BiQuad filter

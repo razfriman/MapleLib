@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     // C# ADSR based on work by Nigel Redmon, EarLevel Engineering: earlevel.com
     // http://www.earlevel.com/main/2013/06/03/envelope-generators-adsr-code/
@@ -144,7 +143,10 @@ namespace NAudio.Dsp
         void SetTargetRatioAttack(float targetRatio)
         {
             if (targetRatio < 0.000000001f)
+            {
                 targetRatio = 0.000000001f;  // -180 dB
+            }
+
             targetRatioAttack = targetRatio;
             attackBase = (1.0f + targetRatioAttack) * (1.0f - attackCoef);
         }
@@ -155,7 +157,10 @@ namespace NAudio.Dsp
         void SetTargetRatioDecayRelease(float targetRatio)
         {
             if (targetRatio < 0.000000001f)
+            {
                 targetRatio = 0.000000001f;  // -180 dB
+            }
+
             targetRatioDecayRelease = targetRatio;
             decayBase = (sustainLevel - targetRatioDecayRelease) * (1.0f - decayCoef);
             releaseBase = -targetRatioDecayRelease * (1.0f - releaseCoef);
@@ -208,9 +213,13 @@ namespace NAudio.Dsp
         public void Gate(bool gate)
         {
             if (gate)
+            {
                 state = EnvelopeState.Attack;
+            }
             else if (state != EnvelopeState.Idle)
+            {
                 state = EnvelopeState.Release;
+            }
         }
 
         /// <summary>

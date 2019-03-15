@@ -1,6 +1,8 @@
 using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Takes a stereo input and turns it to mono
@@ -47,7 +49,10 @@ namespace NAudio.Wave.SampleProviders
         public int Read(float[] buffer, int offset, int count)
         {
             var sourceSamplesRequired = count * 2;
-            if (sourceBuffer == null || sourceBuffer.Length < sourceSamplesRequired) sourceBuffer = new float[sourceSamplesRequired];
+            if (sourceBuffer == null || sourceBuffer.Length < sourceSamplesRequired)
+            {
+                sourceBuffer = new float[sourceSamplesRequired];
+            }
 
             var sourceSamplesRead = sourceProvider.Read(sourceBuffer, 0, sourceSamplesRequired);
             var destOffset = offset;

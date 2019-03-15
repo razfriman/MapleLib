@@ -1,6 +1,7 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.Wave.Asio
+namespace MapleLib.WzLib.NAudio.Wave.Asio
 {
     /// <summary>
     /// This class stores convertors for different interleaved WaveFormat to ASIOSampleType separate channel

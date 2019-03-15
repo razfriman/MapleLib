@@ -1,4 +1,6 @@
-﻿namespace NAudio.Wave.SampleProviders
+﻿using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
+
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Converts an IWaveProvider containing 32 bit PCM to an

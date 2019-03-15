@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     /// <summary>
     /// Contains the name and CLSID of a DirectX Media Object

@@ -1,9 +1,9 @@
-﻿using NAudio.CoreAudioApi.Interfaces;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
 
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Manages the AudioStreamVolume for the <see cref="AudioClient"/>.
@@ -104,8 +104,15 @@ namespace NAudio.CoreAudioApi
             for (var i = 0; i < levels.Length; i++)
             {
                 var level = levels[i];
-                if (level < 0.0f) throw new ArgumentOutOfRangeException(nameof(levels), "All volumes must be between 0.0 and 1.0. Invalid volume at index: " + i.ToString());
-                if (level > 1.0f) throw new ArgumentOutOfRangeException(nameof(levels), "All volumes must be between 0.0 and 1.0. Invalid volume at index: " + i.ToString());
+                if (level < 0.0f)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(levels), "All volumes must be between 0.0 and 1.0. Invalid volume at index: " + i.ToString());
+                }
+
+                if (level > 1.0f)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(levels), "All volumes must be between 0.0 and 1.0. Invalid volume at index: " + i.ToString());
+                }
             }
             unchecked
             {
@@ -122,8 +129,16 @@ namespace NAudio.CoreAudioApi
         {
             CheckChannelIndex(index, "index");
 
-            if (level < 0.0f) throw new ArgumentOutOfRangeException(nameof(level), "Volume must be between 0.0 and 1.0");
-            if (level > 1.0f) throw new ArgumentOutOfRangeException(nameof(level), "Volume must be between 0.0 and 1.0");
+            if (level < 0.0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(level), "Volume must be between 0.0 and 1.0");
+            }
+
+            if (level > 1.0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(level), "Volume must be between 0.0 and 1.0");
+            }
+
             unchecked
             {
                 Marshal.ThrowExceptionForHR(audioStreamVolumeInterface.SetChannelVolume((uint)index, level));

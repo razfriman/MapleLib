@@ -1,9 +1,10 @@
 using System;
 using System.Diagnostics;
-using NAudio.Wave.Compression;
+using MapleLib.WzLib.NAudio.Wave.Compression;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// WaveStream that passes through an ACM Codec

@@ -1,10 +1,8 @@
 using System;
 using System.IO;
-using System.Net;
-using System.Text;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	internal class RiffChunk 
 	{
@@ -88,7 +86,10 @@ namespace NAudio.SoundFont
 		{
 			var data = GetData();
 			if(data == null)
+			{
 				return null;
+			}
+
 			return ByteEncoding.Instance.GetString(data, 0, data.Length);
 		}
 		

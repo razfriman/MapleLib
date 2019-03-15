@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
 
     /****************************************************************************
@@ -94,7 +94,10 @@ namespace NAudio.Dsp
             freqPerBin = sampleRate/(double) fftFrameSize;
             expct = 2.0*Math.PI*(double) stepSize/(double) fftFrameSize;
             inFifoLatency = fftFrameSize - stepSize;
-            if (gRover == 0) gRover = inFifoLatency;
+            if (gRover == 0)
+            {
+                gRover = inFifoLatency;
+            }
 
 
             /* main processing loop */
@@ -145,8 +148,15 @@ namespace NAudio.Dsp
 
                         /* map delta phase into +/- Pi interval */
                         qpd = (long) (tmp/Math.PI);
-                        if (qpd >= 0) qpd += qpd & 1;
-                        else qpd -= qpd & 1;
+                        if (qpd >= 0)
+                        {
+                            qpd += qpd & 1;
+                        }
+                        else
+                        {
+                            qpd -= qpd & 1;
+                        }
+
                         tmp -= Math.PI*(double) qpd;
 
                         /* get deviation from bin frequency from the +/- Pi interval */
@@ -210,7 +220,10 @@ namespace NAudio.Dsp
                     }
 
                     /* zero negative frequencies */
-                    for (k = fftFrameSize + 2; k < 2*fftFrameSize; k++) gFFTworksp[k] = 0.0F;
+                    for (k = fftFrameSize + 2; k < 2*fftFrameSize; k++)
+                    {
+                        gFFTworksp[k] = 0.0F;
+                    }
 
                     /* do inverse transform */
                     ShortTimeFourierTransform(gFFTworksp, fftFrameSize, 1);
@@ -221,7 +234,10 @@ namespace NAudio.Dsp
                         window = -.5*Math.Cos(2.0*Math.PI*(double) k/(double) fftFrameSize) + .5;
                         gOutputAccum[k] += (float) (2.0*window*gFFTworksp[2*k]/(fftFrameSize2*osamp));
                     }
-                    for (k = 0; k < stepSize; k++) gOutFIFO[k] = gOutputAccum[k];
+                    for (k = 0; k < stepSize; k++)
+                    {
+                        gOutFIFO[k] = gOutputAccum[k];
+                    }
 
                     /* shift accumulator */
                     //memmove(gOutputAccum, gOutputAccum + stepSize, fftFrameSize * sizeof(float));
@@ -231,7 +247,10 @@ namespace NAudio.Dsp
                     }
 
                     /* move input FIFO */
-                    for (k = 0; k < inFifoLatency; k++) gInFIFO[k] = gInFIFO[k + stepSize];
+                    for (k = 0; k < inFifoLatency; k++)
+                    {
+                        gInFIFO[k] = gInFIFO[k + stepSize];
+                    }
                 }
             }
         }
@@ -249,7 +268,11 @@ namespace NAudio.Dsp
             {
                 for (bitm = 2, j = 0; bitm < 2*fftFrameSize; bitm <<= 1)
                 {
-                    if ((i & bitm) != 0) j++;
+                    if ((i & bitm) != 0)
+                    {
+                        j++;
+                    }
+
                     j <<= 1;
                 }
                 if (i < j)

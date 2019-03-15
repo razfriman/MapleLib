@@ -1,4 +1,7 @@
-﻿namespace NAudio.Wave.SampleProviders
+﻿using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
+
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Very simple sample provider supporting adjustable gain

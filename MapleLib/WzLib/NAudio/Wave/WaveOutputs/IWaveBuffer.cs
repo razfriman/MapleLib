@@ -1,4 +1,4 @@
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// IWaveBuffer interface use to store wave datas. 

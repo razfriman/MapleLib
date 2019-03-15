@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace NAudio.Wave.WaveFormats
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// The WMA wave format. 
@@ -24,9 +21,13 @@ namespace NAudio.Wave.WaveFormats
         {
             wValidBitsPerSample = (short) bitsPerSample;
             if (channels == 1)
+            {
                 dwChannelMask = 1;
+            }
             else if (channels == 2)
+            {
                 dwChannelMask = 3;
+            }
 
             // WMAUDIO3 is Pro
             this.waveFormatTag = WaveFormatEncoding.WindowsMediaAudio;

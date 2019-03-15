@@ -1,4 +1,4 @@
-﻿namespace NAudio.CoreAudioApi
+﻿namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// The EDataFlow enumeration defines constants that indicate the direction 

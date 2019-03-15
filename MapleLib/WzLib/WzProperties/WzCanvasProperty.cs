@@ -29,7 +29,10 @@ namespace MapleLib.WzLib.WzProperties
         {
             var clone = new WzCanvasProperty(name);
             foreach (var prop in properties)
+            {
                 clone.AddProperty(prop.DeepClone());
+            }
+
             clone.imageProp = (WzPngProperty)imageProp.DeepClone();
             return clone;
         }
@@ -67,10 +70,18 @@ namespace MapleLib.WzLib.WzProperties
             get
             {
                 if (name == "PNG")
+                {
                     return imageProp;
+                }
+
                 foreach (var iwp in properties)
+                {
                     if (iwp.Name.ToLower() == name.ToLower())
+                    {
                         return iwp;
+                    }
+                }
+
                 return null;
             }
             set
@@ -91,8 +102,13 @@ namespace MapleLib.WzLib.WzProperties
         public WzImageProperty GetProperty(string name)
         {
             foreach (var iwp in properties)
+            {
                 if (iwp.Name.ToLower() == name.ToLower())
+                {
                     return iwp;
+                }
+            }
+
             return null;
         }
         /// <summary>
@@ -226,7 +242,11 @@ namespace MapleLib.WzLib.WzProperties
         /// </summary>
         public void ClearProperties()
         {
-            foreach (var prop in properties) prop.Parent = null;
+            foreach (var prop in properties)
+            {
+                prop.Parent = null;
+            }
+
             properties.Clear();
         }
         #endregion

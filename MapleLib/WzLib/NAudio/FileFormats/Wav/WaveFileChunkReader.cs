@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using NAudio.Utils;
-using NAudio.Wave;
 using System.Diagnostics;
+using System.IO;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveStreams;
 
-namespace NAudio.FileFormats.Wav
+namespace MapleLib.WzLib.NAudio.FileFormats.Wav
 {
     class WaveFileChunkReader
     {
@@ -69,7 +69,10 @@ namespace NAudio.FileFormats.Wav
                 else if (chunkIdentifier == formatChunkId)
                 {
                     if (chunkLength > Int32.MaxValue)
-                         throw new InvalidDataException(string.Format("Format chunk length must be between 0 and {0}.", Int32.MaxValue));
+                    {
+                        throw new InvalidDataException(string.Format("Format chunk length must be between 0 and {0}.", Int32.MaxValue));
+                    }
+
                     waveFormat = WaveFormat.FromFormatChunk(br, (int)chunkLength);
                 }
                 else
@@ -89,7 +92,10 @@ namespace NAudio.FileFormats.Wav
                     if (storeAllChunks)
                     {
                         if (chunkLength > Int32.MaxValue)
+                        {
                             throw new InvalidDataException(string.Format("RiffChunk chunk length must be between 0 and {0}.", Int32.MaxValue));
+                        }
+
                         riffChunks.Add(GetRiffChunk(stream, chunkIdentifier, (int)chunkLength));
                     }
                     stream.Position += chunkLength;

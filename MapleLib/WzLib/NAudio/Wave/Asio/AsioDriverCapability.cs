@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NAudio.Wave.Asio
+﻿namespace MapleLib.WzLib.NAudio.Wave.Asio
 {
     /// <summary>
     /// ASIODriverCapability holds all the information from the AsioDriver.

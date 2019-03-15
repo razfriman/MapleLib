@@ -21,9 +21,7 @@
 */
 // modified from Ray Molenkamp's original
 
-using NAudio.CoreAudioApi.Interfaces;
-
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Property Store Property

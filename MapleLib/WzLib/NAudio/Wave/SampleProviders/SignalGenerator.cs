@@ -1,6 +1,8 @@
 ﻿using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Signal Generator
@@ -158,9 +160,14 @@ namespace NAudio.Wave.SampleProviders
                         sampleSaw = ((nSample*multiple)%2);
                         sampleValue = 2*sampleSaw;
                         if (sampleValue > 1)
+                        {
                             sampleValue = 2 - sampleValue;
+                        }
+
                         if (sampleValue < -1)
+                        {
                             sampleValue = -2 - sampleValue;
+                        }
 
                         sampleValue *= Gain;
 
@@ -225,9 +232,13 @@ namespace NAudio.Wave.SampleProviders
                 for (var i = 0; i < waveFormat.Channels; i++)
                 {
                     if (PhaseReverse[i])
+                    {
                         buffer[outIndex++] = (float) -sampleValue;
+                    }
                     else
+                    {
                         buffer[outIndex++] = (float) sampleValue;
+                    }
                 }
             }
             return count;

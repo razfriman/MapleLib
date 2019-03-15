@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 
-namespace NAudio.Dmo
+namespace MapleLib.WzLib.NAudio.Dmo
 {
     static class DmoInterop
     {

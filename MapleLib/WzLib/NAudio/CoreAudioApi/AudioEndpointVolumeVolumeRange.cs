@@ -20,10 +20,11 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 // modified for NAudio
-using NAudio.CoreAudioApi.Interfaces;
-using System.Runtime.InteropServices;
 
-namespace NAudio.CoreAudioApi
+using System.Runtime.InteropServices;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Audio Endpoint Volume Volume Range

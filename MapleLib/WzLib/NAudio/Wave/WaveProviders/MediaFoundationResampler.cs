@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.Dmo;
-using NAudio.MediaFoundation;
+using MapleLib.WzLib.NAudio.Dmo;
+using MapleLib.WzLib.NAudio.MediaFoundation;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// The Media Foundation Resampler Transform
@@ -30,9 +32,15 @@ namespace NAudio.Wave
             : base(sourceProvider, outputFormat)
         {
             if (!IsPcmOrIeeeFloat(sourceProvider.WaveFormat))
+            {
                 throw new ArgumentException("Input must be PCM or IEEE float", "sourceProvider");
+            }
+
             if (!IsPcmOrIeeeFloat(outputFormat))
+            {
                 throw new ArgumentException("Output must be PCM or IEEE float", "outputFormat");
+            }
+
             MediaFoundationApi.Startup();
             ResamplerQuality = 60; // maximum quality
 
@@ -50,7 +58,11 @@ namespace NAudio.Wave
 
         private void FreeComObject(object comObject)
         {
-            if (activate != null) activate.ShutdownObject();
+            if (activate != null)
+            {
+                activate.ShutdownObject();
+            }
+
             Marshal.ReleaseComObject(comObject);
         }
 
@@ -133,7 +145,10 @@ namespace NAudio.Wave
             set 
             { 
                 if (value < 1 || value > 60)
+                {
                     throw new ArgumentOutOfRangeException("Resampler Quality must be between 1 and 60");
+                }
+
                 resamplerQuality = value; 
             }
         }

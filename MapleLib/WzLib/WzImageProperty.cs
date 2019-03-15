@@ -77,9 +77,13 @@ namespace MapleLib.WzLib
             {
                 writer.WriteStringValue(properties[i].Name, 0x00, 0x01);
                 if (properties[i] is WzExtended)
+                {
                     WriteExtendedValue(writer, (WzExtended)properties[i]);
+                }
                 else
+                {
                     properties[i].WriteValue(writer);
+                }
             }
         }
 
@@ -118,9 +122,14 @@ namespace MapleLib.WzLib
                     case 4:
                         var type = reader.ReadByte();
                         if (type == 0x80)
+                        {
                             properties.Add(new WzFloatProperty(name, reader.ReadSingle()) { Parent = parent });
+                        }
                         else if (type == 0)
+                        {
                             properties.Add(new WzFloatProperty(name, 0f) { Parent = parent });
+                        }
+
                         break;
                     case 5:
                         properties.Add(new WzDoubleProperty(name, reader.ReadDouble()) { Parent = parent });

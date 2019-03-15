@@ -1,8 +1,7 @@
 using System;
 using System.IO;
-using System.Text;
 
-namespace NAudio.Midi
+namespace MapleLib.WzLib.NAudio.Midi
 {
     /// <summary>
     /// Represents a MIDI patch change event

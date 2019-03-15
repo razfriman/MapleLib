@@ -1,7 +1,6 @@
-using System;
 using System.Text;
 
-namespace NAudio.Utils
+namespace MapleLib.WzLib.NAudio.Utils
 {
     /// <summary>
     /// An encoding for use with file types that have one byte per character
@@ -45,7 +44,9 @@ namespace NAudio.Utils
             for (var n = 0; n < count; n++)
             {
                 if (bytes[index + n] == 0)
+                {
                     return n;
+                }
             }
             return count;
         }

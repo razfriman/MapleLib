@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// WaveBuffer class use to store wave datas. Data can be manipulated with arrays
@@ -68,7 +68,7 @@ namespace NAudio.Wave
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NAudio.Wave.WaveBuffer"/> to <see cref="System.Byte"/>.
+        /// Performs an implicit conversion from <see cref="WaveBuffer"/> to <see cref="System.Byte"/>.
         /// </summary>
         /// <param name="waveBuffer">The wave buffer.</param>
         /// <returns>The result of the conversion.</returns>
@@ -78,7 +78,7 @@ namespace NAudio.Wave
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NAudio.Wave.WaveBuffer"/> to <see cref="System.Single"/>.
+        /// Performs an implicit conversion from <see cref="WaveBuffer"/> to <see cref="System.Single"/>.
         /// </summary>
         /// <param name="waveBuffer">The wave buffer.</param>
         /// <returns>The result of the conversion.</returns>
@@ -88,7 +88,7 @@ namespace NAudio.Wave
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NAudio.Wave.WaveBuffer"/> to <see cref="System.Int32"/>.
+        /// Performs an implicit conversion from <see cref="WaveBuffer"/> to <see cref="System.Int32"/>.
         /// </summary>
         /// <param name="waveBuffer">The wave buffer.</param>
         /// <returns>The result of the conversion.</returns>
@@ -98,7 +98,7 @@ namespace NAudio.Wave
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NAudio.Wave.WaveBuffer"/> to <see cref="System.Int16"/>.
+        /// Performs an implicit conversion from <see cref="WaveBuffer"/> to <see cref="System.Int16"/>.
         /// </summary>
         /// <param name="waveBuffer">The wave buffer.</param>
         /// <returns>The result of the conversion.</returns>

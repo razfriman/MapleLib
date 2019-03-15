@@ -1,7 +1,8 @@
-// based on EnvelopeDetector.cpp v1.10 © 2006, ChunkWare Music Software, OPEN-SOURCE
+// based on EnvelopeDetector.cpp v1.10 ï¿½ 2006, ChunkWare Music Software, OPEN-SOURCE
+
 using System;
 
-namespace NAudio.Dsp
+namespace MapleLib.WzLib.NAudio.Dsp
 {
     class EnvelopeDetector
     {
@@ -100,9 +101,13 @@ namespace NAudio.Dsp
             // negative delta = release
             // good for linear & log values
             if ( inValue > state )
+            {
                 attack.Run( inValue, ref state );   // attack
+            }
             else
+            {
                 release.Run( inValue, ref state );  // release
+            }
         }
     }
 }

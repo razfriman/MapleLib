@@ -1,9 +1,7 @@
 using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
 
-namespace NAudio.Midi
+namespace MapleLib.WzLib.NAudio.Midi
 {
     /// <summary>
     /// Utility class for comparing MidiEvent objects
@@ -30,16 +28,24 @@ namespace NAudio.Midi
                 if (xMeta != null)
                 {
                     if (xMeta.MetaEventType == MetaEventType.EndTrack)
+                    {
                         xTime = Int64.MaxValue;
+                    }
                     else
+                    {
                         xTime = Int64.MinValue;
+                    }
                 }
                 if (yMeta != null)
                 {
                     if (yMeta.MetaEventType == MetaEventType.EndTrack)
+                    {
                         yTime = Int64.MaxValue;
+                    }
                     else
+                    {
                         yTime = Int64.MinValue;
+                    }
                 }
             }
             return xTime.CompareTo(yTime);

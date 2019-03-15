@@ -1,6 +1,4 @@
-using System;
-
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
 {
     /// <summary>
     /// Summary description for WaveFormatEncoding.

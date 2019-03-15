@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio.SoundFont 
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont 
 {
 	/// <summary>
 	/// Controller Sources
@@ -92,9 +92,13 @@ namespace NAudio.SoundFont
 		public override string ToString()
 		{
 			if(midiContinuousController)
+			{
 				return String.Format("{0} CC{1}",sourceType,midiContinuousControllerNumber);
+			}
 			else
+			{
 				return String.Format("{0} {1}",sourceType,controllerSource);
+			}
 		}
 
 	}

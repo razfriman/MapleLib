@@ -1,10 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using NAudio.Utils;
+using System.IO;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>A read-only stream of AIFF data based on an aiff file
     /// with an associated WaveFormat
@@ -72,7 +73,10 @@ namespace NAudio.Wave
             while (br.BaseStream.Position < br.BaseStream.Length)
             {
                 var nextChunk = ReadChunkHeader(br);
-                if (nextChunk.ChunkName == "\0\0\0\0") break;
+                if (nextChunk.ChunkName == "\0\0\0\0")
+                {
+                    break;
+                }
 
                 if (br.BaseStream.Position + nextChunk.ChunkLength > br.BaseStream.Length)
                 {
@@ -91,10 +95,17 @@ namespace NAudio.Wave
                     {   
                         // In an AIFC file, the compression format is tacked on to the COMM chunk
                         var compress = new string(br.ReadChars(4)).ToLower();
-                        if (compress != "none") throw new FormatException("Compressed AIFC is not supported.");
+                        if (compress != "none")
+                        {
+                            throw new FormatException("Compressed AIFC is not supported.");
+                        }
+
                         br.ReadBytes((int)nextChunk.ChunkLength - 22);
                     }
-                    else br.ReadBytes((int)nextChunk.ChunkLength - 18);
+                    else
+                    {
+                        br.ReadBytes((int)nextChunk.ChunkLength - 18);
+                    }
                 }
                 else if (nextChunk.ChunkName == "SSND")
                 {
@@ -255,7 +266,10 @@ namespace NAudio.Wave
                         array[i + 2] = buffer[i + 1];
                         array[i + 3] = buffer[i + 0];
                     }
-                    else throw new FormatException("Unsupported PCM format.");
+                    else
+                    {
+                        throw new FormatException("Unsupported PCM format.");
+                    }
                 }
 
                 return length;
@@ -265,13 +279,21 @@ namespace NAudio.Wave
         #region Endian Helpers
         private static uint ConvertInt(byte[] buffer)
         {
-            if (buffer.Length != 4) throw new Exception("Incorrect length for long.");
+            if (buffer.Length != 4)
+            {
+                throw new Exception("Incorrect length for long.");
+            }
+
             return (uint)((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3]);
         }
 
         private static short ConvertShort(byte[] buffer)
         {
-            if (buffer.Length != 2) throw new Exception("Incorrect length for int.");
+            if (buffer.Length != 2)
+            {
+                throw new Exception("Incorrect length for int.");
+            }
+
             return (short)((buffer[0] << 8) | buffer[1]);
         }
         #endregion

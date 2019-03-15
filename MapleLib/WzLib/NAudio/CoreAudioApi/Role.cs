@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NAudio.CoreAudioApi
+﻿namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// The ERole enumeration defines constants that indicate the role 

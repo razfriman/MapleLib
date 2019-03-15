@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using NAudio.Wave;
 using System.Runtime.InteropServices.ComTypes;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.MediaFoundation
+namespace MapleLib.WzLib.NAudio.MediaFoundation
 {
     /// <summary>
     /// Interop definitions for MediaFoundation

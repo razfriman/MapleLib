@@ -20,12 +20,14 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 // adapted for use in NAudio
+
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// from Propidl.h.

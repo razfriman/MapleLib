@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-using NAudio.Dsp;
+﻿using MapleLib.WzLib.NAudio.Dsp;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave.SampleProviders
+namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
 {
     /// <summary>
     /// Fully managed resampling sample provider, based on the WDL Resampler

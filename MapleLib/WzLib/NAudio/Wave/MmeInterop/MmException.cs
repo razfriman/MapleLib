@@ -1,6 +1,6 @@
 using System;
 
-namespace NAudio
+namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
 {
     /// <summary>
     /// Summary description for MmException.
@@ -36,7 +36,9 @@ namespace NAudio
         public static void Try(MmResult result, string function)
         {
             if (result != MmResult.NoError)
+            {
                 throw new MmException(result, function);
+            }
         }
 
         /// <summary>

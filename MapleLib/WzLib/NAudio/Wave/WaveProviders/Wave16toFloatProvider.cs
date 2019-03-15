@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NAudio.Wave;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveOutputs;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
 {
     /// <summary>
     /// Converts 16 bit PCM to IEEE float, optionally adjusting volume along the way
@@ -23,9 +22,14 @@ namespace NAudio.Wave
         public Wave16ToFloatProvider(IWaveProvider sourceProvider)
         {
             if (sourceProvider.WaveFormat.Encoding != WaveFormatEncoding.Pcm)
+            {
                 throw new ArgumentException("Only PCM supported");
+            }
+
             if (sourceProvider.WaveFormat.BitsPerSample != 16)
+            {
                 throw new ArgumentException("Only 16 bit audio supported");
+            }
 
             waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sourceProvider.WaveFormat.SampleRate, sourceProvider.WaveFormat.Channels);
 

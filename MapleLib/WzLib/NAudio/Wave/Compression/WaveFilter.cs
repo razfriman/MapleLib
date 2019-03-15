@@ -1,7 +1,6 @@
-using System;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Wave.Compression
+namespace MapleLib.WzLib.NAudio.Wave.Compression
 {
 	/// <summary>
 	/// Summary description for WaveFilter.

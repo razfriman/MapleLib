@@ -1,7 +1,8 @@
 using System;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 {
     /// <summary>
     /// Simply shifts the input stream in time, optionally
@@ -32,7 +33,9 @@ namespace NAudio.Wave
         public WaveOffsetStream(WaveStream sourceStream, TimeSpan startTime, TimeSpan sourceOffset, TimeSpan sourceLength)
         {
             if (sourceStream.WaveFormat.Encoding != WaveFormatEncoding.Pcm)
+            {
                 throw new ArgumentException("Only PCM supported");
+            }
             // TODO: add support for IEEE float + perhaps some others -
             // anything with a fixed bytes per sample
             
@@ -147,9 +150,14 @@ namespace NAudio.Wave
                     // make sure we don't get out of sync
                     value -= (value % BlockAlign);
                     if (value < audioStartPosition)
+                    {
                         sourceStream.Position = sourceOffsetBytes;
+                    }
                     else
+                    {
                         sourceStream.Position = sourceOffsetBytes + (value - audioStartPosition);
+                    }
+
                     position = value;
                 }
             }
@@ -172,7 +180,9 @@ namespace NAudio.Wave
                 {
                     bytesWritten = (int)Math.Min(numBytes, audioStartPosition - position);
                     for (var n = 0; n < bytesWritten; n++)
+                    {
                         destBuffer[n + offset] = 0;
+                    }
                 }
                 if (bytesWritten < numBytes)
                 {
@@ -185,7 +195,10 @@ namespace NAudio.Wave
                 }
                 // 3. Fill out with zeroes
                 for (var n = bytesWritten; n < numBytes; n++)
+                {
                     destBuffer[offset + n] = 0;
+                }
+
                 position += numBytes;
                 return numBytes;
             }
@@ -203,9 +216,15 @@ namespace NAudio.Wave
         public override bool HasData(int count)
         {
             if (position + count < audioStartPosition)
+            {
                 return false;
+            }
+
             if (position >= length)
+            {
                 return false;
+            }
+
             // Check whether the source stream has data.
             // source stream should be in the right poisition
             return sourceStream.HasData(count);

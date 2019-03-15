@@ -1,7 +1,6 @@
-﻿using System;
-using NAudio.Utils;
+﻿using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// Audio Client WASAPI Error Codes (HResult)

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NAudio.Wave;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
 
-namespace NAudio.CoreAudioApi.Interfaces
+namespace MapleLib.WzLib.NAudio.CoreAudioApi.Interfaces
 {
     /// <summary>
     /// Windows CoreAudio IAudioClient interface

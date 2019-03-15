@@ -1,10 +1,12 @@
 ﻿using System;
-using NAudio.CoreAudioApi;
-using System.Threading;
 using System.Runtime.InteropServices;
+using System.Threading;
+using MapleLib.WzLib.NAudio.CoreAudioApi;
+using MapleLib.WzLib.NAudio.Wave.WaveFormats;
+using MapleLib.WzLib.NAudio.Wave.WaveStreams;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// Support for playback using Wasapi
@@ -222,7 +224,7 @@ namespace NAudio.Wave
         }
 
         /// <summary>
-        /// Gets a <see cref="Wave.WaveFormat"/> instance indicating the format the hardware is using.
+        /// Gets a <see cref="WaveFormat"/> instance indicating the format the hardware is using.
         /// </summary>
         public WaveFormat OutputWaveFormat
         {
@@ -415,8 +417,16 @@ namespace NAudio.Wave
             }
             set
             {
-                if (value < 0) throw new ArgumentOutOfRangeException("value", "Volume must be between 0.0 and 1.0");
-                if (value > 1) throw new ArgumentOutOfRangeException("value", "Volume must be between 0.0 and 1.0");
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("value", "Volume must be between 0.0 and 1.0");
+                }
+
+                if (value > 1)
+                {
+                    throw new ArgumentOutOfRangeException("value", "Volume must be between 0.0 and 1.0");
+                }
+
                 mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = value;
             }
         }

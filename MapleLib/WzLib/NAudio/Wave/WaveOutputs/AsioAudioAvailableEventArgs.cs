@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NAudio.Wave.Asio;
+using MapleLib.WzLib.NAudio.Wave.Asio;
 
-namespace NAudio.Wave
+namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
 {
     /// <summary>
     /// Raised when ASIO data has been recorded.
@@ -57,7 +55,11 @@ namespace NAudio.Wave
         public int GetAsInterleavedSamples(float[] samples)
         {
             var channels = InputBuffers.Length;
-            if (samples.Length < SamplesPerBuffer*channels) throw new ArgumentException("Buffer not big enough");
+            if (samples.Length < SamplesPerBuffer*channels)
+            {
+                throw new ArgumentException("Buffer not big enough");
+            }
+
             var index = 0;
             unsafe
             {

@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace NAudio.Wave.Compression
+namespace MapleLib.WzLib.NAudio.Wave.Compression
 {
     /// <summary>
     /// Interop structure for ACM stream headers.

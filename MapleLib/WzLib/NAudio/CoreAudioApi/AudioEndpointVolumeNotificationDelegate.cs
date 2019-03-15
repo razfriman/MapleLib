@@ -20,9 +20,7 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-using System;
-
-namespace NAudio.CoreAudioApi
+namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Audio Endpoint Volume Notifiaction Delegate

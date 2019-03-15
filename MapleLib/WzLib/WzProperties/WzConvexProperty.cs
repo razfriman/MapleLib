@@ -27,7 +27,10 @@ namespace MapleLib.WzLib.WzProperties
         {
             var clone = new WzConvexProperty(name);
             foreach (var prop in properties)
+            {
                 clone.AddProperty(prop.DeepClone());
+            }
+
             return clone;
         }
 
@@ -67,8 +70,13 @@ namespace MapleLib.WzLib.WzProperties
             get
             {
                 foreach (var iwp in properties)
+                {
                     if (iwp.Name.ToLower() == name.ToLower())
+                    {
                         return iwp;
+                    }
+                }
+
                 //throw new KeyNotFoundException("A wz property with the specified name was not found");
                 return null;
             }
@@ -77,8 +85,13 @@ namespace MapleLib.WzLib.WzProperties
         public WzImageProperty GetProperty(string name)
         {
             foreach (var iwp in properties)
+            {
                 if (iwp.Name.ToLower() == name.ToLower())
+                {
                     return iwp;
+                }
+            }
+
             return null;
         }
 
@@ -117,7 +130,14 @@ namespace MapleLib.WzLib.WzProperties
         public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
         {
             var extendedProps = new List<WzExtended>(properties.Count);
-            foreach (var prop in properties) if (prop is WzExtended) extendedProps.Add((WzExtended)prop);
+            foreach (var prop in properties)
+            {
+                if (prop is WzExtended)
+                {
+                    extendedProps.Add((WzExtended)prop);
+                }
+            }
+
             writer.WriteStringValue("Shape2D#Convex2D", 0x73, 0x1B);
             writer.WriteCompressedInt(extendedProps.Count);
             for (var i = 0; i < extendedProps.Count; i++)
@@ -135,7 +155,10 @@ namespace MapleLib.WzLib.WzProperties
         {
             name = null;
             foreach (var exProp in properties)
+            {
                 exProp.Dispose();
+            }
+
             properties.Clear();
             properties = null;
         }
@@ -161,7 +184,10 @@ namespace MapleLib.WzLib.WzProperties
         public void AddProperty(WzImageProperty prop)
         {
             if (!(prop is WzExtended))
+            {
                 throw new Exception("Property is not IExtended");
+            }
+
             prop.Parent = this;
             properties.Add((WzExtended)prop);
         }
@@ -169,7 +195,9 @@ namespace MapleLib.WzLib.WzProperties
         public void AddProperties(List<WzImageProperty> properties)
         {
             foreach (var property in properties)
+            {
                 AddProperty(property);
+            }
         }
 
         public void RemoveProperty(WzImageProperty prop)
@@ -180,7 +208,11 @@ namespace MapleLib.WzLib.WzProperties
 
         public void ClearProperties()
         {
-            foreach (var prop in properties) prop.Parent = null;
+            foreach (var prop in properties)
+            {
+                prop.Parent = null;
+            }
+
             properties.Clear();
         }
 

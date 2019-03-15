@@ -1,9 +1,7 @@
-using System;
 using System.IO;
-using System.Text;
-using NAudio.Utils;
+using MapleLib.WzLib.NAudio.Utils;
 
-namespace NAudio.SoundFont
+namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 {
 	class SampleHeaderBuilder : StructureBuilder<SampleHeader>
 	{

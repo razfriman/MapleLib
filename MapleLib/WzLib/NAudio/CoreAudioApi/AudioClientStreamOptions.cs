@@ -1,4 +1,4 @@
-﻿namespace NAudio.CoreAudioApi
+﻿namespace MapleLib.WzLib.NAudio.CoreAudioApi
 {
     /// <summary>
     /// Defines values that describe the characteristics of an audio stream.
