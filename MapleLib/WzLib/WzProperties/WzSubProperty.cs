@@ -16,7 +16,6 @@ namespace MapleLib.WzLib.WzProperties
         internal string name;
 
         internal WzObject parent;
-        //internal WzImage imgParent;
 
         #endregion
 

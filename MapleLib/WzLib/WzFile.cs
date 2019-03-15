@@ -123,7 +123,7 @@ namespace MapleLib.WzLib
             path = filePath;
             fileVersion = -1;
             mapleVersion = version;
-            if (version == WzMapleVersion.GETFROMZLZ)
+            if (version == WzMapleVersion.GetFromZlz)
             {
                 var zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
                 WzIv = WzKeyGenerator.GetIvFromZlz(zlzStream);
@@ -147,7 +147,7 @@ namespace MapleLib.WzLib
             path = filePath;
             fileVersion = gameVersion;
             mapleVersion = version;
-            if (version == WzMapleVersion.GETFROMZLZ)
+            if (version == WzMapleVersion.GetFromZlz)
             {
                 var zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
                 WzIv = WzKeyGenerator.GetIvFromZlz(zlzStream);
@@ -166,7 +166,7 @@ namespace MapleLib.WzLib
         /// </summary>
         public void ParseWzFile()
         {
-            if (mapleVersion == WzMapleVersion.GENERATE)
+            if (mapleVersion == WzMapleVersion.Generate)
             {
                 {
                     throw new InvalidOperationException("Cannot call ParseWzFile() if WZ file type is GENERATE");
@@ -180,7 +180,7 @@ namespace MapleLib.WzLib
 
         public void ParseWzFile(byte[] WzIv)
         {
-            if (mapleVersion != WzMapleVersion.GENERATE)
+            if (mapleVersion != WzMapleVersion.Generate)
             {
                 {
                     throw new InvalidOperationException(
@@ -526,7 +526,7 @@ namespace MapleLib.WzLib
         public List<WzObject> GetObjectsFromImage(WzImage img)
         {
             var objList = new List<WzObject>();
-            foreach (var prop in img.WzProperties)
+            foreach (var prop in img.Properties.WzProperties)
             {
                 objList.Add(prop);
                 objList.AddRange(GetObjectsFromProperty(prop));
@@ -610,7 +610,7 @@ namespace MapleLib.WzLib
         internal List<string> GetPathsFromImage(WzImage img, string curPath)
         {
             var objList = new List<string>();
-            foreach (var prop in img.WzProperties)
+            foreach (var prop in img.Properties.WzProperties)
             {
                 objList.Add(curPath + "/" + prop.Name);
                 objList.AddRange(GetPathsFromProperty(prop, curPath + "/" + prop.Name));

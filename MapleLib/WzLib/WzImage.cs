@@ -9,10 +9,8 @@ namespace MapleLib.WzLib
     /// <summary>
     /// A .img contained in a wz directory
     /// </summary>
-    public class WzImage : WzObject, IPropertyContainer
+    public class WzImage : WzObject
     {
-        //TODO: nest wzproperties in a wzsubproperty inside of WzImage
-
         #region Fields
 
         internal bool parsed;
@@ -20,7 +18,7 @@ namespace MapleLib.WzLib
         internal int size, checksum;
         internal uint offset;
         internal WzBinaryReader reader;
-        internal List<WzImageProperty> properties = new List<WzImageProperty>();
+        internal WzSubProperty properties = new WzSubProperty();
         internal WzObject parent;
         internal int blockStart;
         internal long tempFileStart;
@@ -67,12 +65,11 @@ namespace MapleLib.WzLib
             reader = null;
             if (properties != null)
             {
-                foreach (var prop in properties)
+                foreach (var prop in properties.properties)
                 {
                     prop.Dispose();
                 }
 
-                properties.Clear();
                 properties = null;
             }
         }
@@ -170,7 +167,7 @@ namespace MapleLib.WzLib
         /// <summary>
         /// The properties contained in the image
         /// </summary>
-        public List<WzImageProperty> WzProperties
+        public WzSubProperty Properties
         {
             get
             {
@@ -191,9 +188,9 @@ namespace MapleLib.WzLib
             }
 
             var clone = new WzImage(name) {changed = true};
-            foreach (var prop in properties)
+            foreach (var prop in properties.WzProperties)
             {
-                clone.AddProperty(prop.DeepClone());
+                clone.properties.AddProperty(prop.DeepClone());
             }
 
             return clone;
@@ -216,7 +213,7 @@ namespace MapleLib.WzLib
                     }
                 }
 
-                foreach (var iwp in properties)
+                foreach (var iwp in properties.WzProperties)
                 {
                     if (iwp.Name.ToLower() == name.ToLower())
                     {
@@ -231,7 +228,7 @@ namespace MapleLib.WzLib
                 if (value != null)
                 {
                     value.Name = name;
-                    AddProperty(value);
+                    properties.AddProperty(value);
                 }
             }
         }
@@ -265,7 +262,7 @@ namespace MapleLib.WzLib
             foreach (var segment in segments)
             {
                 var foundChild = false;
-                foreach (var iwp in ret == null ? properties : ret.WzProperties)
+                foreach (var iwp in ret == null ? properties.WzProperties : ret.WzProperties)
                 {
                     if (iwp.Name == segment)
                     {
@@ -282,54 +279,6 @@ namespace MapleLib.WzLib
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Adds a property to the image
-        /// </summary>
-        /// <param name="prop">Property to add</param>
-        public void AddProperty(WzImageProperty prop)
-        {
-            prop.Parent = this;
-            if (reader != null && !parsed)
-            {
-                ParseImage();
-            }
-
-            properties.Add(prop);
-        }
-
-        public void AddProperties(List<WzImageProperty> props)
-        {
-            foreach (var prop in props)
-            {
-                AddProperty(prop);
-            }
-        }
-
-        /// <summary>
-        /// Removes a property by name
-        /// </summary>
-        /// <param name="prop">The property to remove</param>
-        public void RemoveProperty(WzImageProperty prop)
-        {
-            if (reader != null && !parsed)
-            {
-                ParseImage();
-            }
-
-            prop.Parent = null;
-            properties.Remove(prop);
-        }
-
-        public void ClearProperties()
-        {
-            foreach (var prop in properties)
-            {
-                prop.Parent = null;
-            }
-
-            properties.Clear();
         }
 
         public override void Remove()
@@ -366,7 +315,7 @@ namespace MapleLib.WzLib
                 return;
             }
 
-            properties.AddRange(WzImageProperty.ParsePropertyList(offset, reader, this, this));
+            properties.AddProperties(WzImageProperty.ParsePropertyList(offset, reader, this, this));
             parsed = true;
         }
 
@@ -395,7 +344,7 @@ namespace MapleLib.WzLib
                 return;
             }
 
-            properties.AddRange(WzImageProperty.ParsePropertyList(offset, reader, this, this));
+            properties.AddProperties(WzImageProperty.ParsePropertyList(offset, reader, this, this));
             parsed = true;
         }
 
@@ -417,7 +366,7 @@ namespace MapleLib.WzLib
         public void UnparseImage()
         {
             parsed = false;
-            properties = new List<WzImageProperty>();
+            properties = new WzSubProperty();
         }
 
         internal void SaveImage(WzBinaryWriter writer)
@@ -431,7 +380,7 @@ namespace MapleLib.WzLib
 
                 var imgProp = new WzSubProperty();
                 var startPos = writer.BaseStream.Position;
-                imgProp.AddProperties(WzProperties);
+                imgProp.AddProperties(properties.WzProperties);
                 imgProp.WriteValue(writer);
                 writer.StringCache.Clear();
                 size = (int) (writer.BaseStream.Position - startPos);
@@ -450,7 +399,7 @@ namespace MapleLib.WzLib
             if (oneFile)
             {
                 writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzImage", name, true));
-                WzImageProperty.DumpPropertyList(writer, level, WzProperties);
+                WzImageProperty.DumpPropertyList(writer, level, properties.WzProperties);
                 writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzImage"));
             }
             else

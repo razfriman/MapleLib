@@ -101,9 +101,9 @@ namespace MapleLib.WzLib.Util
         {
             switch (ver)
             {
-                case WzMapleVersion.EMS:
+                case WzMapleVersion.Ems:
                     return CryptoConstants.WzMseaIv;
-                case WzMapleVersion.GMS:
+                case WzMapleVersion.Gms:
                     return CryptoConstants.WzGmsIv;
                 default:
                     return new byte[4];
@@ -158,14 +158,14 @@ namespace MapleLib.WzLib.Util
         {
             var mapleVersionSuccessRates = new Hashtable();
             short? version = null;
-            mapleVersionSuccessRates.Add(WzMapleVersion.GMS,
-                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.GMS, ref version));
-            mapleVersionSuccessRates.Add(WzMapleVersion.EMS,
-                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.EMS, ref version));
-            mapleVersionSuccessRates.Add(WzMapleVersion.BMS,
-                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.BMS, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.Gms,
+                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.Gms, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.Ems,
+                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.Ems, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.Bms,
+                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.Bms, ref version));
             fileVersion = (short) version;
-            var mostSuitableVersion = WzMapleVersion.GMS;
+            var mostSuitableVersion = WzMapleVersion.Gms;
             double maxSuccessRate = 0;
             foreach (DictionaryEntry mapleVersionEntry in mapleVersionSuccessRates)
             {
@@ -178,7 +178,7 @@ namespace MapleLib.WzLib.Util
 
             if (maxSuccessRate < 0.7 && File.Exists(Path.Combine(Path.GetDirectoryName(wzFilePath), "ZLZ.dll")))
             {
-                return WzMapleVersion.GETFROMZLZ;
+                return WzMapleVersion.GetFromZlz;
             }
 
             return mostSuitableVersion;

@@ -6,12 +6,13 @@ using MapleLib.WzLib.WzProperties;
 
 namespace MapleLib.WzLib
 {
+    /// <inheritdoc />
     /// <summary>
     /// An interface for wz img properties
     /// </summary>
     public abstract class WzImageProperty : WzObject
     {
-        #region Virtual\Abstrcat Members
+        #region Virtual\Abstract Members
 
         public virtual List<WzImageProperty> WzProperties => null;
 
@@ -35,9 +36,9 @@ namespace MapleLib.WzLib
                 var parent = Parent;
                 while (parent != null)
                 {
-                    if (parent is WzImage)
+                    if (parent is WzImage image)
                     {
-                        return (WzImage) parent;
+                        return image;
                     }
 
                     parent = parent.Parent;
@@ -167,7 +168,7 @@ namespace MapleLib.WzLib
                 case 0x73:
                     return ExtractMore(reader, offset, endOfBlock, name, "", parent, imgParent);
                 default:
-                    throw new Exception("Invlid byte read at ParseExtendedProp");
+                    throw new Exception("Invalid byte read at ParseExtendedProp");
             }
         }
 

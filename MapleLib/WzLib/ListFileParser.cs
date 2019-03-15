@@ -26,22 +26,23 @@ namespace MapleLib.WzLib
         {
             var listEntries = new List<string>();
             var wzFileBytes = File.ReadAllBytes(filePath);
-            var wzParser = new WzBinaryReader(new MemoryStream(wzFileBytes), WzIv);
-            while (wzParser.PeekChar() != -1)
+            using (var wzParser = new WzBinaryReader(new MemoryStream(wzFileBytes), WzIv))
             {
-                var len = wzParser.ReadInt32();
-                var strChrs = new char[len];
-                for (var i = 0; i < len; i++)
+                while (wzParser.PeekChar() != -1)
                 {
-                    strChrs[i] = (char) wzParser.ReadInt16();
-                }
+                    var len = wzParser.ReadInt32();
+                    var encryptedCharacters = new char[len];
+                    for (var i = 0; i < len; i++)
+                    {
+                        encryptedCharacters[i] = (char) wzParser.ReadInt16();
+                    }
 
-                wzParser.ReadUInt16(); //encrypted null
-                var decryptedStr = wzParser.DecryptString(strChrs);
-                listEntries.Add(decryptedStr);
+                    wzParser.ReadUInt16(); //encrypted null
+                    var decryptedStr = wzParser.DecryptString(encryptedCharacters);
+                    listEntries.Add(decryptedStr);
+                }
             }
 
-            wzParser.Close();
             var lastIndex = listEntries.Count - 1;
             var lastEntry = listEntries[lastIndex];
             listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "g";
@@ -53,19 +54,21 @@ namespace MapleLib.WzLib
             SaveToDisk(path, WzTool.GetIvByMapleVersion(version), listEntries);
         }
 
-        public static void SaveToDisk(string path, byte[] WzIv, List<string> listEntries)
+        public static void SaveToDisk(string path, byte[] wzIv, List<string> listEntries)
         {
             var lastIndex = listEntries.Count - 1;
             var lastEntry = listEntries[lastIndex];
             listEntries[lastIndex] = lastEntry.Substring(0, lastEntry.Length - 1) + "/";
-            var wzWriter = new WzBinaryWriter(File.Create(path), WzIv);
-            foreach (var listEntry in listEntries)
+            using (var wzWriter = new WzBinaryWriter(File.Create(path), wzIv))
             {
-                wzWriter.Write(listEntry.Length);
-                var encryptedChars = wzWriter.EncryptString(listEntry + (char) 0);
-                foreach (var encryptedChar in encryptedChars)
+                foreach (var listEntry in listEntries)
                 {
-                    wzWriter.Write((short) encryptedChar);
+                    wzWriter.Write(listEntry.Length);
+                    var encryptedChars = wzWriter.EncryptString(listEntry + (char) 0);
+                    foreach (var encryptedChar in encryptedChars)
+                    {
+                        wzWriter.Write((short) encryptedChar);
+                    }
                 }
             }
 

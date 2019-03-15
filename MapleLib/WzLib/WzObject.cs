@@ -4,6 +4,7 @@ using Point = System.Drawing.Point;
 
 namespace MapleLib.WzLib
 {
+    /// <inheritdoc />
     /// <summary>
     /// An abstract class for wz objects
     /// </summary>
