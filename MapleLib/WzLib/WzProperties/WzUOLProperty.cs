@@ -67,14 +67,14 @@ namespace MapleLib.WzLib.WzProperties
         }
 
 #if UOLRES
-        public override List<WzImageProperty> WzProperties => LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue).WzProperties : null;
+        public override List<WzImageProperty> WzProperties => (LinkValue as WzImageProperty)?.WzProperties;
 
 
-        public override WzImageProperty this[string name] => LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue)[name] : LinkValue is WzImage ? ((WzImage)LinkValue)[name] : null;
+        public override WzImageProperty this[string name] => LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue)[name] : (LinkValue as WzImage)?[name];
 
         public override WzImageProperty GetFromPath(string path)
         {
-            return LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue).GetFromPath(path) : LinkValue is WzImage ? ((WzImage)LinkValue).GetFromPath(path) : null;
+            return LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue).GetFromPath(path) : (LinkValue as WzImage)?.GetFromPath(path);
         }
 #endif
 

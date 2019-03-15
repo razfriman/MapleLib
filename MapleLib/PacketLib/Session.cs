@@ -18,8 +18,6 @@ namespace MapleLib.PacketLib
         /// </summary>
         private readonly Socket _socket;
 
-        private SessionType _type;
-
         /// <summary>
         /// The Recieved packet crypto manager
         /// </summary>
@@ -77,7 +75,7 @@ namespace MapleLib.PacketLib
         /// </summary>
         public Socket Socket => _socket;
 
-        public SessionType Type => _type;
+        public SessionType Type { get; }
 
         /// <summary>
         /// Creates a new instance of a Session
@@ -87,7 +85,7 @@ namespace MapleLib.PacketLib
         public Session(Socket socket, SessionType type)
         {
             _socket = socket;
-            _type = type;
+            Type = type;
         }
 
         /// <summary>
@@ -156,7 +154,7 @@ namespace MapleLib.PacketLib
                                 var packetHeaderB = headerReader.ToArray();
                                 var packetHeader = headerReader.ReadInt();
                                 var packetLength = (short)MapleCrypto.GetPacketLength(packetHeader);
-                                if (_type == SessionType.SERVER_TO_CLIENT && !_riv.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
+                                if (Type == SessionType.SERVER_TO_CLIENT && !_riv.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
                                 {
                                     Log.LogError("Packet check failed. Disconnecting client");
                                     Socket.Close();
@@ -180,7 +178,7 @@ namespace MapleLib.PacketLib
                                 _riv = new MapleCrypto(reader.ReadBytes(4), version);
                                 var serverType = reader.ReadByte();
 
-                                if (_type == SessionType.CLIENT_TO_SERVER)
+                                if (Type == SessionType.CLIENT_TO_SERVER)
                                 {
                                     OnInitPacketReceived(version, serverType);
                                 }
@@ -252,7 +250,7 @@ namespace MapleLib.PacketLib
         {
             var cryptData = input;
             var sendData = new byte[cryptData.Length + 4];
-            var header = _type == SessionType.SERVER_TO_CLIENT ? _siv.GetHeaderToClient(cryptData.Length) : _siv.GetHeaderToServer(cryptData.Length);
+            var header = Type == SessionType.SERVER_TO_CLIENT ? _siv.GetHeaderToClient(cryptData.Length) : _siv.GetHeaderToServer(cryptData.Length);
 
             MapleCustomEncryption.Encrypt(cryptData);
             _siv.Crypt(cryptData);

@@ -94,12 +94,12 @@ namespace MapleLib.WzLib
                     property3.PngProperty.GetPNG(false).Save(stream, ImageFormat.Png);
                     var pngbytes = stream.ToArray();
                     stream.Close();
-                    tw.Write(string.Concat(new object[] { depth, "<canvas name=\"", XmlUtil.SanitizeText(property3.Name), "\" width=\"", property3.PngProperty.Width, "\" height=\"", property3.PngProperty.Height, "\" basedata=\"", Convert.ToBase64String(pngbytes), "\">" }) + lineBreak);
+                    tw.Write(string.Concat(depth, "<canvas name=\"", XmlUtil.SanitizeText(property3.Name), "\" width=\"", property3.PngProperty.Width, "\" height=\"", property3.PngProperty.Height, "\" basedata=\"", Convert.ToBase64String(pngbytes), "\">") + lineBreak);
                 }
                 else
                 {
                     {
-                        tw.Write(string.Concat(new object[] { depth, "<canvas name=\"", XmlUtil.SanitizeText(property3.Name), "\" width=\"", property3.PngProperty.Width, "\" height=\"", property3.PngProperty.Height, "\">" }) + lineBreak);
+                        tw.Write(string.Concat(depth, "<canvas name=\"", XmlUtil.SanitizeText(property3.Name), "\" width=\"", property3.PngProperty.Width, "\" height=\"", property3.PngProperty.Height, "\">") + lineBreak);
                     }
                 }
 
@@ -115,11 +115,11 @@ namespace MapleLib.WzLib
             }
             else if (prop is WzIntProperty property4)
             {
-                tw.Write(string.Concat(new object[] { depth, "<int name=\"", XmlUtil.SanitizeText(property4.Name), "\" value=\"", property4.Value, "\"/>" }) + lineBreak);
+                tw.Write(string.Concat(depth, "<int name=\"", XmlUtil.SanitizeText(property4.Name), "\" value=\"", property4.Value, "\"/>") + lineBreak);
             }
             else if (prop is WzDoubleProperty property5)
             {
-                tw.Write(string.Concat(new object[] { depth, "<double name=\"", XmlUtil.SanitizeText(property5.Name), "\" value=\"", property5.Value, "\"/>" }) + lineBreak);
+                tw.Write(string.Concat(depth, "<double name=\"", XmlUtil.SanitizeText(property5.Name), "\" value=\"", property5.Value, "\"/>") + lineBreak);
             }
             else if (prop is WzNullProperty property6)
             {
@@ -160,11 +160,11 @@ namespace MapleLib.WzLib
             }
             else if (prop is WzShortProperty property10)
             {
-                tw.Write(string.Concat(new object[] { depth, "<short name=\"", XmlUtil.SanitizeText(property10.Name), "\" value=\"", property10.Value, "\"/>" }) + lineBreak);
+                tw.Write(string.Concat(depth, "<short name=\"", XmlUtil.SanitizeText(property10.Name), "\" value=\"", property10.Value, "\"/>") + lineBreak);
             }
             else if (prop is WzLongProperty long_prop)
             {
-                tw.Write(string.Concat(new object[] { depth, "<long name=\"", XmlUtil.SanitizeText(long_prop.Name), "\" value=\"", long_prop.Value, "\"/>" }) + lineBreak);
+                tw.Write(string.Concat(depth, "<long name=\"", XmlUtil.SanitizeText(long_prop.Name), "\" value=\"", long_prop.Value, "\"/>") + lineBreak);
             }
             else if (prop is WzUOLProperty property11)
             {
@@ -172,7 +172,7 @@ namespace MapleLib.WzLib
             }
             else if (prop is WzVectorProperty property12)
             {
-                tw.Write(string.Concat(new object[] { depth, "<vector name=\"", XmlUtil.SanitizeText(property12.Name), "\" x=\"", property12.X.Value, "\" y=\"", property12.Y.Value, "\"/>" }) + lineBreak);
+                tw.Write(string.Concat(depth, "<vector name=\"", XmlUtil.SanitizeText(property12.Name), "\" x=\"", property12.X.Value, "\" y=\"", property12.Y.Value, "\"/>") + lineBreak);
             }
             else if (prop is WzFloatProperty property13)
             {
@@ -233,7 +233,7 @@ namespace MapleLib.WzLib
     {
         public NoBase64DataException() { }
         public NoBase64DataException(string message) : base(message) { }
-        public NoBase64DataException(string message, System.Exception inner) : base(message, inner) { }
+        public NoBase64DataException(string message, Exception inner) : base(message, inner) { }
         protected NoBase64DataException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context)
         { }
@@ -285,7 +285,7 @@ namespace MapleLib.WzLib
             if (!Directory.Exists(outPath))
             {
                 {
-                    ProgressingWzSerializer.CreateDirSafe(ref outPath);
+                    CreateDirSafe(ref outPath);
                 }
             }
 
@@ -876,7 +876,7 @@ namespace MapleLib.WzLib
             }
 
             result.Changed = true;
-            if (this.useMemorySaving)
+            if (useMemorySaving)
             {
                 var path = Path.GetTempFileName();
                 var wzWriter = new WzBinaryWriter(File.Create(path), iv);

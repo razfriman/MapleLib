@@ -114,7 +114,7 @@ namespace MapleLib.WzLib
             if (version == WzMapleVersion.GETFROMZLZ)
             {
                 var zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
-                WzIv = Util.WzKeyGenerator.GetIvFromZlz(zlzStream);
+                WzIv = WzKeyGenerator.GetIvFromZlz(zlzStream);
                 zlzStream.Close();
             }
             else
@@ -138,7 +138,7 @@ namespace MapleLib.WzLib
             if (version == WzMapleVersion.GETFROMZLZ)
             {
                 var zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
-                WzIv = Util.WzKeyGenerator.GetIvFromZlz(zlzStream);
+                WzIv = WzKeyGenerator.GetIvFromZlz(zlzStream);
                 zlzStream.Close();
             }
             else

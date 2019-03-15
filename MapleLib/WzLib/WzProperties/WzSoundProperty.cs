@@ -6,8 +6,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using MapleLib.Helper;
-using MapleLib.WzLib.NAudio.Wave.WaveFormats;
-using MapleLib.WzLib.NAudio.Wave.WaveStreams;
+using NAudio.Wave;
 
 namespace MapleLib.WzLib.WzProperties
 {
@@ -115,7 +114,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// Frequency of the mp3 file in Hz
         /// </summary>
-        public int Frequency => wavFormat != null ? wavFormat.SampleRate : 0;
+        public int Frequency => wavFormat?.SampleRate ?? 0;
 
         /// <summary>
         /// BPS of the mp3 file

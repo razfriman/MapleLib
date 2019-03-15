@@ -8,11 +8,7 @@ namespace MapleLib.WzLib
 	/// </summary>
 	public abstract class WzObject : IDisposable
 	{
-        private object tag;
-        private object tag2;
-        private object tag3;
-
-		public abstract void Dispose();
+	    public abstract void Dispose();
 
 		/// <summary>
 		/// The name of the object
@@ -78,31 +74,19 @@ namespace MapleLib.WzLib
         /// <summary>
         /// Used in HaCreator to save already parsed images
         /// </summary>
-        public virtual object HCTag
-        {
-            get => tag;
-            set => tag = value;
-        }
+        public virtual object HCTag { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// Used in HaCreator's MapSimulator to save already parsed textures
         /// </summary>
-        public virtual object MSTag
-        {
-            get => tag2;
-            set => tag2 = value;
-        }
+        public virtual object MSTag { get; set; }
 
-        /// <summary>
+	    /// <summary>
         /// Used in HaRepacker to save WzNodes
         /// </summary>
-        public virtual object HRTag
-        {
-            get => tag3;
-            set => tag3 = value;
-        }
+        public virtual object HRTag { get; set; }
 
-        public virtual object WzValue => null;
+	    public virtual object WzValue => null;
 
 	    public abstract void Remove();
 
