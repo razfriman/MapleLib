@@ -80,27 +80,9 @@ namespace MapleLib.WzLib
             }
         }
 
-        /// <summary>
-        /// Used in HaCreator to save already parsed images
-        /// </summary>
-        public virtual object HCTag { get; set; }
-
-        /// <summary>
-        /// Used in HaCreator's MapSimulator to save already parsed textures
-        /// </summary>
-        public virtual object MSTag { get; set; }
-
-        /// <summary>
-        /// Used in HaRepacker to save WzNodes
-        /// </summary>
-        public virtual object HRTag { get; set; }
-
         public virtual object WzValue => null;
 
         public abstract void Remove();
-
-        //Credits to BluePoop for the idea of using cast overriding
-        //2015 - That is the worst idea ever, removed and replaced with Get* methods
 
         #region Cast Values
 

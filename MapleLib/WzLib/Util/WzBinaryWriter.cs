@@ -90,8 +90,7 @@ namespace MapleLib.WzLib.Util
                 {
                     ushort mask = 0xAAAA;
 
-                    if (value.Length >= sbyte.MaxValue
-                    ) // Bugfix - >= because if value.Length = MaxValue, MaxValue will be written and then treated as a long-length marker
+                    if (value.Length >= sbyte.MaxValue)
                     {
                         Write(sbyte.MaxValue);
                         Write(value.Length);
@@ -114,8 +113,7 @@ namespace MapleLib.WzLib.Util
                 {
                     byte mask = 0xAA;
 
-                    if (value.Length > sbyte.MaxValue
-                    ) // Note - no need for >= here because of 2's complement (MinValue == -(MaxValue + 1))
+                    if (value.Length > sbyte.MaxValue)
                     {
                         Write(sbyte.MinValue);
                         Write(value.Length);

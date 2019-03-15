@@ -574,10 +574,10 @@ namespace MapleLib.WzLib
                     }
                 }
             }
-            else if (currObj is WzUOLProperty)
+            else if (currObj is WzUOLProperty property)
             {
                 {
-                    ExportRecursion(((WzUOLProperty) currObj).LinkValue, exportOutPath);
+                    ExportRecursion(property.LinkValue, exportOutPath);
                 }
             }
         }

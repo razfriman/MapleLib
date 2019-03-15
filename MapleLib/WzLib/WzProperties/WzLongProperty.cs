@@ -135,6 +135,7 @@ namespace MapleLib.WzLib.WzProperties
         public override long GetLong()
         {
             return val;
+            
         }
 
         public override int GetInt()
