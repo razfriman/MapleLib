@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System;
 using MapleLib.WzLib.Util;
-using NAudio.Wave;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using MapleLib.Helper;
+using NAudio.Wave;
 
 namespace MapleLib.WzLib.WzProperties
 {

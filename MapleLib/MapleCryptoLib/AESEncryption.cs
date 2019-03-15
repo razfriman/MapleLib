@@ -1,19 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using MapleLib.Helper;
-using Microsoft.Extensions.Logging;
 
 namespace MapleLib.MapleCryptoLib
 {
-
     /// <summary>
     /// Class to handle the AES Encryption routines
     /// </summary>
-    public static class AESEncryption
+    public static class AesEncryption
     {
-        public static ILogger Log = LogManager.Log;
-
         /// <summary>
         /// Encrypt data using MapleStory's AES algorithm
         /// </summary>
@@ -21,7 +16,8 @@ namespace MapleLib.MapleCryptoLib
         /// <param name="data">Data to encrypt</param>
         /// <param name="length">Length of data</param>
         /// <returns>Crypted data</returns>
-        public static byte[] AesCrypt(byte[] iv, byte[] data, int length) => AesCrypt(iv, data, length, CryptoConstants.TrimmedUserKey);
+        public static byte[] AesCrypt(byte[] iv, byte[] data, int length) =>
+            AesCrypt(iv, data, length, CryptoConstants.TrimmedUserKey);
 
         /// <summary>
         /// Encrypt data using MapleStory's AES method
@@ -35,7 +31,7 @@ namespace MapleLib.MapleCryptoLib
         {
             var crypto = new AesManaged
             {
-                KeySize = 256, //in bits
+                KeySize = 256,
                 Key = key,
                 Mode = CipherMode.ECB // Should be OFB, but this works too
             };
@@ -45,31 +41,33 @@ namespace MapleLib.MapleCryptoLib
                 using (var cryptoStream = new CryptoStream(memStream, crypto.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     var remaining = length;
-                    var llength = 0x5B0;
+                    var size = 0x5B0;
                     var start = 0;
 
                     while (remaining > 0)
                     {
-                        var myIV = MapleCrypto.MultiplyBytes(iv, 4, 4);
-                        if (remaining < llength)
+                        var myIv = MapleCrypto.MultiplyBytes(iv, 4, 4);
+                        if (remaining < size)
                         {
-                            llength = remaining;
+                            size = remaining;
                         }
 
-                        for (int x = start; x < (start + llength); x++)
+                        for (int x = start; x < (start + size); x++)
                         {
-                            if ((x - start) % myIV.Length == 0)
+                            if ((x - start) % myIv.Length == 0)
                             {
-                                cryptoStream.Write(myIV, 0, myIV.Length);
-                                byte[] newIV = memStream.ToArray();
-                                Array.Copy(newIV, myIV, myIV.Length);
+                                cryptoStream.Write(myIv, 0, myIv.Length);
+                                byte[] newIv = memStream.ToArray();
+                                Array.Copy(newIv, myIv, myIv.Length);
                                 memStream.Position = 0;
                             }
-                            data[x] ^= myIV[(x - start) % myIV.Length];
+
+                            data[x] ^= myIv[(x - start) % myIv.Length];
                         }
-                        start += llength;
-                        remaining -= llength;
-                        llength = 0x5B4;
+
+                        start += size;
+                        remaining -= size;
+                        size = 0x5B4;
                     }
                 }
             }

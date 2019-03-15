@@ -48,7 +48,7 @@ namespace MapleLib.MapleCryptoLib
         /// <param name="data">The data to crypt</param>
         public void Crypt(byte[] data)
         {
-            AESEncryption.AesCrypt(_iv, data, data.Length);
+            AesEncryption.AesCrypt(_iv, data, data.Length);
             UpdateIV();
         }
 
