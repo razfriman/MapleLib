@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
 namespace MapleLib.PacketLib
@@ -17,7 +16,7 @@ namespace MapleLib.PacketLib
         /// <summary>
         /// Amount of data writen in the writer
         /// </summary>
-        public short Length => (short) _buffer.Length;
+        public short Length => (short) Buffer.Length;
 
         /// <summary>
         /// Creates a new instance of PacketWriter
@@ -25,21 +24,21 @@ namespace MapleLib.PacketLib
         /// <param name="size">Starting size of the buffer</param>
         public PacketWriter(int size = 0)
         {
-            _buffer = new MemoryStream(size);
-            _binWriter = new BinaryWriter(_buffer, Encoding.ASCII);
+            Buffer = new MemoryStream(size);
+            _binWriter = new BinaryWriter(Buffer, Encoding.ASCII);
         }
 
         public PacketWriter(byte[] data)
         {
-            _buffer = new MemoryStream(data);
-            _binWriter = new BinaryWriter(_buffer, Encoding.ASCII);
+            Buffer = new MemoryStream(data);
+            _binWriter = new BinaryWriter(Buffer, Encoding.ASCII);
         }
 
         /// <summary>
         /// Restart writing from the point specified. This will overwrite data in the packet.
         /// </summary>
         /// <param name="length">The point of the packet to start writing from.</param>
-        public void Reset(int length) => _buffer.Seek(length, SeekOrigin.Begin);
+        public void Reset(int length) => Buffer.Seek(length, SeekOrigin.Begin);
 
         /// <summary>
         /// Writes a byte to the stream
@@ -106,10 +105,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The byte to set</param>
         public void SetByte(long index, int writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteByte((byte) writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -119,10 +118,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The bytes to set</param>
         public void SetBytes(long index, byte[] writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteBytes(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -132,10 +131,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The bool to set</param>
         public void SetBool(long index, bool writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteBool(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -145,10 +144,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The short to set</param>
         public void SetShort(long index, int writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteShort((short) writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -158,10 +157,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The int to set</param>
         public void SetInt(long index, int writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteInt(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -171,10 +170,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The long to set</param>
         public void SetLong(long index, long writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteLong(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -184,10 +183,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The long to set</param>
         public void SetString(long index, string writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteString(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -197,10 +196,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The string to set</param>
         public void SetMapleString(long index, string writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteMapleString(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
 
         /// <summary>
@@ -210,10 +209,10 @@ namespace MapleLib.PacketLib
         /// <param name="writeValue">The hex-string to set</param>
         public void SetHexString(long index, string writeValue)
         {
-            var oldIndex = _buffer.Position;
-            _buffer.Position = index;
+            var oldIndex = Buffer.Position;
+            Buffer.Position = index;
             WriteHexString(writeValue);
-            _buffer.Position = oldIndex;
+            Buffer.Position = oldIndex;
         }
     }
 }

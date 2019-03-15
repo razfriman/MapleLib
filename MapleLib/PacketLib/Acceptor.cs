@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace MapleLib.PacketLib
 {
     /// <summary>
-    /// A Nework Socket Acceptor (Listener)
+    /// A Network Socket Acceptor (Listener)
     /// </summary>
     public class Acceptor
     {
@@ -43,7 +43,7 @@ namespace MapleLib.PacketLib
         {
             _listener.Bind(new IPEndPoint(IPAddress.Any, port));
             _listener.Listen(BACKLOG_SIZE);
-            _listener.BeginAccept(new AsyncCallback(OnClientConnect), null);
+            _listener.BeginAccept(OnClientConnect, null);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace MapleLib.PacketLib
 
                 OnClientConnected?.Invoke(session);
                 session.WaitForData();
-                _listener.BeginAccept(new AsyncCallback(OnClientConnect), null);
+                _listener.BeginAccept(OnClientConnect, null);
             }
             catch (ObjectDisposedException e)
             {

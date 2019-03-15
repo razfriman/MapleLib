@@ -224,7 +224,7 @@ namespace MapleLib.WzLib
                     {
                         reader.Hash = versionHash;
                         var position = reader.BaseStream.Position;
-                        WzDirectory testDirectory = null;
+                        WzDirectory testDirectory;
                         try
                         {
                             testDirectory = new WzDirectory(reader, name, versionHash, WzIv, this);
@@ -268,7 +268,7 @@ namespace MapleLib.WzLib
                 throw new Exception(
                     "Error with game version hash : The specified game version is incorrect and WzLib was unable to determine the version itself");
             }
-            else
+
             {
                 versionHash = GetVersionHash(version, fileVersion);
                 reader.Hash = versionHash;
@@ -301,7 +301,7 @@ namespace MapleLib.WzLib
             d = VersionHash & 0xFF;
             DecryptedVersionNumber = (0xff ^ a ^ b ^ c ^ d);
 
-            return EncryptedVersionNumber == DecryptedVersionNumber ? Convert.ToUInt32(VersionHash) : (uint) 0;
+            return EncryptedVersionNumber == DecryptedVersionNumber ? Convert.ToUInt32(VersionHash) : 0;
         }
 
         private void CreateVersionHash()
@@ -758,13 +758,14 @@ namespace MapleLib.WzLib
                 return strCompare.Where((t, index) => StrMatch(strWildCard.Substring(1), strCompare.Substring(index)))
                     .Any();
             }
-            else if (strWildCard[0] == '*')
+
+            if (strWildCard[0] == '*')
             {
                 {
                     return true;
                 }
             }
-            else if (strWildCard[0] == strCompare[0])
+            if (strWildCard[0] == strCompare[0])
             {
                 {
                     return StrMatch(strWildCard.Substring(1), strCompare.Substring(1));

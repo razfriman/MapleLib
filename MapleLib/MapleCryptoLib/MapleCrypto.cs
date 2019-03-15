@@ -50,11 +50,12 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>A new IV</returns>
         public static byte[] GetNewIV(byte[] oldIv)
         {
-            byte[] start = { 0xf2, 0x53, 0x50, 0xc6 };
+            byte[] start = {0xf2, 0x53, 0x50, 0xc6};
             for (var i = 0; i < 4; i++)
             {
                 Shuffle(oldIv[i], start);
             }
+
             return start;
         }
 
@@ -86,17 +87,17 @@ namespace MapleLib.MapleCryptoLib
             a += CryptoConstants.ShuffleBytes[inputByte];
             start[3] = a;
 
-            c = (uint)(start[0] + start[1] * 0x100 + start[2] * 0x10000 + start[3] * 0x1000000);
+            c = (uint) (start[0] + start[1] * 0x100 + start[2] * 0x10000 + start[3] * 0x1000000);
             d = c;
             c >>= 0x1D;
             d <<= 0x03;
             c |= d;
-            start[0] = (byte)(c % 0x100);
+            start[0] = (byte) (c % 0x100);
             c /= 0x100;
-            start[1] = (byte)(c % 0x100);
+            start[1] = (byte) (c % 0x100);
             c /= 0x100;
-            start[2] = (byte)(c % 0x100);
-            start[3] = (byte)(c / 0x100);
+            start[2] = (byte) (c % 0x100);
+            start[3] = (byte) (c / 0x100);
 
             return start;
         }
@@ -112,10 +113,10 @@ namespace MapleLib.MapleCryptoLib
             var a = IV[3] * 0x100 + IV[2];
             a ^= -(_mapleVersion + 1);
             var b = a ^ size;
-            header[0] = (byte)(a % 0x100);
-            header[1] = (byte)((a - header[0]) / 0x100);
-            header[2] = (byte)(b ^ 0x100);
-            header[3] = (byte)((b - header[2]) / 0x100);
+            header[0] = (byte) (a % 0x100);
+            header[1] = (byte) ((a - header[0]) / 0x100);
+            header[2] = (byte) (b ^ 0x100);
+            header[3] = (byte) ((b - header[2]) / 0x100);
             return header;
         }
 
@@ -155,8 +156,8 @@ namespace MapleLib.MapleCryptoLib
             {
                 return -1;
             }
-            return (packetHeader[0] + (packetHeader[1] << 8)) ^ (packetHeader[2] + (packetHeader[3] << 8));
 
+            return (packetHeader[0] + (packetHeader[1] << 8)) ^ (packetHeader[2] + (packetHeader[3] << 8));
         }
 
         /// <summary>
@@ -186,6 +187,7 @@ namespace MapleLib.MapleCryptoLib
             {
                 ret[x] = input[x % count];
             }
+
             return ret;
         }
     }

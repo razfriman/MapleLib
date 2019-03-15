@@ -4,8 +4,8 @@ namespace MapleLib.PacketLib
 {
     public abstract class AbstractPacket
     {
-        protected MemoryStream _buffer;
+        protected MemoryStream Buffer;
 
-        public byte[] ToArray() => _buffer.ToArray();
+        public byte[] ToArray() => Buffer.ToArray();
     }
 }

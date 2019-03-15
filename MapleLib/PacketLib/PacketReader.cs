@@ -16,7 +16,7 @@ namespace MapleLib.PacketLib
         /// <summary>
         /// Amount of data left in the reader
         /// </summary>
-        public short Length => (short) _buffer.Length;
+        public short Length => (short) Buffer.Length;
 
         /// <summary>
         /// Creates a new instance of PacketReader
@@ -24,17 +24,17 @@ namespace MapleLib.PacketLib
         /// <param name="_arrayOfBytes">Starting byte array</param>
         public PacketReader(byte[] _arrayOfBytes)
         {
-            _buffer = new MemoryStream(_arrayOfBytes, false);
-            _binReader = new BinaryReader(_buffer, Encoding.ASCII);
+            Buffer = new MemoryStream(_arrayOfBytes, false);
+            _binReader = new BinaryReader(Buffer, Encoding.ASCII);
         }
 
         /// <summary>
         /// Restart reading from the point specified.
         /// </summary>
         /// <param name="length">The point of the packet to start reading from.</param>
-        public void Reset(int length) => _buffer.Seek(length, SeekOrigin.Begin);
+        public void Reset(int length) => Buffer.Seek(length, SeekOrigin.Begin);
 
-        public void Skip(int pLength) => _buffer.Position += pLength;
+        public void Skip(int pLength) => Buffer.Position += pLength;
 
         /// <summary>
         /// Reads an unsigned byte from the stream

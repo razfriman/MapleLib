@@ -7,7 +7,6 @@ namespace MapleLib.PacketLib
     /// </summary>
     public static class HexEncoding
     {
-
         /// <summary>
         /// Checks if a character is a hex digit
         /// </summary>
@@ -45,11 +44,11 @@ namespace MapleLib.PacketLib
             return newByte;
         }
 
-		/// <summary>
-		/// Convert a hex string to a byte array
-		/// </summary>
-		/// <param name="hexString">byte array as a hex string</param>
-		/// <returns>Byte array representation of the string</returns>
+        /// <summary>
+        /// Convert a hex string to a byte array
+        /// </summary>
+        /// <param name="hexString">byte array as a hex string</param>
+        /// <returns>Byte array representation of the string</returns>
         public static byte[] GetBytes(string hexString)
         {
             var newString = string.Empty;
@@ -78,7 +77,7 @@ namespace MapleLib.PacketLib
 
             for (var i = 0; i < bytes.Length; i++)
             {
-                hex = new String(new Char[] { newString[j], newString[j + 1] });
+                hex = new String(new[] {newString[j], newString[j + 1]});
                 bytes[i] = HexToByte(hex);
                 j = j + 2;
             }
@@ -103,9 +102,10 @@ namespace MapleLib.PacketLib
                 else
                 {
                     var chr = bytes[x] & 0xFF;
-                    ret[x] = (char)chr;
+                    ret[x] = (char) chr;
                 }
             }
+
             return new string(ret);
         }
     }

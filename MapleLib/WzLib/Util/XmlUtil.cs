@@ -4,9 +4,8 @@ namespace MapleLib.WzLib.Util
 {
     public static class XmlUtil
     {
-
-        private static readonly char[] specialCharacters = { '"', '\'', '&', '<', '>' };
-        private static readonly string[] replacementStrings = { "&quot;", "&apos;", "&amp;", "&lt;", "&gt;" };
+        private static readonly char[] specialCharacters = {'"', '\'', '&', '<', '>'};
+        private static readonly string[] replacementStrings = {"&quot;", "&apos;", "&amp;", "&lt;", "&gt;"};
 
         public static string SanitizeText(string text)
         {
@@ -17,7 +16,6 @@ namespace MapleLib.WzLib.Util
                 charFixed = false;
                 for (var k = 0; k < specialCharacters.Length; k++)
                 {
-
                     if (text[i] == specialCharacters[k])
                     {
                         fixedText += replacementStrings[k];
@@ -25,11 +23,13 @@ namespace MapleLib.WzLib.Util
                         break;
                     }
                 }
+
                 if (!charFixed)
                 {
                     fixedText += text[i];
                 }
             }
+
             return fixedText;
         }
 
@@ -40,7 +40,7 @@ namespace MapleLib.WzLib.Util
 
         public static string EmptyNamedValuePair(string tag, string name, string value)
         {
-            return OpenNamedTag(tag, name, false, false) + Attrib("value", value, true, true);
+            return OpenNamedTag(tag, name, false) + Attrib("value", value, true, true);
         }
 
         public static string OpenNamedTag(string tag, string name, bool finish, bool empty = false)
@@ -65,6 +65,7 @@ namespace MapleLib.WzLib.Util
             {
                 indent[i] = '\t';
             }
+
             return new String(indent);
         }
     }

@@ -66,8 +66,8 @@ namespace MapleLib.PacketLib
         /// </summary>
         public MapleCrypto SIV
         {
-			get => _siv;
-			set => _siv = value;
+            get => _siv;
+            set => _siv = value;
         }
 
         /// <summary>
@@ -81,7 +81,6 @@ namespace MapleLib.PacketLib
         /// Creates a new instance of a Session
         /// </summary>
         /// <param name="socket">Socket connection of the session</param>
-
         public Session(Socket socket, SessionType type)
         {
             _socket = socket;
@@ -107,7 +106,7 @@ namespace MapleLib.PacketLib
                     socketInfo.Index,
                     socketInfo.DataBuffer.Length - socketInfo.Index,
                     SocketFlags.None,
-                    new AsyncCallback(OnDataReceived),
+                    OnDataReceived,
                     socketInfo);
             }
             catch (Exception se)
@@ -122,7 +121,7 @@ namespace MapleLib.PacketLib
         /// <param name="iar">IAsyncResult of the data received event</param>
         private void OnDataReceived(IAsyncResult iar)
         {
-            var socketInfo = (SocketInfo)iar.AsyncState;
+            var socketInfo = (SocketInfo) iar.AsyncState;
             try
             {
                 var received = socketInfo.Socket.EndReceive(iar);
@@ -153,17 +152,20 @@ namespace MapleLib.PacketLib
                                 var headerReader = new PacketReader(socketInfo.DataBuffer);
                                 var packetHeaderB = headerReader.ToArray();
                                 var packetHeader = headerReader.ReadInt();
-                                var packetLength = (short)MapleCrypto.GetPacketLength(packetHeader);
-                                if (Type == SessionType.SERVER_TO_CLIENT && !_riv.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
+                                var packetLength = (short) MapleCrypto.GetPacketLength(packetHeader);
+                                if (Type == SessionType.SERVER_TO_CLIENT &&
+                                    !_riv.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
                                 {
                                     Log.LogError("Packet check failed. Disconnecting client");
                                     Socket.Close();
                                 }
+
                                 socketInfo.State = SocketInfo.StateEnum.Content;
                                 socketInfo.DataBuffer = new byte[packetLength];
                                 socketInfo.Index = 0;
                                 WaitForData(socketInfo);
                             }
+
                             break;
                         case SocketInfo.StateEnum.Content:
                             var data = socketInfo.DataBuffer;
@@ -198,6 +200,7 @@ namespace MapleLib.PacketLib
 
                                 WaitForData();
                             }
+
                             break;
                     }
                 }
@@ -250,7 +253,9 @@ namespace MapleLib.PacketLib
         {
             var cryptData = input;
             var sendData = new byte[cryptData.Length + 4];
-            var header = Type == SessionType.SERVER_TO_CLIENT ? _siv.GetHeaderToClient(cryptData.Length) : _siv.GetHeaderToServer(cryptData.Length);
+            var header = Type == SessionType.SERVER_TO_CLIENT
+                ? _siv.GetHeaderToClient(cryptData.Length)
+                : _siv.GetHeaderToServer(cryptData.Length);
 
             MapleCustomEncryption.Encrypt(cryptData);
             _siv.Crypt(cryptData);

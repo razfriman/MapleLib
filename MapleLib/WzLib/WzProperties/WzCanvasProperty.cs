@@ -131,7 +131,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return ((WzImageProperty) Parent)[path.Substring(name.IndexOf('/') + 1)];
@@ -192,9 +192,9 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzCanvas", Name, false, false) +
+            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzCanvas", Name, false) +
                              XmlUtil.Attrib("width", PngProperty.Width.ToString()) +
-                             XmlUtil.Attrib("height", PngProperty.Height.ToString(), true, false));
+                             XmlUtil.Attrib("height", PngProperty.Height.ToString(), true));
             DumpPropertyList(writer, level, WzProperties);
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzCanvas"));
         }

@@ -78,7 +78,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void ExportXml(StreamWriter writer, int level)
         {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzVector", Name, false, false) +
+            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzVector", Name, false) +
                              XmlUtil.Attrib("X", X.Value.ToString()) +
                              XmlUtil.Attrib("Y", Y.Value.ToString(), true, true));
         }
@@ -162,7 +162,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override string ToString()
         {
-            return "X: " + x.val.ToString() + ", Y: " + y.val.ToString();
+            return "X: " + x.val + ", Y: " + y.val;
         }
 
         #endregion

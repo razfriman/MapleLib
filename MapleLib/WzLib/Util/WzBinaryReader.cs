@@ -7,17 +7,21 @@ namespace MapleLib.WzLib.Util
     public class WzBinaryReader : BinaryReader
     {
         #region Properties
+
         public WzMutableKey WzKey { get; set; }
         public uint Hash { get; set; }
         public WzHeader Header { get; set; }
+
         #endregion
 
         #region Constructors
+
         public WzBinaryReader(Stream input, byte[] WzIv)
             : base(input)
         {
             WzKey = WzKeyGenerator.GenerateWzKey(WzIv);
         }
+
         #endregion
 
         #region Methods
@@ -30,6 +34,7 @@ namespace MapleLib.WzLib.Util
             {
                 ReadByte();
             }
+
             var ReturnString = ReadString();
             BaseStream.Position = CurrentOffset;
             return ReturnString;
@@ -59,13 +64,14 @@ namespace MapleLib.WzLib.Util
                 {
                     var encryptedChar = ReadUInt16();
                     encryptedChar ^= mask;
-                    encryptedChar ^= (ushort)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2]);
-                    retString.Append((char)encryptedChar);
+                    encryptedChar ^= (ushort) ((WzKey[i * 2 + 1] << 8) + WzKey[i * 2]);
+                    retString.Append((char) encryptedChar);
                     mask++;
                 }
             }
             else
-            { // ASCII
+            {
+                // ASCII
                 byte mask = 0xAA;
                 if (smallLength == sbyte.MinValue)
                 {
@@ -75,6 +81,7 @@ namespace MapleLib.WzLib.Util
                 {
                     length = -smallLength;
                 }
+
                 if (length <= 0)
                 {
                     return string.Empty;
@@ -85,10 +92,11 @@ namespace MapleLib.WzLib.Util
                     var encryptedChar = ReadByte();
                     encryptedChar ^= mask;
                     encryptedChar ^= WzKey[i];
-                    retString.Append((char)encryptedChar);
+                    retString.Append((char) encryptedChar);
                     mask++;
                 }
             }
+
             return retString.ToString();
         }
 
@@ -107,9 +115,10 @@ namespace MapleLib.WzLib.Util
             var b = ReadByte();
             while (b != 0)
             {
-                retString.Append((char)b);
+                retString.Append((char) b);
                 b = ReadByte();
             }
+
             return retString.ToString();
         }
 
@@ -127,11 +136,11 @@ namespace MapleLib.WzLib.Util
 
         public uint ReadOffset()
         {
-            var offset = (uint)BaseStream.Position;
+            var offset = (uint) BaseStream.Position;
             offset = (offset - Header.FStart) ^ uint.MaxValue;
             offset *= Hash;
             offset -= CryptoConstants.WzOffsetConstant;
-            offset = WzTool.RotateLeft(offset, (byte)(offset & 0x1F));
+            offset = WzTool.RotateLeft(offset, (byte) (offset & 0x1F));
             var encryptedOffset = ReadUInt32();
             offset ^= encryptedOffset;
             offset += Header.FStart * 2;
@@ -143,7 +152,7 @@ namespace MapleLib.WzLib.Util
             var outputString = "";
             for (var i = 0; i < stringToDecrypt.Length; i++)
             {
-                outputString += (char)(stringToDecrypt[i] ^ ((char)((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
+                outputString += (char) (stringToDecrypt[i] ^ ((char) ((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
             }
 
             return outputString;
@@ -154,7 +163,7 @@ namespace MapleLib.WzLib.Util
             var outputString = "";
             for (var i = 0; i < stringToDecrypt.Length; i++)
             {
-                outputString += (char)(stringToDecrypt[i] ^ WzKey[i]);
+                outputString += (char) (stringToDecrypt[i] ^ WzKey[i]);
             }
 
             return outputString;

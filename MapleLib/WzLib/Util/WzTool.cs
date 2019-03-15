@@ -7,7 +7,6 @@ namespace MapleLib.WzLib.Util
 {
     public static class WzTool
     {
-
         public static Hashtable StringCache = new Hashtable();
 
         public static UInt32 RotateLeft(UInt32 x, byte n)
@@ -70,6 +69,7 @@ namespace MapleLib.WzLib.Util
 
                 len += s.Length;
             }
+
             return len;
         }
 
@@ -89,7 +89,7 @@ namespace MapleLib.WzLib.Util
         {
             try
             {
-                return (T)Enum.Parse(typeof(T), name);
+                return (T) Enum.Parse(typeof(T), name);
             }
             catch
             {
@@ -126,7 +126,9 @@ namespace MapleLib.WzLib.Util
 
         private static double GetDecryptionSuccessRate(string wzPath, WzMapleVersion encVersion, ref short? version)
         {
-            var wzf = version == null ? new WzFile(wzPath, encVersion) : new WzFile(wzPath, (short)version, encVersion);
+            var wzf = version == null
+                ? new WzFile(wzPath, encVersion)
+                : new WzFile(wzPath, (short) version, encVersion);
 
             wzf.ParseWzFile();
             if (version == null)
@@ -141,31 +143,36 @@ namespace MapleLib.WzLib.Util
                 recognizedChars += GetRecognizedCharacters(wzdir.Name);
                 totalChars += wzdir.Name.Length;
             }
+
             foreach (var wzimg in wzf.WzDirectory.WzImages)
             {
                 recognizedChars += GetRecognizedCharacters(wzimg.Name);
                 totalChars += wzimg.Name.Length;
             }
+
             wzf.Dispose();
-            return recognizedChars / (double)totalChars;
+            return recognizedChars / (double) totalChars;
         }
 
         public static WzMapleVersion DetectMapleVersion(string wzFilePath, out short fileVersion)
         {
             var mapleVersionSuccessRates = new Hashtable();
             short? version = null;
-            mapleVersionSuccessRates.Add(WzMapleVersion.GMS, GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.GMS, ref version));
-            mapleVersionSuccessRates.Add(WzMapleVersion.EMS, GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.EMS, ref version));
-            mapleVersionSuccessRates.Add(WzMapleVersion.BMS, GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.BMS, ref version));
-            fileVersion = (short)version;
+            mapleVersionSuccessRates.Add(WzMapleVersion.GMS,
+                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.GMS, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.EMS,
+                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.EMS, ref version));
+            mapleVersionSuccessRates.Add(WzMapleVersion.BMS,
+                GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.BMS, ref version));
+            fileVersion = (short) version;
             var mostSuitableVersion = WzMapleVersion.GMS;
             double maxSuccessRate = 0;
             foreach (DictionaryEntry mapleVersionEntry in mapleVersionSuccessRates)
             {
-                if ((double)mapleVersionEntry.Value > maxSuccessRate)
+                if ((double) mapleVersionEntry.Value > maxSuccessRate)
                 {
-                    mostSuitableVersion = (WzMapleVersion)mapleVersionEntry.Key;
-                    maxSuccessRate = (double)mapleVersionEntry.Value;
+                    mostSuitableVersion = (WzMapleVersion) mapleVersionEntry.Key;
+                    maxSuccessRate = (double) mapleVersionEntry.Value;
                 }
             }
 

@@ -331,7 +331,7 @@ namespace MapleLib.WzLib.WzProperties
 
                 if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)
                 {
-                    Log.LogCritical($"Failed to parse sound header");
+                    Log.LogCritical("Failed to parse sound header");
                     return;
                 }
 
