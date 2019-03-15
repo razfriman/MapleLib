@@ -17,7 +17,7 @@ namespace MapleLib.WzLib
     /// </summary>
     public class WzFile : WzObject
     {
-        public static ILogger Log = LogManager.Log;
+        public static readonly ILogger Log = LogManager.Log;
 
         #region Fields
 
@@ -66,8 +66,7 @@ namespace MapleLib.WzLib
             internal set { }
         }
 
-        [JsonIgnore]
-        public override WzFile WzFileParent => this;
+        [JsonIgnore] public override WzFile WzFileParent => this;
 
         public override void Dispose()
         {
@@ -162,7 +161,7 @@ namespace MapleLib.WzLib
             GC.WaitForPendingFinalizers();
         }
 
-        public void ParseWzFile(byte[] WzIv)
+        public void ParseWzFile(byte[] wzIv)
         {
             if (MapleVersion != WzMapleVersion.Generate)
             {
@@ -172,7 +171,7 @@ namespace MapleLib.WzLib
                 }
             }
 
-            this.WzIv = WzIv;
+            WzIv = wzIv;
             ParseMainWzDirectory();
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -338,25 +337,18 @@ namespace MapleLib.WzLib
             GC.WaitForPendingFinalizers();
         }
 
-        public void ExportJson(string path, bool oneFile)
+        public void ExportJson(Stream stream)
         {
             var serializer = new JsonSerializer();
             serializer.Converters.Add(new JavaScriptDateTimeConverter());
             serializer.NullValueHandling = NullValueHandling.Ignore;
-            
-            if (oneFile)
+
+            using (var sw = new StreamWriter(stream))
             {
-                using (var sw = new StreamWriter(Path.Combine(path, $"{Name}.json")))
+                using (var writer = new JsonTextWriter(sw))
                 {
-                    using (var writer = new JsonTextWriter(sw))
-                    {
-                        serializer.Serialize(writer, this);
-                    }
+                    serializer.Serialize(writer, this);
                 }
-            }
-            else
-            {
-                throw new NotImplementedException("Under Construction");
             }
         }
 
@@ -383,6 +375,7 @@ namespace MapleLib.WzLib
                 {
                     WzDirectory
                 };
+
                 fullList.AddRange(GetObjectsFromDirectory(WzDirectory));
                 return fullList;
             }
@@ -580,7 +573,6 @@ namespace MapleLib.WzLib
             foreach (var img in dir.WzImages)
             {
                 objList.Add(curPath + "/" + img.Name);
-
                 objList.AddRange(GetPathsFromImage(img, curPath + "/" + img.Name));
             }
 
@@ -702,7 +694,6 @@ namespace MapleLib.WzLib
                                 }
 
                                 return null;
-
                             default:
                                 return null;
                         }

@@ -435,32 +435,6 @@ namespace MapleLib.WzLib
             return curOffset;
         }
 
-        internal void ExportXml(StreamWriter writer, bool oneFile, int level, bool isDirectory)
-        {
-            if (oneFile)
-            {
-                if (isDirectory)
-                {
-                    writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzDirectory", name, true));
-                }
-
-                foreach (var subDir in WzDirectories)
-                {
-                    subDir.ExportXml(writer, oneFile, level + 1, isDirectory);
-                }
-
-                foreach (var subImg in WzImages)
-                {
-                    subImg.ExportXml(writer, oneFile, level + 1);
-                }
-
-                if (isDirectory)
-                {
-                    writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzDirectory"));
-                }
-            }
-        }
-
         /// <summary>
         /// Parses the wz images
         /// </summary>

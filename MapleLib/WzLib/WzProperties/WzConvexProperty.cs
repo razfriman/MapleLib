@@ -160,13 +160,6 @@ namespace MapleLib.WzLib.WzProperties
             }
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzConvex", Name, true));
-            DumpPropertyList(writer, level, WzProperties);
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzConvex"));
-        }
-
         public override void Dispose()
         {
             name = null;

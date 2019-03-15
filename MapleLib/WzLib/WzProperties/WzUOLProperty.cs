@@ -100,11 +100,6 @@ namespace MapleLib.WzLib.WzProperties
             writer.WriteStringValue(Value, 0, 1);
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.EmptyNamedValuePair("WzUOL", Name, Value));
-        }
-
         /// <summary>
         /// Disposes the object
         /// </summary>

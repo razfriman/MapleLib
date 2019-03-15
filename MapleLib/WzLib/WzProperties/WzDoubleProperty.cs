@@ -66,12 +66,6 @@ namespace MapleLib.WzLib.WzProperties
             writer.Write(Value);
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) +
-                             XmlUtil.EmptyNamedValuePair("WzDouble", Name, Value.ToString()));
-        }
-
         public override void Dispose()
         {
             name = null;

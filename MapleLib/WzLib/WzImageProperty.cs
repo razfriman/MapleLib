@@ -61,12 +61,6 @@ namespace MapleLib.WzLib
             ((IPropertyContainer) Parent).RemoveProperty(this);
         }
 
-        public virtual void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag(PropertyType.ToString(), Name, true));
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag(PropertyType.ToString()));
-        }
-
         public override WzFile WzFileParent => ParentImage.WzFileParent;
 
         #endregion
@@ -88,14 +82,6 @@ namespace MapleLib.WzLib
                 {
                     property.WriteValue(writer);
                 }
-            }
-        }
-
-        internal static void DumpPropertyList(StreamWriter writer, int level, List<WzImageProperty> properties)
-        {
-            foreach (var prop in properties)
-            {
-                prop.ExportXml(writer, level + 1);
             }
         }
 

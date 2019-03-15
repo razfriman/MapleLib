@@ -75,12 +75,6 @@ namespace MapleLib.WzLib.WzProperties
             }
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) +
-                             XmlUtil.EmptyNamedValuePair("WzByteFloat", Name, Value.ToString()));
-        }
-
         /// <summary>
         /// Dispose the object
         /// </summary>

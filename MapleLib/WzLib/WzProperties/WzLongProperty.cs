@@ -64,12 +64,6 @@ namespace MapleLib.WzLib.WzProperties
             writer.WriteCompressedLong(Value);
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) +
-                             XmlUtil.EmptyNamedValuePair("WzLong", Name, Value.ToString()));
-        }
-
         /// <summary>
         /// Dispose the object
         /// </summary>

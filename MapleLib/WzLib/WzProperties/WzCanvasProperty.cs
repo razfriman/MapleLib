@@ -190,15 +190,6 @@ namespace MapleLib.WzLib.WzProperties
             writer.Write(bytes);
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzCanvas", Name, false) +
-                             XmlUtil.Attrib("width", PngProperty.Width.ToString()) +
-                             XmlUtil.Attrib("height", PngProperty.Height.ToString(), true));
-            DumpPropertyList(writer, level, WzProperties);
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzCanvas"));
-        }
-
         /// <summary>
         /// Dispose the object
         /// </summary>

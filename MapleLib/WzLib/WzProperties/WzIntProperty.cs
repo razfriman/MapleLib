@@ -68,12 +68,6 @@ namespace MapleLib.WzLib.WzProperties
             writer.WriteCompressedInt(Value);
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) +
-                             XmlUtil.EmptyNamedValuePair("WzCompressedInt", Name, Value.ToString()));
-        }
-
         /// <summary>
         /// Dispose the object
         /// </summary>

@@ -394,20 +394,6 @@ namespace MapleLib.WzLib
             }
         }
 
-        public void ExportXml(StreamWriter writer, bool oneFile, int level)
-        {
-            if (oneFile)
-            {
-                writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzImage", name, true));
-                WzImageProperty.DumpPropertyList(writer, level, properties.WzProperties);
-                writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzImage"));
-            }
-            else
-            {
-                throw new Exception("Under Construction");
-            }
-        }
-
         #endregion
     }
 }

@@ -141,13 +141,6 @@ namespace MapleLib.WzLib.WzProperties
             WritePropertyList(writer, properties);
         }
 
-        public override void ExportXml(StreamWriter writer, int level)
-        {
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzSub", Name, true));
-            DumpPropertyList(writer, level, WzProperties);
-            writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzSub"));
-        }
-
         /// <summary>
         /// Disposes the object
         /// </summary>
