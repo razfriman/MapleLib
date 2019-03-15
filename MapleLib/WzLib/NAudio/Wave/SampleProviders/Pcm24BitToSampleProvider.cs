@@ -27,11 +27,11 @@ namespace NAudio.Wave.SampleProviders
         /// <returns>number of samples provided</returns>
         public override int Read(float[] buffer, int offset, int count)
         {
-            int sourceBytesRequired = count * 3;
+            var sourceBytesRequired = count * 3;
             EnsureSourceBuffer(sourceBytesRequired);
-            int bytesRead = source.Read(sourceBuffer, 0, sourceBytesRequired);
-            int outIndex = offset;
-            for (int n = 0; n < bytesRead; n += 3)
+            var bytesRead = source.Read(sourceBuffer, 0, sourceBytesRequired);
+            var outIndex = offset;
+            for (var n = 0; n < bytesRead; n += 3)
             {
                 buffer[outIndex++] = (((sbyte)sourceBuffer[n + 2] << 16) | (sourceBuffer[n + 1] << 8) | sourceBuffer[n]) / 8388608f;
             }

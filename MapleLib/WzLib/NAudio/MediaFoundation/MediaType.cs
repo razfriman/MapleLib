@@ -62,7 +62,7 @@ namespace NAudio.MediaFoundation
         /// <returns>Value or default if key doesn't exist</returns>
         public int TryGetUInt32(Guid key, int defaultValue = -1)
         {
-            int intValue = defaultValue;
+            var intValue = defaultValue;
             try
             {
                 mediaType.GetUINT32(key, out intValue);

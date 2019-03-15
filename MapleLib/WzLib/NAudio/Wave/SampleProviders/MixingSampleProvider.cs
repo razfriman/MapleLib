@@ -141,17 +141,17 @@ namespace NAudio.Wave.SampleProviders
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            int outputSamples = 0;
+            var outputSamples = 0;
             sourceBuffer = BufferHelpers.Ensure(sourceBuffer, count);
             lock (sources)
             {
-                int index = sources.Count - 1;
+                var index = sources.Count - 1;
                 while (index >= 0)
                 {
                     var source = sources[index];
-                    int samplesRead = source.Read(sourceBuffer, 0, count);
-                    int outIndex = offset;
-                    for (int n = 0; n < samplesRead; n++)
+                    var samplesRead = source.Read(sourceBuffer, 0, count);
+                    var outIndex = offset;
+                    for (var n = 0; n < samplesRead; n++)
                     {
                         if (n >= outputSamples)
                         {
@@ -174,7 +174,7 @@ namespace NAudio.Wave.SampleProviders
             // optionally ensure we return a full buffer
             if (ReadFully && outputSamples < count)
             {
-                int outputIndex = offset + outputSamples;
+                var outputIndex = offset + outputSamples;
                 while (outputIndex < offset + count)
                 {
                     buffer[outputIndex++] = 0;

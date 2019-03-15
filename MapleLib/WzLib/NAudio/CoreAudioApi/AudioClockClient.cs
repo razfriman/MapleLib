@@ -66,7 +66,7 @@ namespace NAudio.CoreAudioApi
                 var byteLatency = (TimeSpan.TicksPerSecond / Frequency);
 
                 ulong pos, qpos;
-                int cnt = 0;
+                var cnt = 0;
                 while (!GetPosition(out pos, out qpos))
                 {
                     if (++cnt == 5)

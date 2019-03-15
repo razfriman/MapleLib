@@ -13,10 +13,10 @@
         /// <returns>Encrypted data</returns>
         public static void Encrypt(byte[] data)
         {
-            int size = data.Length;
+            var size = data.Length;
             int j;
             byte a, c;
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 a = 0;
                 for (j = size; j > 0; j--)
@@ -53,10 +53,10 @@
         /// <returns>Decrypted data</returns>
         public static void Decrypt(byte[] data)
         {
-            int size = data.Length;
+            var size = data.Length;
             int j;
             byte a, b, c;
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 a = 0;
                 b = 0;
@@ -99,7 +99,7 @@
         public static byte Rol(byte val, int num)
         {
             int highbit;
-            for (int i = 0; i < num; i++)
+            for (var i = 0; i < num; i++)
             {
                 highbit = ((val & 0x80) != 0 ? 1 : 0);
                 val <<= 1;
@@ -117,7 +117,7 @@
         public static byte Ror(byte val, int num)
         {
             int lowbit;
-            for (int i = 0; i < num; i++)
+            for (var i = 0; i < num; i++)
             {
                 lowbit = ((val & 1) != 0 ? 1 : 0);
                 val >>= 1;

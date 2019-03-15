@@ -39,10 +39,10 @@ namespace NAudio.Wave.SampleProviders
         {
             float[] inBuffer;
             int inBufferOffset;
-            int framesRequested = count / channels;
-            int inNeeded = resampler.ResamplePrepare(framesRequested, outFormat.Channels, out inBuffer, out inBufferOffset);
-            int inAvailable = source.Read(inBuffer, inBufferOffset, inNeeded * channels) / channels;
-            int outAvailable = resampler.ResampleOut(buffer, offset, inAvailable, framesRequested, channels);
+            var framesRequested = count / channels;
+            var inNeeded = resampler.ResamplePrepare(framesRequested, outFormat.Channels, out inBuffer, out inBufferOffset);
+            var inAvailable = source.Read(inBuffer, inBufferOffset, inNeeded * channels) / channels;
+            var outAvailable = resampler.ResampleOut(buffer, offset, inAvailable, framesRequested, channels);
             return outAvailable * channels;
         }
 

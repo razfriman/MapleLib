@@ -234,11 +234,11 @@ namespace NAudio.Wave
                 {
                     if (sourceBuffer == null || sourceBuffer.Length < count)
                         sourceBuffer = new byte[count];
-                    int sourceBytesRead = sourceStream.Read(sourceBuffer, 0, count);
-                    int sampleCount = sourceBytesRead / (bytesPerSample * channels);
-                    for (int sample = 0; sample < sampleCount; sample++)
+                    var sourceBytesRead = sourceStream.Read(sourceBuffer, 0, count);
+                    var sampleCount = sourceBytesRead / (bytesPerSample * channels);
+                    for (var sample = 0; sample < sampleCount; sample++)
                     {
-                        int start = sample * bytesPerSample * channels;
+                        var start = sample * bytesPerSample * channels;
                         double in1;
                         double in2;
                         ReadSamples(sourceBuffer, start, out in1, out in2);

@@ -139,7 +139,7 @@ namespace NAudio.Dsp
         // amount of input that has been received but not yet converted to output, in seconds
         public double GetCurrentLatency()
         {
-            double v = ((double)m_samples_in_rsinbuf - m_filtlatency) / m_sratein;
+            var v = ((double)m_samples_in_rsinbuf - m_filtlatency) / m_sratein;
 
             if (v < 0.0) v = 0.0;
             return v;
@@ -164,13 +164,13 @@ namespace NAudio.Dsp
                 return 0;
             }
 
-            int fsize = 0;
+            var fsize = 0;
             if (m_sincsize > 1)
             {
                 fsize = m_sincsize;
             }
 
-            int hfs = fsize / 2;
+            var hfs = fsize / 2;
             if (hfs > 1 && m_samples_in_rsinbuf < hfs - 1)
             {
                 m_filtlatency += hfs - 1 - m_samples_in_rsinbuf;
@@ -183,7 +183,7 @@ namespace NAudio.Dsp
                 }
             }
 
-            int sreq = 0;
+            var sreq = 0;
 
             if (!m_feedmode) sreq = (int)(m_ratio * out_samples) + 4 + fsize - m_samples_in_rsinbuf;
             else sreq = out_samples;
@@ -193,7 +193,7 @@ namespace NAudio.Dsp
         again:
             Array.Resize(ref m_rsinbuf, (m_samples_in_rsinbuf + sreq) * nch);
 
-            int sz = m_rsinbuf.Length / ((nch != 0) ? nch : 1) - m_samples_in_rsinbuf;
+            var sz = m_rsinbuf.Length / ((nch != 0) ? nch : 1) - m_samples_in_rsinbuf;
             if (sz != sreq)
             {
                 if (sreq > 4 && (sz == 0))
@@ -228,12 +228,12 @@ namespace NAudio.Dsp
                 {
                     if (m_iirfilter == null) m_iirfilter = new WDL_Resampler_IIRFilter();
 
-                    int n = m_filtercnt;
+                    var n = m_filtercnt;
                     m_iirfilter.setParms((1.0 / m_ratio) * m_filterpos, m_filterq);
 
-                    int bufIndex = m_samples_in_rsinbuf * nch;
+                    var bufIndex = m_samples_in_rsinbuf * nch;
                     int a, x;
-                    int offs = 0;
+                    var offs = 0;
                     for (x = 0; x < nch; x++)
                         for (a = 0; a < n; a++)
                             m_iirfilter.Apply(m_rsinbuf, bufIndex + x, m_rsinbuf, bufIndex + x, nsamples_in, nch, offs++);
@@ -243,13 +243,13 @@ namespace NAudio.Dsp
             m_samples_in_rsinbuf += Math.Min(nsamples_in, m_last_requested); // prevent the user from corrupting the internal state
 
 
-            int rsinbuf_availtemp = m_samples_in_rsinbuf;
+            var rsinbuf_availtemp = m_samples_in_rsinbuf;
 
             if (nsamples_in < m_last_requested) // flush out to ensure we can deliver
             {
-                int fsize = (m_last_requested - nsamples_in) * 2 + m_sincsize * 2;
+                var fsize = (m_last_requested - nsamples_in) * 2 + m_sincsize * 2;
 
-                int alloc_size = (m_samples_in_rsinbuf + fsize) * nch;
+                var alloc_size = (m_samples_in_rsinbuf + fsize) * nch;
                 Array.Resize(ref m_rsinbuf, alloc_size);
                 if (m_rsinbuf.Length == alloc_size)
                 {
@@ -258,32 +258,32 @@ namespace NAudio.Dsp
                 }
             }
 
-            int ret = 0;
-            double srcpos = m_fracpos;
-            double drspos = m_ratio;
-            int localin = 0; // localin is an index into m_rsinbuf
+            var ret = 0;
+            var srcpos = m_fracpos;
+            var drspos = m_ratio;
+            var localin = 0; // localin is an index into m_rsinbuf
 
-            int outptr = outBufferIndex;  // outptr is an index into  outBuffer;
+            var outptr = outBufferIndex;  // outptr is an index into  outBuffer;
 
-            int ns = nsamples_out;
+            var ns = nsamples_out;
 
-            int outlatadj = 0;
+            var outlatadj = 0;
 
             if (m_sincsize != 0) // sinc interpolating
             {
                 if (m_ratio > 1.0) BuildLowPass(1.0 / (m_ratio * 1.03));
                 else BuildLowPass(1.0);
 
-                int filtsz = m_filter_coeffs_size;
-                int filtlen = rsinbuf_availtemp - filtsz;
+                var filtsz = m_filter_coeffs_size;
+                var filtlen = rsinbuf_availtemp - filtsz;
                 outlatadj = filtsz / 2 - 1;
-                int filter = 0; // filter is an index into m_filter_coeffs m_filter_coeffs.Get();
+                var filter = 0; // filter is an index into m_filter_coeffs m_filter_coeffs.Get();
 
                 if (nch == 1)
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
+                        var ipos = (int)srcpos;
 
                         if (ipos >= filtlen - 1) break; // quit decoding, not enough input samples
 
@@ -297,7 +297,7 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
+                        var ipos = (int)srcpos;
 
                         if (ipos >= filtlen - 1) break; // quit decoding, not enough input samples
 
@@ -311,7 +311,7 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
+                        var ipos = (int)srcpos;
 
                         if (ipos >= filtlen - 1) break; // quit decoding, not enough input samples
 
@@ -328,7 +328,7 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
+                        var ipos = (int)srcpos;
                         if (ipos >= rsinbuf_availtemp) break; // quit decoding, not enough input samples
 
                         outBuffer[outptr++] = m_rsinbuf[localin + ipos];
@@ -340,7 +340,7 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
+                        var ipos = (int)srcpos;
                         if (ipos >= rsinbuf_availtemp) break; // quit decoding, not enough input samples
 
                         ipos += ipos;
@@ -355,7 +355,7 @@ namespace NAudio.Dsp
                 else
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
+                        var ipos = (int)srcpos;
                         if (ipos >= rsinbuf_availtemp) break; // quit decoding, not enough input samples
 
                         Array.Copy(m_rsinbuf, localin + ipos * nch, outBuffer, outptr, nch);
@@ -370,16 +370,16 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
-                        double fracpos = srcpos - ipos;
+                        var ipos = (int)srcpos;
+                        var fracpos = srcpos - ipos;
 
                         if (ipos >= rsinbuf_availtemp - 1)
                         {
                             break; // quit decoding, not enough input samples
                         }
 
-                        double ifracpos = 1.0 - fracpos;
-                        int inptr = localin + ipos;
+                        var ifracpos = 1.0 - fracpos;
+                        var inptr = localin + ipos;
                         outBuffer[outptr++] = (WDL_ResampleSample)(m_rsinbuf[inptr] * (ifracpos) + m_rsinbuf[inptr + 1] * (fracpos));
                         srcpos += drspos;
                         ret++;
@@ -389,16 +389,16 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
-                        double fracpos = srcpos - ipos;
+                        var ipos = (int)srcpos;
+                        var fracpos = srcpos - ipos;
 
                         if (ipos >= rsinbuf_availtemp - 1)
                         {
                             break; // quit decoding, not enough input samples
                         }
 
-                        double ifracpos = 1.0 - fracpos;
-                        int inptr = localin + ipos * 2;
+                        var ifracpos = 1.0 - fracpos;
+                        var inptr = localin + ipos * 2;
                         outBuffer[outptr + 0] = (WDL_ResampleSample)(m_rsinbuf[inptr] * (ifracpos) + m_rsinbuf[inptr + 2] * (fracpos));
                         outBuffer[outptr + 1] = (WDL_ResampleSample)(m_rsinbuf[inptr + 1] * (ifracpos) + m_rsinbuf[inptr + 3] * (fracpos));
                         outptr += 2;
@@ -410,17 +410,17 @@ namespace NAudio.Dsp
                 {
                     while (ns-- != 0)
                     {
-                        int ipos = (int)srcpos;
-                        double fracpos = srcpos - ipos;
+                        var ipos = (int)srcpos;
+                        var fracpos = srcpos - ipos;
 
                         if (ipos >= rsinbuf_availtemp - 1)
                         {
                             break; // quit decoding, not enough input samples
                         }
 
-                        double ifracpos = 1.0 - fracpos;
-                        int ch = nch;
-                        int inptr = localin + ipos * nch;
+                        var ifracpos = 1.0 - fracpos;
+                        var ch = nch;
+                        var inptr = localin + ipos * nch;
                         while (ch-- != 0)
                         {
                             outBuffer[outptr++] = (WDL_ResampleSample)(m_rsinbuf[inptr] * (ifracpos) + m_rsinbuf[inptr + nch] * (fracpos));
@@ -437,11 +437,11 @@ namespace NAudio.Dsp
                 if (m_ratio < 1.0 && ret > 0) // filter output
                 {
                     if (m_iirfilter == null) m_iirfilter = new WDL_Resampler_IIRFilter();
-                    int n = m_filtercnt;
+                    var n = m_filtercnt;
                     m_iirfilter.setParms(m_ratio * m_filterpos, m_filterq);
 
                     int x, a;
-                    int offs = 0;
+                    var offs = 0;
                     for (x = 0; x < nch; x++)
                         for (a = 0; a < n; a++)
                             m_iirfilter.Apply(outBuffer, x, outBuffer, x, ret, nch, offs++);
@@ -451,7 +451,7 @@ namespace NAudio.Dsp
             if (ret > 0 && rsinbuf_availtemp > m_samples_in_rsinbuf) // we had to pad!!
             {
                 // check for the case where rsinbuf_availtemp>m_samples_in_rsinbuf, decrease ret down to actual valid samples
-                double adj = (srcpos - m_samples_in_rsinbuf + outlatadj) / drspos;
+                var adj = (srcpos - m_samples_in_rsinbuf + outlatadj) / drspos;
                 if (adj > 0)
                 {
                     ret -= (int)(adj + 0.5);
@@ -459,7 +459,7 @@ namespace NAudio.Dsp
                 }
             }
 
-            int isrcpos = (int)srcpos;
+            var isrcpos = (int)srcpos;
             m_fracpos = srcpos - isrcpos;
             m_samples_in_rsinbuf -= isrcpos;
             if (m_samples_in_rsinbuf <= 0)
@@ -480,8 +480,8 @@ namespace NAudio.Dsp
         // only called in sinc modes
         private void BuildLowPass(double filtpos)
         {
-            int wantsize = m_sincsize;
-            int wantinterp = m_sincoversize;
+            var wantsize = m_sincsize;
+            var wantinterp = m_sincoversize;
 
             if (m_filter_ratio != filtpos ||
                 m_filter_coeffs_size != wantsize ||
@@ -491,25 +491,25 @@ namespace NAudio.Dsp
                 m_filter_ratio = filtpos;
 
                 // build lowpass filter
-                int allocsize = (wantsize + 1) * m_lp_oversize;
+                var allocsize = (wantsize + 1) * m_lp_oversize;
                 Array.Resize(ref m_filter_coeffs, allocsize);
                 //int cfout = 0; // this is an index into m_filter_coeffs
                 if (m_filter_coeffs.Length == allocsize)
                 {
                     m_filter_coeffs_size = wantsize;
 
-                    int sz = wantsize * m_lp_oversize;
-                    int hsz = sz / 2;
-                    double filtpower = 0.0;
-                    double windowpos = 0.0;
-                    double dwindowpos = 2.0 * PI / (double)(sz);
-                    double dsincpos = PI / m_lp_oversize * filtpos; // filtpos is outrate/inrate, i.e. 0.5 is going to half rate
-                    double sincpos = dsincpos * (double)(-hsz);
+                    var sz = wantsize * m_lp_oversize;
+                    var hsz = sz / 2;
+                    var filtpower = 0.0;
+                    var windowpos = 0.0;
+                    var dwindowpos = 2.0 * PI / (double)(sz);
+                    var dsincpos = PI / m_lp_oversize * filtpos; // filtpos is outrate/inrate, i.e. 0.5 is going to half rate
+                    var sincpos = dsincpos * (double)(-hsz);
 
                     int x;
                     for (x = -hsz; x < hsz + m_lp_oversize; x++)
                     {
-                        double val = 0.35875 - 0.48829 * Math.Cos(windowpos) + 0.14128 * Math.Cos(2 * windowpos) - 0.01168 * Math.Cos(6 * windowpos); // blackman-harris
+                        var val = 0.35875 - 0.48829 * Math.Cos(windowpos) + 0.14128 * Math.Cos(2 * windowpos) - 0.01168 * Math.Cos(6 * windowpos); // blackman-harris
                         if (x != 0) val *= Math.Sin(sincpos) / sincpos;
 
                         windowpos += dwindowpos;
@@ -532,18 +532,18 @@ namespace NAudio.Dsp
         // SincSample(WDL_ResampleSample *outptr, WDL_ResampleSample *inptr, double fracpos, int nch, WDL_SincFilterSample *filter, int filtsz)
         private void SincSample(WDL_ResampleSample[] outBuffer, int outBufferIndex, WDL_ResampleSample[] inBuffer, int inBufferIndex, double fracpos, int nch, WDL_SincFilterSample[] filter, int filterIndex, int filtsz)
         {
-            int oversize = m_lp_oversize;
+            var oversize = m_lp_oversize;
             fracpos *= oversize;
-            int ifpos = (int)fracpos;
+            var ifpos = (int)fracpos;
             filterIndex += oversize - 1 - ifpos;
             fracpos -= ifpos;
 
-            for (int x = 0; x < nch; x++)
+            for (var x = 0; x < nch; x++)
             {
                 double sum = 0.0, sum2 = 0.0;
-                int fptr = filterIndex;
-                int iptr = inBufferIndex + x;
-                int i = filtsz;
+                var fptr = filterIndex;
+                var iptr = inBufferIndex + x;
+                var i = filtsz;
                 while (i-- != 0)
                 {
                     sum += filter[fptr] * inBuffer[iptr];
@@ -558,16 +558,16 @@ namespace NAudio.Dsp
         // SincSample1(WDL_ResampleSample* outptr, WDL_ResampleSample* inptr, double fracpos, WDL_SincFilterSample* filter, int filtsz)
         private void SincSample1(WDL_ResampleSample[] outBuffer, int outBufferIndex, WDL_ResampleSample[] inBuffer, int inBufferIndex, double fracpos, WDL_SincFilterSample[] filter, int filterIndex, int filtsz)
         {
-            int oversize = m_lp_oversize;
+            var oversize = m_lp_oversize;
             fracpos *= oversize;
-            int ifpos = (int)fracpos;
+            var ifpos = (int)fracpos;
             filterIndex += oversize - 1 - ifpos;
             fracpos -= ifpos;
 
             double sum = 0.0, sum2 = 0.0;
-            int fptr = filterIndex;
-            int iptr = inBufferIndex;
-            int i = filtsz;
+            var fptr = filterIndex;
+            var iptr = inBufferIndex;
+            var i = filtsz;
             while (i-- != 0)
             {
                 sum += filter[fptr] * inBuffer[iptr];
@@ -581,19 +581,19 @@ namespace NAudio.Dsp
         // SincSample2(WDL_ResampleSample* outptr, WDL_ResampleSample* inptr, double fracpos, WDL_SincFilterSample* filter, int filtsz)
         private void SincSample2(WDL_ResampleSample[] outptr, int outBufferIndex, WDL_ResampleSample[] inBuffer, int inBufferIndex, double fracpos, WDL_SincFilterSample[] filter, int filterIndex, int filtsz)
         {
-            int oversize = m_lp_oversize;
+            var oversize = m_lp_oversize;
             fracpos *= oversize;
-            int ifpos = (int)fracpos;
+            var ifpos = (int)fracpos;
             filterIndex += oversize - 1 - ifpos;
             fracpos -= ifpos;
 
-            double sum = 0.0;
-            double sum2 = 0.0;
-            double sumb = 0.0;
-            double sum2b = 0.0;
-            int fptr = filterIndex;
-            int iptr = inBufferIndex;
-            int i = filtsz / 2;
+            var sum = 0.0;
+            var sum2 = 0.0;
+            var sumb = 0.0;
+            var sum2b = 0.0;
+            var fptr = filterIndex;
+            var iptr = inBufferIndex;
+            var i = filtsz / 2;
             while (i-- != 0)
             {
                 sum += filter[fptr] * inBuffer[iptr];
@@ -654,13 +654,13 @@ namespace NAudio.Dsp
                 if (Math.Abs(fpos - m_fpos) < 0.000001) return;
                 m_fpos = fpos;
 
-                double pos = fpos * PI;
-                double cpos = Math.Cos(pos);
-                double spos = Math.Sin(pos);
+                var pos = fpos * PI;
+                var cpos = Math.Cos(pos);
+                var spos = Math.Sin(pos);
 
-                double alpha = spos / (2.0 * Q);
+                var alpha = spos / (2.0 * Q);
 
-                double sc = 1.0 / (1 + alpha);
+                var sc = 1.0 / (1 + alpha);
                 m_b1 = (1 - cpos) * sc;
                 m_b2 = m_b0 = m_b1 * 0.5;
                 m_a1 = -2 * cpos * sc;
@@ -676,7 +676,7 @@ namespace NAudio.Dsp
                 {
                     double inx = inBuffer[inIndex];
                     inIndex += span;
-                    double outx = (double)(inx * b0 + m_hist[w, 0] * b1 + m_hist[w, 1] * b2 - m_hist[w, 2] * a1 - m_hist[w, 3] * a2);
+                    var outx = (double)(inx * b0 + m_hist[w, 0] * b1 + m_hist[w, 1] * b2 - m_hist[w, 2] * a1 - m_hist[w, 3] * a2);
                     m_hist[w, 1] = m_hist[w, 0];
                     m_hist[w, 0] = inx;
                     m_hist[w, 3] = m_hist[w, 2];

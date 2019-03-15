@@ -30,7 +30,7 @@ namespace NAudio.Utils
         /// </summary>
         public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
         {
-            for (int n = 0; n < charCount; n++)
+            for (var n = 0; n < charCount; n++)
             {
                 bytes[byteIndex + n] = (byte)chars[charIndex + n];
             }
@@ -42,7 +42,7 @@ namespace NAudio.Utils
         /// </summary>
         public override int GetCharCount(byte[] bytes, int index, int count)
         {
-            for (int n = 0; n < count; n++)
+            for (var n = 0; n < count; n++)
             {
                 if (bytes[index + n] == 0)
                     return n;
@@ -55,7 +55,7 @@ namespace NAudio.Utils
         /// </summary>
         public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
         {
-            for (int n = 0; n < byteCount; n++)
+            for (var n = 0; n < byteCount; n++)
             {
                 var b = bytes[byteIndex + n];
                 if (b == 0)

@@ -62,8 +62,8 @@ namespace NAudio.Wave
             if (inputStreams.Count == 0)
             {
                 // first one - set the format
-                int sampleRate = waveStream.WaveFormat.SampleRate;
-                int channels = waveStream.WaveFormat.Channels;
+                var sampleRate = waveStream.WaveFormat.SampleRate;
+                var channels = waveStream.WaveFormat.Channels;
                 waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
             }
             else
@@ -137,7 +137,7 @@ namespace NAudio.Wave
 
             // blank the buffer
             Array.Clear(buffer, offset, count);
-            int bytesRead = 0;
+            var bytesRead = 0;
 
             // sum the channels in
             var readBuffer = new byte[count];
@@ -147,7 +147,7 @@ namespace NAudio.Wave
                 {
                     if (inputStream.HasData(count))
                     {
-                        int readFromThisStream = inputStream.Read(readBuffer, 0, count);
+                        var readFromThisStream = inputStream.Read(readBuffer, 0, count);
                         // don't worry if input stream returns less than we requested - may indicate we have got to the end
                         bytesRead = Math.Max(bytesRead, readFromThisStream);
                         if (readFromThisStream > 0)
@@ -172,10 +172,10 @@ namespace NAudio.Wave
             fixed (byte* pDestBuffer = &destBuffer[offset],
                       pSourceBuffer = &sourceBuffer[0])
             {
-                float* pfDestBuffer = (float*)pDestBuffer;
-                float* pfReadBuffer = (float*)pSourceBuffer;
-                int samplesRead = bytesRead / 4;
-                for (int n = 0; n < samplesRead; n++)
+                var pfDestBuffer = (float*)pDestBuffer;
+                var pfReadBuffer = (float*)pSourceBuffer;
+                var samplesRead = bytesRead / 4;
+                for (var n = 0; n < samplesRead; n++)
                 {
                     pfDestBuffer[n] += pfReadBuffer[n];
                 }
@@ -209,7 +209,7 @@ namespace NAudio.Wave
                 lock (inputsLock)
                 {
                     value = Math.Min(value, Length);
-                    foreach (WaveStream inputStream in inputStreams)
+                    foreach (var inputStream in inputStreams)
                     {
                         inputStream.Position = Math.Min(value, inputStream.Length);
                     }
@@ -232,7 +232,7 @@ namespace NAudio.Wave
             {
                 lock (inputsLock)
                 {
-                    foreach (WaveStream inputStream in inputStreams)
+                    foreach (var inputStream in inputStreams)
                     {
                         inputStream.Dispose();
                     }

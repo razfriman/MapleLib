@@ -44,9 +44,9 @@ namespace NAudio.Wave
         /// </summary>
         public int Read(byte[] buffer, int offset, int count)
         {
-            WaveBuffer waveBuffer = new WaveBuffer(buffer);
-            int samplesRequired = count / 2;
-            int samplesRead = Read(waveBuffer.ShortBuffer, offset / 2, samplesRequired);
+            var waveBuffer = new WaveBuffer(buffer);
+            var samplesRequired = count / 2;
+            var samplesRead = Read(waveBuffer.ShortBuffer, offset / 2, samplesRequired);
             return samplesRead * 2;
         }
 

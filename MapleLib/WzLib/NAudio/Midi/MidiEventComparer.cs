@@ -18,14 +18,14 @@ namespace NAudio.Midi
         /// </summary>
         public int Compare(MidiEvent x, MidiEvent y)
         {
-            long xTime = x.AbsoluteTime;
-            long yTime = y.AbsoluteTime;
+            var xTime = x.AbsoluteTime;
+            var yTime = y.AbsoluteTime;
 
             if (xTime == yTime)
             {
                 // sort meta events before note events, except end track
-                MetaEvent xMeta = x as MetaEvent;
-                MetaEvent yMeta = y as MetaEvent;
+                var xMeta = x as MetaEvent;
+                var yMeta = y as MetaEvent;
 
                 if (xMeta != null)
                 {

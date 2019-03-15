@@ -57,7 +57,7 @@ namespace NAudio.Dmo
 
         public static string GetMediaTypeName(Guid majorType)
         {
-            for (int index = 0; index < MajorTypes.Length; index++)
+            for (var index = 0; index < MajorTypes.Length; index++)
             {
                 if (majorType == MajorTypes[index])
                 {

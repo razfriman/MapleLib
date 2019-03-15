@@ -27,8 +27,8 @@ namespace MapleLib.WzLib.WzProperties
 
         public override WzImageProperty DeepClone()
         {
-            WzCanvasProperty clone = new WzCanvasProperty(name);
-            foreach (WzImageProperty prop in properties)
+            var clone = new WzCanvasProperty(name);
+            foreach (var prop in properties)
                 clone.AddProperty(prop.DeepClone());
             clone.imageProp = (WzPngProperty)imageProp.DeepClone();
             return clone;
@@ -68,7 +68,7 @@ namespace MapleLib.WzLib.WzProperties
             {
                 if (name == "PNG")
                     return imageProp;
-                foreach (WzImageProperty iwp in properties)
+                foreach (var iwp in properties)
                     if (iwp.Name.ToLower() == name.ToLower())
                         return iwp;
                 return null;
@@ -90,7 +90,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public WzImageProperty GetProperty(string name)
         {
-            foreach (WzImageProperty iwp in properties)
+            foreach (var iwp in properties)
                 if (iwp.Name.ToLower() == name.ToLower())
                     return iwp;
             return null;
@@ -102,20 +102,20 @@ namespace MapleLib.WzLib.WzProperties
 		/// <returns>the wz property with the specified name</returns>
 		public override WzImageProperty GetFromPath(string path)
         {
-            string[] segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return ((WzImageProperty)Parent)[path.Substring(name.IndexOf('/') + 1)];
             }
             WzImageProperty ret = this;
-            for (int x = 0; x < segments.Length; x++)
+            for (var x = 0; x < segments.Length; x++)
             {
-                bool foundChild = false;
+                var foundChild = false;
                 if (segments[x] == "PNG")
                 {
                     return imageProp;
                 }
-                foreach (WzImageProperty iwp in ret.WzProperties)
+                foreach (var iwp in ret.WzProperties)
                 {
                     if (iwp.Name == segments[x])
                     {
@@ -149,7 +149,7 @@ namespace MapleLib.WzLib.WzProperties
             writer.WriteCompressedInt(PngProperty.format);
             writer.Write((byte)PngProperty.format2);
             writer.Write(0);
-            byte[] bytes = PngProperty.GetCompressedBytes(false);
+            var bytes = PngProperty.GetCompressedBytes(false);
             writer.Write(bytes.Length + 1);
             writer.Write((byte)0);
             writer.Write(bytes);
@@ -170,7 +170,7 @@ namespace MapleLib.WzLib.WzProperties
             name = null;
             imageProp.Dispose();
             imageProp = null;
-            foreach (WzImageProperty prop in properties)
+            foreach (var prop in properties)
             {
                 prop.Dispose();
             }
@@ -207,7 +207,7 @@ namespace MapleLib.WzLib.WzProperties
         }
         public void AddProperties(List<WzImageProperty> props)
         {
-            foreach (WzImageProperty prop in props)
+            foreach (var prop in props)
             {
                 AddProperty(prop);
             }
@@ -226,7 +226,7 @@ namespace MapleLib.WzLib.WzProperties
         /// </summary>
         public void ClearProperties()
         {
-            foreach (WzImageProperty prop in properties) prop.Parent = null;
+            foreach (var prop in properties) prop.Parent = null;
             properties.Clear();
         }
         #endregion

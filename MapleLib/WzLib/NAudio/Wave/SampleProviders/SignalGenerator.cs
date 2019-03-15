@@ -115,7 +115,7 @@ namespace NAudio.Wave.SampleProviders
         /// </summary>
         public int Read(float[] buffer, int offset, int count)
         {
-            int outIndex = offset;
+            var outIndex = offset;
 
             // Generator current value
             double multiple;
@@ -123,7 +123,7 @@ namespace NAudio.Wave.SampleProviders
             double sampleSaw;
 
             // Complete Buffer
-            for (int sampleCount = 0; sampleCount < count/waveFormat.Channels; sampleCount++)
+            for (var sampleCount = 0; sampleCount < count/waveFormat.Channels; sampleCount++)
             {
                 switch (Type)
                 {
@@ -188,14 +188,14 @@ namespace NAudio.Wave.SampleProviders
 
                         // Pink Noise Generator
 
-                        double white = NextRandomTwo();
+                        var white = NextRandomTwo();
                         pinkNoiseBuffer[0] = 0.99886*pinkNoiseBuffer[0] + white*0.0555179;
                         pinkNoiseBuffer[1] = 0.99332*pinkNoiseBuffer[1] + white*0.0750759;
                         pinkNoiseBuffer[2] = 0.96900*pinkNoiseBuffer[2] + white*0.1538520;
                         pinkNoiseBuffer[3] = 0.86650*pinkNoiseBuffer[3] + white*0.3104856;
                         pinkNoiseBuffer[4] = 0.55000*pinkNoiseBuffer[4] + white*0.5329522;
                         pinkNoiseBuffer[5] = -0.7616*pinkNoiseBuffer[5] - white*0.0168980;
-                        double pink = pinkNoiseBuffer[0] + pinkNoiseBuffer[1] + pinkNoiseBuffer[2] + pinkNoiseBuffer[3] + pinkNoiseBuffer[4] + pinkNoiseBuffer[5] + pinkNoiseBuffer[6] + white*0.5362;
+                        var pink = pinkNoiseBuffer[0] + pinkNoiseBuffer[1] + pinkNoiseBuffer[2] + pinkNoiseBuffer[3] + pinkNoiseBuffer[4] + pinkNoiseBuffer[5] + pinkNoiseBuffer[6] + white*0.5362;
                         pinkNoiseBuffer[6] = white*0.115926;
                         sampleValue = (Gain*(pink/5));
                         break;
@@ -203,7 +203,7 @@ namespace NAudio.Wave.SampleProviders
                     case SignalGeneratorType.Sweep:
 
                         // Sweep Generator
-                        double f = Math.Exp(FrequencyLog + (nSample*(FrequencyEndLog - FrequencyLog))/(SweepLengthSecs*waveFormat.SampleRate));
+                        var f = Math.Exp(FrequencyLog + (nSample*(FrequencyEndLog - FrequencyLog))/(SweepLengthSecs*waveFormat.SampleRate));
 
                         multiple = TwoPi*f/waveFormat.SampleRate;
                         phi += multiple;
@@ -222,7 +222,7 @@ namespace NAudio.Wave.SampleProviders
                 }
 
                 // Phase Reverse Per Channel
-                for (int i = 0; i < waveFormat.Channels; i++)
+                for (var i = 0; i < waveFormat.Channels; i++)
                 {
                     if (PhaseReverse[i])
                         buffer[outIndex++] = (float) -sampleValue;

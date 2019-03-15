@@ -38,7 +38,7 @@
 
 		public static WzHeader GetDefault()
 		{
-			WzHeader header = new WzHeader();
+			var header = new WzHeader();
 			header.ident = "PKG1";
 			header.copyright = "Package file v1.0 Copyright 2002 Wizet, ZMS";
 			header.fstart = 60;

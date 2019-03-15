@@ -108,7 +108,7 @@ namespace NAudio.Wave
         /// </summary>
         public int Read(byte[] buffer, int offset, int count) 
         {
-            int read = 0;
+            var read = 0;
             if (circularBuffer != null) // not yet created
             { 
                 read = circularBuffer.Read(buffer, offset, count);

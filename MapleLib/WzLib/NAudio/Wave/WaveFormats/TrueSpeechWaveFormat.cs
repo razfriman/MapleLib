@@ -39,7 +39,7 @@ namespace NAudio.Wave
         public override void Serialize(BinaryWriter writer)
         {
             base.Serialize(writer);
-            foreach (short val in unknown)
+            foreach (var val in unknown)
             {
                 writer.Write(val);
             }

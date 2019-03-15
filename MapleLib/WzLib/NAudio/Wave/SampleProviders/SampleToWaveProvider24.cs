@@ -44,7 +44,7 @@ namespace NAudio.Wave.SampleProviders
             sourceBuffer = BufferHelpers.Ensure(sourceBuffer, samplesRequired);
             var sourceSamples = sourceProvider.Read(sourceBuffer, 0, samplesRequired);
 
-            int destOffset = offset;
+            var destOffset = offset;
             for (var sample = 0; sample < sourceSamples; sample++)
             {
                 // adjust volume

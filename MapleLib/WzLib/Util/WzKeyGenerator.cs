@@ -9,7 +9,7 @@ namespace MapleLib.WzLib.Util
 
         public static byte[] GetIvFromZlz(FileStream zlzStream)
         {
-            byte[] iv = new byte[4];
+            var iv = new byte[4];
 
             zlzStream.Seek(0x10040, SeekOrigin.Begin);
             zlzStream.Read(iv, 0, 4);
@@ -18,10 +18,10 @@ namespace MapleLib.WzLib.Util
 
         private static byte[] GetAesKeyFromZlz(FileStream zlzStream)
         {
-            byte[] aes = new byte[32];
+            var aes = new byte[32];
 
             zlzStream.Seek(0x10060, SeekOrigin.Begin);
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
                 zlzStream.Read(aes, i * 4, 4);
                 zlzStream.Seek(12, SeekOrigin.Current);

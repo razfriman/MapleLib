@@ -50,8 +50,8 @@ namespace NAudio.Wave
                 throw new ArgumentNullException("frame", "You must provide a non-null Mp3Frame to decompress");
             }
             Array.Copy(frame.RawData, conversionStream.SourceBuffer, frame.FrameLength);
-            int sourceBytesConverted = 0;
-            int converted = conversionStream.Convert(frame.FrameLength, out sourceBytesConverted);
+            var sourceBytesConverted = 0;
+            var converted = conversionStream.Convert(frame.FrameLength, out sourceBytesConverted);
             if (sourceBytesConverted != frame.FrameLength)
             {
                 throw new InvalidOperationException(String.Format("Couldn't convert the whole MP3 frame (converted {0}/{1})",

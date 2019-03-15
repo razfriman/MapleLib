@@ -13,8 +13,8 @@ namespace NAudio.SoundFont
 
         public override Instrument Read(BinaryReader br) 
 		{
-			Instrument i = new Instrument();
-			string s = Encoding.UTF8.GetString(br.ReadBytes(20), 0, 20);
+			var i = new Instrument();
+			var s = Encoding.UTF8.GetString(br.ReadBytes(20), 0, 20);
 			if(s.IndexOf('\0') >= 0) 
 			{
 				s = s.Substring(0,s.IndexOf('\0'));
@@ -45,9 +45,9 @@ namespace NAudio.SoundFont
 		public void LoadZones(Zone[] zones)
 		{
 			// don't do the last preset, which is simply EOP
-			for(int instrument = 0; instrument < data.Count - 1; instrument++)
+			for(var instrument = 0; instrument < data.Count - 1; instrument++)
 			{
-				Instrument i = (Instrument) data[instrument];
+				var i = (Instrument) data[instrument];
 				i.Zones = new Zone[i.endInstrumentZoneIndex - i.startInstrumentZoneIndex + 1];
 				Array.Copy(zones,i.startInstrumentZoneIndex,i.Zones,0,i.Zones.Length);
 			}

@@ -29,7 +29,7 @@ namespace NAudio.Wave
         /// </summary>
         public int Read(byte[] buffer, int offset, int count)
         {
-            int bytesRead = source.Read(buffer, offset, count);
+            var bytesRead = source.Read(buffer, offset, count);
             writer.Write(buffer, offset, bytesRead);
             return bytesRead;
         }

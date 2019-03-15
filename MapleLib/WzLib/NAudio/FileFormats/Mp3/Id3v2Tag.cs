@@ -49,7 +49,7 @@ namespace NAudio.Wave
         /// <returns></returns>
         static byte[] FrameSizeToBytes(int n)
         {
-            byte[] result = BitConverter.GetBytes(n);
+            var result = BitConverter.GetBytes(n);
             Array.Reverse(result);
             return result;
         }
@@ -78,9 +78,9 @@ namespace NAudio.Wave
             }
 
             const byte UnicodeEncoding = 01; // encode text in Unicode
-            byte[] UnicodeOrder = new byte[] { 0xff, 0xfe }; // Unicode byte order mark
-            byte[] language = new byte[] { 0, 0, 0 }; // language is empty (only used in COMM -> comment)
-            byte[] shortDescription = new byte[] { 0, 0 }; // short description is empty (only used in COMM -> comment)
+            var UnicodeOrder = new byte[] { 0xff, 0xfe }; // Unicode byte order mark
+            var language = new byte[] { 0, 0, 0 }; // language is empty (only used in COMM -> comment)
+            var shortDescription = new byte[] { 0, 0 }; // short description is empty (only used in COMM -> comment)
 
             byte[] body;
             if (key == "COMM") // comment
@@ -116,8 +116,8 @@ namespace NAudio.Wave
         /// <returns></returns>
         static byte[] GetId3TagHeaderSize(int size)
         {
-            byte[] result = new byte[4];
-            for (int idx = result.Length - 1; idx >= 0; idx--)
+            var result = new byte[4];
+            for (var idx = result.Length - 1; idx >= 0; idx--)
             {
                 result[idx] = (byte)(size % 128);
                 size = size / 128;
@@ -133,13 +133,13 @@ namespace NAudio.Wave
         /// <returns></returns>
         static byte[] CreateId3v2TagHeader(IEnumerable<byte[]> frames)
         {
-            int size = 0;
-            foreach (byte[] frame in frames)
+            var size = 0;
+            foreach (var frame in frames)
             {
                 size += frame.Length;
             }
 
-            byte[] tagHeader = ByteArrayExtensions.Concat(
+            var tagHeader = ByteArrayExtensions.Concat(
                 Encoding.UTF8.GetBytes("ID3"),
                 new byte[] { 3, 0 }, // version
                 new byte[] { 0 }, // flags
@@ -154,17 +154,17 @@ namespace NAudio.Wave
         /// <returns></returns>
         static Stream CreateId3v2TagStream(IEnumerable<KeyValuePair<string, string>> tags)
         {
-            List<byte[]> frames = new List<byte[]>();
-            foreach (KeyValuePair<string, string> tag in tags)
+            var frames = new List<byte[]>();
+            foreach (var tag in tags)
             {
                 frames.Add(CreateId3v2Frame(tag.Key, tag.Value));
             }
 
-            byte[] header = CreateId3v2TagHeader(frames);
+            var header = CreateId3v2TagHeader(frames);
 
-            MemoryStream ms = new MemoryStream();
+            var ms = new MemoryStream();
             ms.Write(header, 0, header.Length);
-            foreach (byte[] frame in frames)
+            foreach (var frame in frames)
             {
                 ms.Write(frame, 0, frame.Length);
             }
@@ -179,7 +179,7 @@ namespace NAudio.Wave
         {
             tagStartPosition = input.Position;
             var reader = new BinaryReader(input);
-            byte[] headerBytes = reader.ReadBytes(10);
+            var headerBytes = reader.ReadBytes(10);
             if ((headerBytes.Length >= 3) &&
                 (headerBytes[0] == (byte)'I') &&
                 (headerBytes[1] == (byte)'D') &&
@@ -193,24 +193,24 @@ namespace NAudio.Wave
                 if ((headerBytes[5] & 0x40) == 0x40)
                 {
                     // extended header present
-                    byte[] extendedHeader = reader.ReadBytes(4);
-                    int extendedHeaderLength = extendedHeader[0] * (1 << 21);
+                    var extendedHeader = reader.ReadBytes(4);
+                    var extendedHeaderLength = extendedHeader[0] * (1 << 21);
                     extendedHeaderLength += extendedHeader[1] * (1 << 14);
                     extendedHeaderLength += extendedHeader[2] * (1 << 7);
                     extendedHeaderLength += extendedHeader[3];
                 }
 
                 // synchsafe
-                int dataLength = headerBytes[6] * (1 << 21);
+                var dataLength = headerBytes[6] * (1 << 21);
                 dataLength += headerBytes[7] * (1 << 14);
                 dataLength += headerBytes[8] * (1 << 7);
                 dataLength += headerBytes[9];
-                byte[] tagData = reader.ReadBytes(dataLength);
+                var tagData = reader.ReadBytes(dataLength);
 
                 if ((headerBytes[5] & 0x10) == 0x10)
                 {
                     // footer present
-                    byte[] footer = reader.ReadBytes(10);
+                    var footer = reader.ReadBytes(10);
                 }
             }
             else

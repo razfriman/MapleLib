@@ -45,8 +45,8 @@ namespace NAudio.Wave
 
         private void WriteBigEndian(byte[] buffer, int offset, int value)
         {
-            byte[] littleEndian = BitConverter.GetBytes(value);
-            for (int n = 0; n < 4; n++)
+            var littleEndian = BitConverter.GetBytes(value);
+            for (var n = 0; n < 4; n++)
             {
                 buffer[offset + 3 - n] = littleEndian[n];
             }
@@ -59,9 +59,9 @@ namespace NAudio.Wave
         /// <returns>Xing Header</returns>
         public static XingHeader LoadXingHeader(Mp3Frame frame)
         {
-            XingHeader xingHeader = new XingHeader();
+            var xingHeader = new XingHeader();
             xingHeader.frame = frame;
-            int offset = 0;
+            var offset = 0;
 
             if (frame.MpegVersion == MpegVersion.Version1)
             {
@@ -96,7 +96,7 @@ namespace NAudio.Wave
                 return null;
             }
 
-            XingHeaderOptions flags = (XingHeaderOptions)ReadBigEndian(frame.RawData, offset);
+            var flags = (XingHeaderOptions)ReadBigEndian(frame.RawData, offset);
             offset += 4;
 
             if ((flags & XingHeaderOptions.Frames) != 0)

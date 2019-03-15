@@ -60,7 +60,7 @@ namespace NAudio.CoreAudioApi
             var voldata = new float[data.nChannels];
             
             //Read all floats from memory.
-            for (int i = 0; i < data.nChannels; i++)
+            for (var i = 0; i < data.nChannels; i++)
             {
                 voldata[i] = MarshalHelpers.PtrToStructure<float>(firstFloatPtr);
             }

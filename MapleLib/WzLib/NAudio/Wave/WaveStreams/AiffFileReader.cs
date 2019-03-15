@@ -54,14 +54,14 @@ namespace NAudio.Wave
         {
             dataChunkPosition = -1;
             format = null;
-            BinaryReader br = new BinaryReader(stream);
+            var br = new BinaryReader(stream);
             
             if (ReadChunkName(br) != "FORM")
             {
                 throw new FormatException("Not an AIFF file - no FORM header.");
             }
-            uint fileSize = ConvertInt(br.ReadBytes(4));
-            string formType = ReadChunkName(br);
+            var fileSize = ConvertInt(br.ReadBytes(4));
+            var formType = ReadChunkName(br);
             if (formType != "AIFC" && formType != "AIFF")
             {
                 throw new FormatException("Not an AIFF file - no AIFF/AIFC header.");
@@ -71,7 +71,7 @@ namespace NAudio.Wave
 
             while (br.BaseStream.Position < br.BaseStream.Length)
             {
-                AiffChunk nextChunk = ReadChunkHeader(br);
+                var nextChunk = ReadChunkHeader(br);
                 if (nextChunk.ChunkName == "\0\0\0\0") break;
 
                 if (br.BaseStream.Position + nextChunk.ChunkLength > br.BaseStream.Length)
@@ -80,17 +80,17 @@ namespace NAudio.Wave
                 }
                 if (nextChunk.ChunkName == "COMM")
                 {
-                    short numChannels = ConvertShort(br.ReadBytes(2));
-                    uint numSampleFrames = ConvertInt(br.ReadBytes(4));
-                    short sampleSize = ConvertShort(br.ReadBytes(2));
-                    double sampleRate = IEEE.ConvertFromIeeeExtended(br.ReadBytes(10));
+                    var numChannels = ConvertShort(br.ReadBytes(2));
+                    var numSampleFrames = ConvertInt(br.ReadBytes(4));
+                    var sampleSize = ConvertShort(br.ReadBytes(2));
+                    var sampleRate = IEEE.ConvertFromIeeeExtended(br.ReadBytes(10));
 
                     format = new WaveFormat((int)sampleRate, (int)sampleSize, (int)numChannels);
 
                     if (nextChunk.ChunkLength > 18 && formType == "AIFC")
                     {   
                         // In an AIFC file, the compression format is tacked on to the COMM chunk
-                        string compress = new string(br.ReadChars(4)).ToLower();
+                        var compress = new string(br.ReadChars(4)).ToLower();
                         if (compress != "none") throw new FormatException("Compressed AIFC is not supported.");
                         br.ReadBytes((int)nextChunk.ChunkLength - 22);
                     }
@@ -98,8 +98,8 @@ namespace NAudio.Wave
                 }
                 else if (nextChunk.ChunkName == "SSND")
                 {
-                    uint offset = ConvertInt(br.ReadBytes(4));
-                    uint blockSize = ConvertInt(br.ReadBytes(4));
+                    var offset = ConvertInt(br.ReadBytes(4));
+                    var blockSize = ConvertInt(br.ReadBytes(4));
                     dataChunkPosition = nextChunk.ChunkStart + 16 + offset;
                     dataChunkLength = (int)nextChunk.ChunkLength - 8;
                     br.BaseStream.Position += (nextChunk.ChunkLength - 8);
@@ -227,11 +227,11 @@ namespace NAudio.Wave
                 }
 
                 // Need to fix the endianness since intel expect little endian, and apple is big endian.
-                byte[] buffer = new byte[count];
-                int length = waveStream.Read(buffer, offset, count);
+                var buffer = new byte[count];
+                var length = waveStream.Read(buffer, offset, count);
 
-                int bytesPerSample = WaveFormat.BitsPerSample/8;
-                for (int i = 0; i < length; i += bytesPerSample)
+                var bytesPerSample = WaveFormat.BitsPerSample/8;
+                for (var i = 0; i < length; i += bytesPerSample)
                 {
                     if (WaveFormat.BitsPerSample == 8)
                     {

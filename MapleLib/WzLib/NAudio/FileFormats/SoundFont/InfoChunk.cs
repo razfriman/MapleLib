@@ -11,8 +11,8 @@ namespace NAudio.SoundFont
 	{
 	    internal InfoChunk(RiffChunk chunk) 
 		{
-			bool ifilPresent = false;
-			bool inamPresent = false;
+			var ifilPresent = false;
+			var inamPresent = false;
 			if(chunk.ReadChunkID() != "INFO") 
 			{
 				throw new InvalidDataException("Not an INFO chunk");

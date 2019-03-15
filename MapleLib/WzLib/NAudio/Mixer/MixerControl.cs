@@ -41,9 +41,9 @@ namespace NAudio.Mixer
             var controls = new List<MixerControl>();
             if (mixerLine.ControlsCount > 0)
             {
-                int mixerControlSize = Marshal.SizeOf(typeof (MixerInterop.MIXERCONTROL));
+                var mixerControlSize = Marshal.SizeOf(typeof (MixerInterop.MIXERCONTROL));
                 var mlc = new MixerInterop.MIXERLINECONTROLS();
-                IntPtr pmc = Marshal.AllocHGlobal(mixerControlSize * mixerLine.ControlsCount);
+                var pmc = Marshal.AllocHGlobal(mixerControlSize * mixerLine.ControlsCount);
                 mlc.cbStruct = Marshal.SizeOf(mlc);
                 mlc.dwLineID = mixerLine.LineId;
                 mlc.cControls = mixerLine.ControlsCount;
@@ -51,14 +51,14 @@ namespace NAudio.Mixer
                 mlc.cbmxctrl = Marshal.SizeOf(typeof(MixerInterop.MIXERCONTROL));
                 try
                 {
-                    MmResult err = MixerInterop.mixerGetLineControls(mixerHandle, ref mlc, MixerFlags.All | mixerHandleType);
+                    var err = MixerInterop.mixerGetLineControls(mixerHandle, ref mlc, MixerFlags.All | mixerHandleType);
                     if (err != MmResult.NoError)
                     {
                         throw new MmException(err, "mixerGetLineControls");
                     }
-                    for (int i = 0; i < mlc.cControls; i++)
+                    for (var i = 0; i < mlc.cControls; i++)
                     {
-                        Int64 address = pmc.ToInt64() + mixerControlSize * i;
+                        var address = pmc.ToInt64() + mixerControlSize * i;
 
                         var mc = (MixerInterop.MIXERCONTROL)
                             Marshal.PtrToStructure((IntPtr)address, typeof(MixerInterop.MIXERCONTROL));
@@ -89,11 +89,11 @@ namespace NAudio.Mixer
         public static MixerControl GetMixerControl(IntPtr mixerHandle, int nLineID, int controlId, int nChannels,
                                                    MixerFlags mixerFlags)
         {
-            MixerInterop.MIXERLINECONTROLS mlc = new MixerInterop.MIXERLINECONTROLS();
-            MixerInterop.MIXERCONTROL mc = new MixerInterop.MIXERCONTROL();
+            var mlc = new MixerInterop.MIXERLINECONTROLS();
+            var mc = new MixerInterop.MIXERCONTROL();
 
             // set up the pointer to a structure
-            IntPtr pMixerControl = Marshal.AllocCoTaskMem(Marshal.SizeOf(mc));
+            var pMixerControl = Marshal.AllocCoTaskMem(Marshal.SizeOf(mc));
             //Marshal.StructureToPtr(mc, pMixerControl, false);      
 
             mlc.cbStruct = Marshal.SizeOf(mlc);
@@ -102,7 +102,7 @@ namespace NAudio.Mixer
             mlc.cbmxctrl = Marshal.SizeOf(mc);
             mlc.pamxctrl = pMixerControl;
             mlc.dwLineID = nLineID;
-            MmResult err = MixerInterop.mixerGetLineControls(mixerHandle, ref mlc, MixerFlags.OneById | mixerFlags);
+            var err = MixerInterop.mixerGetLineControls(mixerHandle, ref mlc, MixerFlags.OneById | mixerFlags);
             if (err != MmResult.NoError)
             {
                 Marshal.FreeCoTaskMem(pMixerControl);
@@ -200,11 +200,11 @@ namespace NAudio.Mixer
                 // fixing issue 16390 - calculating size correctly for multiple items
                 detailsSize *= (int) mixerControl.cMultipleItems;
             }
-            IntPtr buffer = Marshal.AllocCoTaskMem(detailsSize);
+            var buffer = Marshal.AllocCoTaskMem(detailsSize);
             // To copy stuff in:
             // Marshal.StructureToPtr( theStruct, buffer, false );
             mixerControlDetails.paDetails = buffer;
-            MmResult err = MixerInterop.mixerGetControlDetails(mixerHandle, ref mixerControlDetails,
+            var err = MixerInterop.mixerGetControlDetails(mixerHandle, ref mixerControlDetails,
                                                                MixerFlags.Value | mixerHandleType);
             // let the derived classes get the details before we free the handle			
             if (err == MmResult.NoError)

@@ -113,7 +113,7 @@ namespace NAudio.MediaFoundation
             }
 
             // strategy will be to always read 1 second from the source, and give it to the resampler
-            int bytesWritten = 0;
+            var bytesWritten = 0;
             
             // read in any leftovers from last time
             if (outputBufferCount > 0)
@@ -230,14 +230,14 @@ namespace NAudio.MediaFoundation
         
         private static long BytesToNsPosition(int bytes, WaveFormat waveFormat)
         {
-            long nsPosition = (10000000L * bytes) / waveFormat.AverageBytesPerSecond;
+            var nsPosition = (10000000L * bytes) / waveFormat.AverageBytesPerSecond;
             return nsPosition;
         }
 
         private IMFSample ReadFromSource()
         {
             // we always read a full second
-            int bytesRead = sourceProvider.Read(sourceBuffer, 0, sourceBuffer.Length);
+            var bytesRead = sourceProvider.Read(sourceBuffer, 0, sourceBuffer.Length);
             if (bytesRead == 0) return null;
 
             var mediaBuffer = MediaFoundationApi.CreateMemoryBuffer(bytesRead);
@@ -252,7 +252,7 @@ namespace NAudio.MediaFoundation
             sample.AddBuffer(mediaBuffer);
             // we'll set the time, I don't think it is needed for Resampler, but other MFTs might need it
             sample.SetSampleTime(inputPosition);
-            long duration = BytesToNsPosition(bytesRead, sourceProvider.WaveFormat);
+            var duration = BytesToNsPosition(bytesRead, sourceProvider.WaveFormat);
             sample.SetSampleDuration(duration);
             inputPosition += duration;
             Marshal.ReleaseComObject(mediaBuffer);
@@ -261,7 +261,7 @@ namespace NAudio.MediaFoundation
 
         private int ReadFromOutputBuffer(byte[] buffer, int offset, int needed)
         {
-            int bytesFromOutputBuffer = Math.Min(needed, outputBufferCount);
+            var bytesFromOutputBuffer = Math.Min(needed, outputBufferCount);
             Array.Copy(outputBuffer, outputBufferOffset, buffer, offset, bytesFromOutputBuffer);
             outputBufferOffset += bytesFromOutputBuffer;
             outputBufferCount -= bytesFromOutputBuffer;

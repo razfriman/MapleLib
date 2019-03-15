@@ -99,9 +99,9 @@ namespace NAudio.Wave
         {
             lock (lockObject)
             {
-                int count = numBytes*2;
+                var count = numBytes*2;
                 sourceBuffer = BufferHelpers.Ensure(sourceBuffer, count);
-                int bytesRead = sourceStream.Read(sourceBuffer, 0, count);
+                var bytesRead = sourceStream.Read(sourceBuffer, 0, count);
                 Convert32To16(destBuffer, offset, sourceBuffer, bytesRead);
                 position += (bytesRead/2);
                 return bytesRead/2;
@@ -116,13 +116,13 @@ namespace NAudio.Wave
             fixed (byte* pDestBuffer = &destBuffer[offset],
                 pSourceBuffer = &source[0])
             {
-                short* psDestBuffer = (short*)pDestBuffer;
-                float* pfSourceBuffer = (float*)pSourceBuffer;
+                var psDestBuffer = (short*)pDestBuffer;
+                var pfSourceBuffer = (float*)pSourceBuffer;
 
-                int samplesRead = bytesRead / 4;
-                for (int n = 0; n < samplesRead; n++)
+                var samplesRead = bytesRead / 4;
+                for (var n = 0; n < samplesRead; n++)
                 {
-                    float sampleVal = pfSourceBuffer[n] * volume;
+                    var sampleVal = pfSourceBuffer[n] * volume;
                     if (sampleVal > 1.0f)
                     {
                         psDestBuffer[n] = short.MaxValue;

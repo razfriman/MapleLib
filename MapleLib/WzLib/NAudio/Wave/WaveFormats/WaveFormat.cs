@@ -53,7 +53,7 @@ namespace NAudio.Wave
         /// <returns></returns>
         public int ConvertLatencyToByteSize(int milliseconds)
         {
-            int bytes = (int) ((AverageBytesPerSecond/1000.0)*milliseconds);
+            var bytes = (int) ((AverageBytesPerSecond/1000.0)*milliseconds);
             if ((bytes%BlockAlign) != 0)
             {
                 // Return the upper BlockAligned
@@ -74,7 +74,7 @@ namespace NAudio.Wave
         /// <returns></returns>
         public static WaveFormat CreateCustomFormat(WaveFormatEncoding tag, int sampleRate, int channels, int averageBytesPerSecond, int blockAlign, int bitsPerSample)
         {
-            WaveFormat waveFormat = new WaveFormat();
+            var waveFormat = new WaveFormat();
             waveFormat.waveFormatTag = tag;
             waveFormat.channels = (short)channels;
             waveFormat.sampleRate = sampleRate;
@@ -186,8 +186,8 @@ namespace NAudio.Wave
         /// <returns>IntPtr to WaveFormat structure (needs to be freed by callee)</returns>
         public static IntPtr MarshalToPtr(WaveFormat format)
         {
-            int formatSize = Marshal.SizeOf(format);
-            IntPtr formatPointer = Marshal.AllocHGlobal(formatSize);
+            var formatSize = Marshal.SizeOf(format);
+            var formatPointer = Marshal.AllocHGlobal(formatSize);
             Marshal.StructureToPtr(format, formatPointer, false);
             return formatPointer;
         }
@@ -234,7 +234,7 @@ namespace NAudio.Wave
         /// <param name="br">A binary reader that wraps the stream</param>
         public WaveFormat(BinaryReader br)
         {
-            int formatChunkLength = br.ReadInt32();
+            var formatChunkLength = br.ReadInt32();
             ReadWaveFormat(br, formatChunkLength);
         }
 

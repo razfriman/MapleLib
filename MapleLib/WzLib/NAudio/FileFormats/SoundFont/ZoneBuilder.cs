@@ -9,7 +9,7 @@ namespace NAudio.SoundFont
 
         public override Zone Read(BinaryReader br) 
         {
-			Zone z = new Zone();
+			var z = new Zone();
 			z.generatorIndex = br.ReadUInt16();
 			z.modulatorIndex = br.ReadUInt16();
 			if(lastZone != null)
@@ -30,9 +30,9 @@ namespace NAudio.SoundFont
 		public void Load(Modulator[] modulators, Generator[] generators)
 		{
 			// don't do the last zone, which is simply EOZ
-			for(int zone = 0; zone < data.Count - 1; zone++)
+			for(var zone = 0; zone < data.Count - 1; zone++)
 			{
-				Zone z = (Zone) data[zone];
+				var z = (Zone) data[zone];
 				z.Generators = new Generator[z.generatorCount];
 				Array.Copy(generators,z.generatorIndex,z.Generators,0,z.generatorCount);
 				z.Modulators = new Modulator[z.modulatorCount];

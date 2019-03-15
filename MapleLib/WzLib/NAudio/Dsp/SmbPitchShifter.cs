@@ -87,7 +87,7 @@ namespace NAudio.Dsp
             long i, k, qpd, index, inFifoLatency, stepSize, fftFrameSize2;
 
 
-            float[] outdata = indata;
+            var outdata = indata;
             /* set up some handy variables */
             fftFrameSize2 = fftFrameSize/2;
             stepSize = fftFrameSize/osamp;
@@ -163,7 +163,7 @@ namespace NAudio.Dsp
 
                     /* ***************** PROCESSING ******************* */
                     /* this does the actual pitch shifting */
-                    for (int zero = 0; zero < fftFrameSize; zero++)
+                    for (var zero = 0; zero < fftFrameSize; zero++)
                     {
                         gSynMagn[zero] = 0;
                         gSynFreq[zero] = 0;
@@ -262,7 +262,7 @@ namespace NAudio.Dsp
                     fftBuffer[j + 1] = temp;
                 }
             }
-            long max = (long) (Math.Log(fftFrameSize)/Math.Log(2.0) + .5);
+            var max = (long) (Math.Log(fftFrameSize)/Math.Log(2.0) + .5);
             for (k = 0, le = 2; k < max; k++)
             {
                 le <<= 1;

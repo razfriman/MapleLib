@@ -24,7 +24,7 @@ namespace NAudio.CoreAudioApi
         /// <param name="parameter"></param>
         private void CheckChannelIndex(int channelIndex, string parameter)
         {
-            int channelCount = ChannelCount;
+            var channelCount = ChannelCount;
             if (channelIndex >= channelCount)
             {
                 throw new ArgumentOutOfRangeException(parameter, "You must supply a valid channel index < current count of channels: " + channelCount.ToString());
@@ -89,7 +89,7 @@ namespace NAudio.CoreAudioApi
         public void SetAllVolumes(float[] levels)
         {
             // Make friendly Net exceptions for common problems:
-            int channelCount = ChannelCount;
+            var channelCount = ChannelCount;
             if (levels == null)
             {
                 throw new ArgumentNullException(nameof(levels));
@@ -101,9 +101,9 @@ namespace NAudio.CoreAudioApi
                     String.Format(CultureInfo.InvariantCulture, "SetAllVolumes MUST be supplied with a volume level for ALL channels. The AudioStream has {0} channels and you supplied {1} channels.",
                                   channelCount, levels.Length));
             }
-            for (int i = 0; i < levels.Length; i++)
+            for (var i = 0; i < levels.Length; i++)
             {
-                float level = levels[i];
+                var level = levels[i];
                 if (level < 0.0f) throw new ArgumentOutOfRangeException(nameof(levels), "All volumes must be between 0.0 and 1.0. Invalid volume at index: " + i.ToString());
                 if (level > 1.0f) throw new ArgumentOutOfRangeException(nameof(levels), "All volumes must be between 0.0 and 1.0. Invalid volume at index: " + i.ToString());
             }

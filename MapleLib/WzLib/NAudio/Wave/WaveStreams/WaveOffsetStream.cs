@@ -166,25 +166,25 @@ namespace NAudio.Wave
         {
             lock (lockObject)
             {
-                int bytesWritten = 0;
+                var bytesWritten = 0;
                 // 1. fill with silence
                 if (position < audioStartPosition)
                 {
                     bytesWritten = (int)Math.Min(numBytes, audioStartPosition - position);
-                    for (int n = 0; n < bytesWritten; n++)
+                    for (var n = 0; n < bytesWritten; n++)
                         destBuffer[n + offset] = 0;
                 }
                 if (bytesWritten < numBytes)
                 {
                     // don't read too far into source stream
-                    int sourceBytesRequired = (int)Math.Min(
+                    var sourceBytesRequired = (int)Math.Min(
                         numBytes - bytesWritten,
                         sourceLengthBytes + sourceOffsetBytes - sourceStream.Position);
-                    int read = sourceStream.Read(destBuffer, bytesWritten + offset, sourceBytesRequired);
+                    var read = sourceStream.Read(destBuffer, bytesWritten + offset, sourceBytesRequired);
                     bytesWritten += read;
                 }
                 // 3. Fill out with zeroes
-                for (int n = bytesWritten; n < numBytes; n++)
+                for (var n = bytesWritten; n < numBytes; n++)
                     destBuffer[offset + n] = 0;
                 position += numBytes;
                 return numBytes;

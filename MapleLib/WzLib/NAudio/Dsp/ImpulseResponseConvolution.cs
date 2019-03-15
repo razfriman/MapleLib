@@ -16,9 +16,9 @@ namespace NAudio.Dsp
         public float[] Convolve(float[] input, float[] impulseResponse)
         {
             var output = new float[input.Length + impulseResponse.Length];
-            for(int t = 0; t < output.Length; t++)
+            for(var t = 0; t < output.Length; t++)
             {
-                for(int n = 0; n < impulseResponse.Length; n++)
+                for(var n = 0; n < impulseResponse.Length; n++)
                 {
                     if((t >= n) && (t-n < input.Length))
                     {
@@ -36,10 +36,10 @@ namespace NAudio.Dsp
         public void Normalize(float[] data)
         {
             float max = 0;
-            for(int n = 0; n < data.Length; n++)
+            for(var n = 0; n < data.Length; n++)
                 max = Math.Max(max,Math.Abs(data[n]));
             if(max > 1.0)
-                for(int n = 0; n < data.Length; n++)
+                for(var n = 0; n < data.Length; n++)
                     data[n] /= max;
         }
     }

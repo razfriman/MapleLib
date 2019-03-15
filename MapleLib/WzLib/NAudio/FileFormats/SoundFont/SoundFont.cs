@@ -31,21 +31,21 @@ namespace NAudio.SoundFont
 	    {
             using(sfFile) // a bit ugly, done to get Win store to compile
 			{
-				RiffChunk riff = RiffChunk.GetTopLevelChunk(new BinaryReader(sfFile));
+				var riff = RiffChunk.GetTopLevelChunk(new BinaryReader(sfFile));
 				if(riff.ChunkID == "RIFF") 
 				{
-					string formHeader = riff.ReadChunkID();
+					var formHeader = riff.ReadChunkID();
 					if(formHeader != "sfbk") 
 					{
 						throw new InvalidDataException(String.Format("Not a SoundFont ({0})",formHeader));
 					}
-					RiffChunk list = riff.GetNextSubChunk();
+					var list = riff.GetNextSubChunk();
 					if(list.ChunkID == "LIST") 
 					{
 						//RiffChunk r = list.GetNextSubChunk();
 						info = new InfoChunk(list);
 
-						RiffChunk r = riff.GetNextSubChunk();
+						var r = riff.GetNextSubChunk();
 						sampleData = new SampleDataChunk(r);
 
 						r = riff.GetNextSubChunk();

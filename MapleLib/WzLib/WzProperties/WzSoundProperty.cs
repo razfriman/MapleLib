@@ -43,7 +43,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override WzImageProperty DeepClone()
         {
-            WzSoundProperty clone = new WzSoundProperty(name, len_ms, header, mp3bytes);
+            var clone = new WzSoundProperty(name, len_ms, header, mp3bytes);
             return clone;
         }
 
@@ -71,7 +71,7 @@ namespace MapleLib.WzLib.WzProperties
         public override WzPropertyType PropertyType { get { return WzPropertyType.Sound; } }
         public override void WriteValue(WzBinaryWriter writer)
         {
-            byte[] data = GetBytes(false);
+            var data = GetBytes(false);
             writer.WriteStringValue("Sound_DX8", 0x73, 0x1B);
             writer.Write((byte)0);
             writer.WriteCompressedInt(data.Length);
@@ -129,7 +129,7 @@ namespace MapleLib.WzLib.WzProperties
             soundDataLen = reader.ReadCompressedInt();
             len_ms = reader.ReadCompressedInt();
 
-            long headerOff = reader.BaseStream.Position;
+            var headerOff = reader.BaseStream.Position;
             reader.BaseStream.Position += soundHeader.Length; //skip GUIDs
             int wavFormatLen = reader.ReadByte();
             reader.BaseStream.Position = headerOff;
@@ -176,7 +176,7 @@ namespace MapleLib.WzLib.WzProperties
         public WzSoundProperty(string name, string file)
         {
             this.name = name;
-            Mp3FileReader reader = new Mp3FileReader(file);
+            var reader = new Mp3FileReader(file);
             wavFormat = reader.Mp3WaveFormat;
             len_ms = (int)(reader.Length * 1000d / reader.WaveFormat.AverageBytesPerSecond);
             RebuildHeader();
@@ -186,7 +186,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public static bool Memcmp(byte[] a, byte[] b, int n)
         {
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 if (a[i] != b[i])
                 {
@@ -198,21 +198,21 @@ namespace MapleLib.WzLib.WzProperties
 
         public static string ByteArrayToString(byte[] ba)
         {
-            StringBuilder hex = new StringBuilder(ba.Length * 3);
-            foreach (byte b in ba)
+            var hex = new StringBuilder(ba.Length * 3);
+            foreach (var b in ba)
                 hex.AppendFormat("{0:x2} ", b);
             return hex.ToString();
         }
 
         public void RebuildHeader()
         {
-            using (BinaryWriter bw = new BinaryWriter(new MemoryStream()))
+            using (var bw = new BinaryWriter(new MemoryStream()))
             {
                 bw.Write(soundHeader);
-                byte[] wavHeader = StructToBytes(wavFormat);
+                var wavHeader = StructToBytes(wavFormat);
                 if (headerEncrypted)
                 {
-                    for (int i = 0; i < wavHeader.Length; i++)
+                    for (var i = 0; i < wavHeader.Length; i++)
                     {
                         wavHeader[i] ^= wzReader.WzKey[i];
                     }
@@ -225,8 +225,8 @@ namespace MapleLib.WzLib.WzProperties
 
         private static byte[] StructToBytes<T>(T obj)
         {
-            byte[] result = new byte[Marshal.SizeOf(obj)];
-            GCHandle handle = GCHandle.Alloc(result, GCHandleType.Pinned);
+            var result = new byte[Marshal.SizeOf(obj)];
+            var handle = GCHandle.Alloc(result, GCHandleType.Pinned);
             try
             {
                 Marshal.StructureToPtr(obj, handle.AddrOfPinnedObject(), false);
@@ -240,7 +240,7 @@ namespace MapleLib.WzLib.WzProperties
 
         private static T BytesToStruct<T>(byte[] data) where T : new()
         {
-            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
                 return Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject());
@@ -253,10 +253,10 @@ namespace MapleLib.WzLib.WzProperties
 
         private static T BytesToStructConstructorless<T>(byte[] data)
         {
-            GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
             try
             {
-                T obj = (T)FormatterServices.GetUninitializedObject(typeof(T));
+                var obj = (T)FormatterServices.GetUninitializedObject(typeof(T));
                 Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject(), obj);
                 return obj;
             }
@@ -268,18 +268,18 @@ namespace MapleLib.WzLib.WzProperties
 
         private void ParseHeader()
         {
-            byte[] wavHeader = new byte[header.Length - soundHeader.Length - 1];
+            var wavHeader = new byte[header.Length - soundHeader.Length - 1];
             Buffer.BlockCopy(header, soundHeader.Length + 1, wavHeader, 0, wavHeader.Length);
 
             if (wavHeader.Length < Marshal.SizeOf<WaveFormat>())
                 return;
 
-            WaveFormat wavFmt = BytesToStruct<WaveFormat>(wavHeader);
+            var wavFmt = BytesToStruct<WaveFormat>(wavHeader);
 
             if (Marshal.SizeOf<WaveFormat>() + wavFmt.ExtraSize != wavHeader.Length)
             {
                 //try decrypt
-                for (int i = 0; i < wavHeader.Length; i++)
+                for (var i = 0; i < wavHeader.Length; i++)
                 {
                     wavHeader[i] ^= wzReader.WzKey[i];
                 }
@@ -317,7 +317,7 @@ namespace MapleLib.WzLib.WzProperties
                 return mp3bytes;
             }
             if (wzReader == null) return null;
-            long currentPos = wzReader.BaseStream.Position;
+            var currentPos = wzReader.BaseStream.Position;
             wzReader.BaseStream.Position = offs;
             mp3bytes = wzReader.ReadBytes(soundDataLen);
             wzReader.BaseStream.Position = currentPos;
@@ -327,7 +327,7 @@ namespace MapleLib.WzLib.WzProperties
                 return mp3bytes;
             }
 
-            byte[] result = mp3bytes;
+            var result = mp3bytes;
             mp3bytes = null;
             return result;
         }

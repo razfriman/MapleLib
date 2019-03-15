@@ -61,7 +61,7 @@ namespace NAudio.Dmo
             try
             {
                 DmoMediaType mediaType;
-                int hresult = mediaObject.GetInputType(inputStream, inputTypeIndex, out mediaType);
+                var hresult = mediaObject.GetInputType(inputStream, inputTypeIndex, out mediaType);
                 if (hresult == HResult.S_OK)
                 {
                     // this frees the format (if present)
@@ -92,7 +92,7 @@ namespace NAudio.Dmo
             try
             {
                 DmoMediaType mediaType;
-                int hresult = mediaObject.GetOutputType(outputStream, outputTypeIndex, out mediaType);
+                var hresult = mediaObject.GetOutputType(outputStream, outputTypeIndex, out mediaType);
                 if (hresult == HResult.S_OK)
                 {
                     // this frees the format (if present)
@@ -120,7 +120,7 @@ namespace NAudio.Dmo
         public DmoMediaType GetOutputCurrentType(int outputStreamIndex)
         {
             DmoMediaType mediaType;
-            int hresult = mediaObject.GetOutputCurrentType(outputStreamIndex, out mediaType);
+            var hresult = mediaObject.GetOutputCurrentType(outputStreamIndex, out mediaType);
             if (hresult == HResult.S_OK)
             {
                 // this frees the format (if present)
@@ -149,7 +149,7 @@ namespace NAudio.Dmo
         /// <returns>Enumeration of input types</returns>
         public IEnumerable<DmoMediaType> GetInputTypes(int inputStreamIndex)
         {
-            int typeIndex = 0;
+            var typeIndex = 0;
             DmoMediaType? mediaType;
             while ((mediaType = GetInputType(inputStreamIndex,typeIndex)) != null)
             {
@@ -165,7 +165,7 @@ namespace NAudio.Dmo
         /// <returns>Enumeration of supported output types</returns>
         public IEnumerable<DmoMediaType> GetOutputTypes(int outputStreamIndex)
         {
-            int typeIndex = 0;
+            var typeIndex = 0;
             DmoMediaType? mediaType;
             while ((mediaType = GetOutputType(outputStreamIndex, typeIndex)) != null)
             {
@@ -197,7 +197,7 @@ namespace NAudio.Dmo
         /// <param name="flags">Flags (can be used to test rather than set)</param>
         private bool SetInputType(int inputStreamIndex, DmoMediaType mediaType, DmoSetTypeFlags flags)
         {
-            int hResult = mediaObject.SetInputType(inputStreamIndex, ref mediaType, flags);
+            var hResult = mediaObject.SetInputType(inputStreamIndex, ref mediaType, flags);
             if (hResult != HResult.S_OK)
             {
                 if (hResult == (int)DmoHResults.DMO_E_INVALIDSTREAMINDEX)
@@ -234,8 +234,8 @@ namespace NAudio.Dmo
         /// <param name="waveFormat">Wave format</param>
         public void SetInputWaveFormat(int inputStreamIndex, WaveFormat waveFormat)
         {
-            DmoMediaType mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
-            bool set = SetInputType(inputStreamIndex, mediaType, DmoSetTypeFlags.None);
+            var mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
+            var set = SetInputType(inputStreamIndex, mediaType, DmoSetTypeFlags.None);
             DmoInterop.MoFreeMediaType(ref mediaType);
             if (!set)
             {
@@ -251,8 +251,8 @@ namespace NAudio.Dmo
         /// <returns>true if supported</returns>
         public bool SupportsInputWaveFormat(int inputStreamIndex, WaveFormat waveFormat)
         {
-            DmoMediaType mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
-            bool supported = SetInputType(inputStreamIndex, mediaType, DmoSetTypeFlags.DMO_SET_TYPEF_TEST_ONLY);
+            var mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
+            var supported = SetInputType(inputStreamIndex, mediaType, DmoSetTypeFlags.DMO_SET_TYPEF_TEST_ONLY);
             DmoInterop.MoFreeMediaType(ref mediaType);
             return supported;
         }
@@ -262,8 +262,8 @@ namespace NAudio.Dmo
         /// </summary>
         private DmoMediaType CreateDmoMediaTypeForWaveFormat(WaveFormat waveFormat)
         {
-            DmoMediaType mediaType = new DmoMediaType();
-            int waveFormatExSize = Marshal.SizeOf(waveFormat);  // 18 + waveFormat.ExtraSize;
+            var mediaType = new DmoMediaType();
+            var waveFormatExSize = Marshal.SizeOf(waveFormat);  // 18 + waveFormat.ExtraSize;
             DmoInterop.MoInitMediaType(ref mediaType, waveFormatExSize);
             mediaType.SetWaveFormat(waveFormat);
             return mediaType;
@@ -294,8 +294,8 @@ namespace NAudio.Dmo
         /// <returns>True if supported</returns>
         public bool SupportsOutputWaveFormat(int outputStreamIndex, WaveFormat waveFormat)
         {
-            DmoMediaType mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
-            bool supported = SetOutputType(outputStreamIndex, mediaType, DmoSetTypeFlags.DMO_SET_TYPEF_TEST_ONLY);
+            var mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
+            var supported = SetOutputType(outputStreamIndex, mediaType, DmoSetTypeFlags.DMO_SET_TYPEF_TEST_ONLY);
             DmoInterop.MoFreeMediaType(ref mediaType);
             return supported;
         }
@@ -305,7 +305,7 @@ namespace NAudio.Dmo
         /// </summary>
         private bool SetOutputType(int outputStreamIndex, DmoMediaType mediaType, DmoSetTypeFlags flags)
         {
-            int hresult = mediaObject.SetOutputType(outputStreamIndex, ref mediaType, flags);
+            var hresult = mediaObject.SetOutputType(outputStreamIndex, ref mediaType, flags);
             if (hresult == (int)DmoHResults.DMO_E_TYPE_NOT_ACCEPTED)
             {
                 return false;
@@ -342,8 +342,8 @@ namespace NAudio.Dmo
         /// <param name="waveFormat">Wave format</param>
         public void SetOutputWaveFormat(int outputStreamIndex, WaveFormat waveFormat)
         {
-            DmoMediaType mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
-            bool succeeded = SetOutputType(outputStreamIndex, mediaType, DmoSetTypeFlags.None);
+            var mediaType = CreateDmoMediaTypeForWaveFormat(waveFormat);
+            var succeeded = SetOutputType(outputStreamIndex, mediaType, DmoSetTypeFlags.None);
             DmoInterop.MoFreeMediaType(ref mediaType);
             if (!succeeded)
             {
@@ -464,7 +464,7 @@ namespace NAudio.Dmo
         public bool IsAcceptingData(int inputStreamIndex)
         {
             DmoInputStatusFlags flags;
-            int hresult = mediaObject.GetInputStatus(inputStreamIndex, out flags);
+            var hresult = mediaObject.GetInputStatus(inputStreamIndex, out flags);
             Marshal.ThrowExceptionForHR(hresult);
             return (flags & DmoInputStatusFlags.DMO_INPUT_STATUSF_ACCEPT_DATA) == DmoInputStatusFlags.DMO_INPUT_STATUSF_ACCEPT_DATA;
         }

@@ -82,7 +82,7 @@ namespace NAudio.Wave
                     {
                         if (position % BlockAlign != 0)
                             throw new ArgumentException("Position must be block aligned");
-                        long sourcePosition = value - (value % sourceStream.BlockAlign);
+                        var sourcePosition = value - (value % sourceStream.BlockAlign);
                         if (sourceStream.Position != sourcePosition)
                         {
                             sourceStream.Position = sourcePosition;
@@ -138,13 +138,13 @@ namespace NAudio.Wave
                 // 1. attempt to fill the circular buffer with enough data to meet our request
                 while (BufferEndPosition < position + count)
                 {
-                    int sourceReadCount = count;
+                    var sourceReadCount = count;
                     if (sourceReadCount % sourceStream.BlockAlign != 0)
                     {
                         sourceReadCount = (count + sourceStream.BlockAlign) - (count % sourceStream.BlockAlign);
                     }
 
-                    int sourceRead = sourceStream.Read(GetSourceBuffer(sourceReadCount), 0, sourceReadCount);
+                    var sourceRead = sourceStream.Read(GetSourceBuffer(sourceReadCount), 0, sourceReadCount);
                     circularBuffer.Write(GetSourceBuffer(sourceReadCount), 0, sourceRead);
                     if (sourceRead == 0)
                     {
@@ -161,7 +161,7 @@ namespace NAudio.Wave
                 }
 
                 // 3. now whatever is in the buffer we can return
-                int bytesRead = circularBuffer.Read(buffer, offset, count);
+                var bytesRead = circularBuffer.Read(buffer, offset, count);
                 position += bytesRead;
                 // anything left in buffer is at start position
                 bufferStartPosition = position;

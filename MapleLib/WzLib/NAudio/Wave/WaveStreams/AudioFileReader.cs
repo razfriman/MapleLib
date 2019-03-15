@@ -101,8 +101,8 @@ namespace NAudio.Wave
         public override int Read(byte[] buffer, int offset, int count)
         {
             var waveBuffer = new WaveBuffer(buffer);
-            int samplesRequired = count / 4;
-            int samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
+            var samplesRequired = count / 4;
+            var samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
             return samplesRead * 4;
         }
 

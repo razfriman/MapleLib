@@ -56,16 +56,16 @@ namespace NAudio.Wave
         /// <samples>The samples as 32 bit floating point, interleaved</samples>
         public int GetAsInterleavedSamples(float[] samples)
         {
-            int channels = InputBuffers.Length;
+            var channels = InputBuffers.Length;
             if (samples.Length < SamplesPerBuffer*channels) throw new ArgumentException("Buffer not big enough");
-            int index = 0;
+            var index = 0;
             unsafe
             {
                 if (AsioSampleType == AsioSampleType.Int32LSB)
                 {
-                    for (int n = 0; n < SamplesPerBuffer; n++)
+                    for (var n = 0; n < SamplesPerBuffer; n++)
                     {
-                        for (int ch = 0; ch < channels; ch++)
+                        for (var ch = 0; ch < channels; ch++)
                         {
                             samples[index++] = *((int*)InputBuffers[ch] + n) / (float)Int32.MaxValue;
                         }
@@ -73,9 +73,9 @@ namespace NAudio.Wave
                 }
                 else if (AsioSampleType == AsioSampleType.Int16LSB)
                 {
-                    for (int n = 0; n < SamplesPerBuffer; n++)
+                    for (var n = 0; n < SamplesPerBuffer; n++)
                     {
-                        for (int ch = 0; ch < channels; ch++)
+                        for (var ch = 0; ch < channels; ch++)
                         {
                             samples[index++] = *((short*)InputBuffers[ch] + n) / (float)Int16.MaxValue;
                         }
@@ -83,23 +83,23 @@ namespace NAudio.Wave
                 }
                 else if (AsioSampleType == AsioSampleType.Int24LSB)
                 {
-                    for (int n = 0; n < SamplesPerBuffer; n++)
+                    for (var n = 0; n < SamplesPerBuffer; n++)
                     {
-                        for (int ch = 0; ch < channels; ch++)
+                        for (var ch = 0; ch < channels; ch++)
                         {
-                            byte *pSample = ((byte*)InputBuffers[ch] + n * 3);
+                            var pSample = ((byte*)InputBuffers[ch] + n * 3);
 
                             //int sample = *pSample + *(pSample+1) << 8 + (sbyte)*(pSample+2) << 16;
-                            int sample = pSample[0] | (pSample[1] << 8) | ((sbyte)pSample[2] << 16);
+                            var sample = pSample[0] | (pSample[1] << 8) | ((sbyte)pSample[2] << 16);
                             samples[index++] = sample / 8388608.0f;
                         }
                     }
                 }
                 else if (AsioSampleType == AsioSampleType.Float32LSB)
                 {
-                    for (int n = 0; n < SamplesPerBuffer; n++)
+                    for (var n = 0; n < SamplesPerBuffer; n++)
                     {
-                        for (int ch = 0; ch < channels; ch++)
+                        for (var ch = 0; ch < channels; ch++)
                         {
                             samples[index++] = *((float*)InputBuffers[ch] + n);
                         }
@@ -126,7 +126,7 @@ namespace NAudio.Wave
         [Obsolete("Better performance if you use the overload that takes an array, and reuse the same one")]
         public float[] GetAsInterleavedSamples()
         {
-            int channels = InputBuffers.Length;
+            var channels = InputBuffers.Length;
             var samples = new float[SamplesPerBuffer*channels];
             GetAsInterleavedSamples(samples);
             return samples;

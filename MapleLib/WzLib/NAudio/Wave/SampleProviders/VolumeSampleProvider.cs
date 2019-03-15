@@ -31,10 +31,10 @@
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int sampleCount)
         {
-            int samplesRead = source.Read(buffer, offset, sampleCount);
+            var samplesRead = source.Read(buffer, offset, sampleCount);
             if (Volume != 1f)
             {
-                for (int n = 0; n < sampleCount; n++)
+                for (var n = 0; n < sampleCount; n++)
                 {
                     buffer[offset + n] *= Volume;
                 }

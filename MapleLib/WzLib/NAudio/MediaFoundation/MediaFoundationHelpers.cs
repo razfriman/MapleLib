@@ -45,7 +45,7 @@ namespace NAudio.MediaFoundation
             MediaFoundationInterop.MFTEnumEx(category, _MFT_ENUM_FLAG.MFT_ENUM_FLAG_ALL,
                 null, null, out interfacesPointer, out interfaceCount);
             var interfaces = new IMFActivate[interfaceCount];
-            for (int n = 0; n < interfaceCount; n++)
+            for (var n = 0; n < interfaceCount; n++)
             {
                 var ptr =
                     Marshal.ReadIntPtr(new IntPtr(interfacesPointer.ToInt64() + n*Marshal.SizeOf(interfacesPointer)));

@@ -16,7 +16,7 @@ namespace NAudio.Utils
             }
 
 
-            int midIndex = (lowIndex + highIndex) / 2;
+            var midIndex = (lowIndex + highIndex) / 2;
 
 
             // Partition the list into two lists and Sort them recursively
@@ -24,8 +24,8 @@ namespace NAudio.Utils
             Sort(list, midIndex + 1, highIndex, comparer);
 
             // Merge the two sorted lists
-            int endLow = midIndex;
-            int startHigh = midIndex + 1;
+            var endLow = midIndex;
+            var startHigh = midIndex + 1;
 
 
             while ((lowIndex <= endLow) && (startHigh <= highIndex))
@@ -41,9 +41,9 @@ namespace NAudio.Utils
                     // The next element comes from the second list, 
                     // move the list[start_hi] element into the next 
                     //  position and shuffle all the other elements up.
-                    T t = list[startHigh];
+                    var t = list[startHigh];
 
-                    for (int k = startHigh - 1; k >= lowIndex; k--)
+                    for (var k = startHigh - 1; k >= lowIndex; k--)
                     {
                         list[k + 1] = list[k];
                     }

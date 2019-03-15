@@ -96,7 +96,7 @@ namespace NAudio.Wave
         private void PlayThread()
         {
             ResamplerDmoStream resamplerDmoStream = null;
-            IWaveProvider playbackProvider = sourceProvider;
+            var playbackProvider = sourceProvider;
             Exception exception = null;
             try
             {
@@ -120,7 +120,7 @@ namespace NAudio.Wave
                 while (playbackState != PlaybackState.Stopped)
                 {
                     // If using Event Sync, Wait for notification from AudioClient or Sleep half latency
-                    int indexHandle = 0;
+                    var indexHandle = 0;
                     if (isUsingEventSync)
                     {
                         indexHandle = WaitHandle.WaitAny(waitHandles, 3 * latencyMilliseconds, false);
@@ -144,7 +144,7 @@ namespace NAudio.Wave
                         {
                             numFramesPadding = audioClient.CurrentPadding;
                         }
-                        int numFramesAvailable = bufferFrameCount - numFramesPadding;
+                        var numFramesAvailable = bufferFrameCount - numFramesPadding;
                         if (numFramesAvailable > 10) // see https://naudio.codeplex.com/workitem/16363
                         {
                             FillBuffer(playbackProvider, numFramesAvailable);
@@ -192,13 +192,13 @@ namespace NAudio.Wave
         {
             var buffer = renderClient.GetBuffer(frameCount);
             var readLength = frameCount * bytesPerFrame;
-            int read = playbackProvider.Read(readBuffer, 0, readLength);
+            var read = playbackProvider.Read(readBuffer, 0, readLength);
             if (read == 0)
             {
                 playbackState = PlaybackState.Stopped;
             }
             Marshal.Copy(readBuffer,0,buffer,read);
-            int actualFrameCount = read / bytesPerFrame;
+            var actualFrameCount = read / bytesPerFrame;
             /*if (actualFrameCount != frameCount)
             {
                 Debug.WriteLine(String.Format("WASAPI wanted {0} frames, supplied {1}", frameCount, actualFrameCount ));
@@ -294,7 +294,7 @@ namespace NAudio.Wave
                 // The MixFormat is more likely to be a WaveFormatExtensible.
                 if (closestSampleRateFormat == null)
                 {
-                    WaveFormat correctSampleRateFormat = audioClient.MixFormat;
+                    var correctSampleRateFormat = audioClient.MixFormat;
                         /*WaveFormat.CreateIeeeFloatWaveFormat(
                         audioClient.MixFormat.SampleRate,
                         audioClient.MixFormat.Channels);*/
@@ -315,7 +315,7 @@ namespace NAudio.Wave
                               };
 
                         // Check from best Format to worst format ( Float32, Int24, Int16 )
-                        for (int i = 0; i < bestToWorstFormats.Length; i++ )
+                        for (var i = 0; i < bestToWorstFormats.Length; i++ )
                         {
                             correctSampleRateFormat = bestToWorstFormats[i];
                             if ( audioClient.IsFormatSupported(shareMode, correctSampleRateFormat) )

@@ -61,7 +61,7 @@ namespace NAudio.Wave.SampleProviders
             }
 
             mappings = new List<int>();
-            for (int n = 0; n < outputChannelCount; n++)
+            for (var n = 0; n < outputChannelCount; n++)
             {
                 mappings.Add(n % inputChannelCount);
             }
@@ -81,27 +81,27 @@ namespace NAudio.Wave.SampleProviders
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            int sampleFramesRequested = count / outputChannelCount;
-            int inputOffset = 0;
-            int sampleFramesRead = 0;
+            var sampleFramesRequested = count / outputChannelCount;
+            var inputOffset = 0;
+            var sampleFramesRead = 0;
             // now we must read from all inputs, even if we don't need their data, so they stay in sync
             foreach (var input in inputs)
             {
-                int samplesRequired = sampleFramesRequested * input.WaveFormat.Channels;
+                var samplesRequired = sampleFramesRequested * input.WaveFormat.Channels;
                 inputBuffer = BufferHelpers.Ensure(inputBuffer, samplesRequired);
-                int samplesRead = input.Read(inputBuffer, 0, samplesRequired);
+                var samplesRead = input.Read(inputBuffer, 0, samplesRequired);
                 sampleFramesRead = Math.Max(sampleFramesRead, samplesRead / input.WaveFormat.Channels);
 
-                for (int n = 0; n < input.WaveFormat.Channels; n++)
+                for (var n = 0; n < input.WaveFormat.Channels; n++)
                 {
-                    int inputIndex = inputOffset + n;
-                    for (int outputIndex = 0; outputIndex < outputChannelCount; outputIndex++)
+                    var inputIndex = inputOffset + n;
+                    for (var outputIndex = 0; outputIndex < outputChannelCount; outputIndex++)
                     {
                         if (mappings[outputIndex] == inputIndex)
                         {
-                            int inputBufferOffset = n;
-                            int outputBufferOffset = offset + outputIndex;
-                            int sample = 0;
+                            var inputBufferOffset = n;
+                            var outputBufferOffset = offset + outputIndex;
+                            var sample = 0;
                             while (sample < sampleFramesRequested && inputBufferOffset < samplesRead)
                             {
                                 buffer[outputBufferOffset] = inputBuffer[inputBufferOffset];

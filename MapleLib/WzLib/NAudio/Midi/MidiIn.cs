@@ -130,8 +130,8 @@ namespace NAudio.Midi
         /// </summary>
         public static MidiInCapabilities DeviceInfo(int midiInDeviceNumber)
         {
-            MidiInCapabilities caps = new MidiInCapabilities();
-            int structSize = Marshal.SizeOf(caps);
+            var caps = new MidiInCapabilities();
+            var structSize = Marshal.SizeOf(caps);
             MmException.Try(MidiInterop.midiInGetDevCaps((IntPtr)midiInDeviceNumber,out caps,structSize),"midiInGetDevCaps");
             return caps;
         }

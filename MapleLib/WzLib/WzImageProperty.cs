@@ -30,7 +30,7 @@ namespace MapleLib.WzLib
         {
             get
             {
-                WzObject parent = Parent;
+                var parent = Parent;
                 while (parent != null)
                 {
                     if (parent is WzImage)
@@ -73,7 +73,7 @@ namespace MapleLib.WzLib
         {
             writer.Write((ushort)0);
             writer.WriteCompressedInt(properties.Count);
-            for (int i = 0; i < properties.Count; i++)
+            for (var i = 0; i < properties.Count; i++)
             {
                 writer.WriteStringValue(properties[i].Name, 0x00, 0x01);
                 if (properties[i] is WzExtended)
@@ -85,7 +85,7 @@ namespace MapleLib.WzLib
 
         internal static void DumpPropertyList(StreamWriter writer, int level, List<WzImageProperty> properties)
         {
-            foreach (WzImageProperty prop in properties)
+            foreach (var prop in properties)
             {
                 prop.ExportXml(writer, level + 1);
             }
@@ -93,12 +93,12 @@ namespace MapleLib.WzLib
 
         internal static List<WzImageProperty> ParsePropertyList(uint offset, WzBinaryReader reader, WzObject parent, WzImage parentImg)
         {
-            int entryCount = reader.ReadCompressedInt();
-            List<WzImageProperty> properties = new List<WzImageProperty>(entryCount);
-            for (int i = 0; i < entryCount; i++)
+            var entryCount = reader.ReadCompressedInt();
+            var properties = new List<WzImageProperty>(entryCount);
+            for (var i = 0; i < entryCount; i++)
             {
-                string name = reader.ReadStringBlock(offset);
-                byte ptype = reader.ReadByte();
+                var name = reader.ReadStringBlock(offset);
+                var ptype = reader.ReadByte();
                 switch (ptype)
                 {
                     case 0:
@@ -116,7 +116,7 @@ namespace MapleLib.WzLib
                         properties.Add(new WzLongProperty(name, reader.ReadLong()) { Parent = parent });
                         break;
                     case 4:
-                        byte type = reader.ReadByte();
+                        var type = reader.ReadByte();
                         if (type == 0x80)
                             properties.Add(new WzFloatProperty(name, reader.ReadSingle()) { Parent = parent });
                         else if (type == 0)
@@ -129,7 +129,7 @@ namespace MapleLib.WzLib
                         properties.Add(new WzStringProperty(name, reader.ReadStringBlock(offset)) { Parent = parent });
                         break;
                     case 9:
-                        int eob = (int)(reader.ReadUInt32() + reader.BaseStream.Position);
+                        var eob = (int)(reader.ReadUInt32() + reader.BaseStream.Position);
                         WzImageProperty exProp = ParseExtendedProp(reader, offset, eob, name, parent, parentImg);
                         properties.Add(exProp);
                         reader.BaseStream.Position = eob;
@@ -166,12 +166,12 @@ namespace MapleLib.WzLib
             switch (iname)
             {
                 case "Property":
-                    WzSubProperty subProp = new WzSubProperty(name) { Parent = parent };
+                    var subProp = new WzSubProperty(name) { Parent = parent };
                     reader.BaseStream.Position += 2; // Reserved?
                     subProp.AddProperties(ParsePropertyList(offset, reader, subProp, imgParent));
                     return subProp;
                 case "Canvas":
-                    WzCanvasProperty canvasProp = new WzCanvasProperty(name) { Parent = parent };
+                    var canvasProp = new WzCanvasProperty(name) { Parent = parent };
                     reader.BaseStream.Position++;
                     if (reader.ReadByte() == 1)
                     {
@@ -181,21 +181,21 @@ namespace MapleLib.WzLib
                     canvasProp.PngProperty = new WzPngProperty(reader, imgParent.parseEverything) { Parent = canvasProp };
                     return canvasProp;
                 case "Shape2D#Vector2D":
-                    WzVectorProperty vecProp = new WzVectorProperty(name) { Parent = parent };
+                    var vecProp = new WzVectorProperty(name) { Parent = parent };
                     vecProp.X = new WzIntProperty("X", reader.ReadCompressedInt()) { Parent = vecProp };
                     vecProp.Y = new WzIntProperty("Y", reader.ReadCompressedInt()) { Parent = vecProp };
                     return vecProp;
                 case "Shape2D#Convex2D":
-                    WzConvexProperty convexProp = new WzConvexProperty(name) { Parent = parent };
-                    int convexEntryCount = reader.ReadCompressedInt();
+                    var convexProp = new WzConvexProperty(name) { Parent = parent };
+                    var convexEntryCount = reader.ReadCompressedInt();
                     convexProp.WzProperties.Capacity = convexEntryCount;
-                    for (int i = 0; i < convexEntryCount; i++)
+                    for (var i = 0; i < convexEntryCount; i++)
                     {
                         convexProp.AddProperty(ParseExtendedProp(reader, offset, 0, name, convexProp, imgParent));
                     }
                     return convexProp;
                 case "Sound_DX8":
-                    WzSoundProperty soundProp = new WzSoundProperty(name, reader, imgParent.parseEverything) { Parent = parent };
+                    var soundProp = new WzSoundProperty(name, reader, imgParent.parseEverything) { Parent = parent };
                     return soundProp;
                 case "UOL":
                     reader.BaseStream.Position++;
@@ -215,11 +215,11 @@ namespace MapleLib.WzLib
         internal static void WriteExtendedValue(WzBinaryWriter writer, WzExtended property)
         {
             writer.Write((byte)9);
-            long beforePos = writer.BaseStream.Position;
+            var beforePos = writer.BaseStream.Position;
             writer.Write(0); // Placeholder
             property.WriteValue(writer);
-            int len = (int)(writer.BaseStream.Position - beforePos);
-            long newPos = writer.BaseStream.Position;
+            var len = (int)(writer.BaseStream.Position - beforePos);
+            var newPos = writer.BaseStream.Position;
             writer.BaseStream.Position = beforePos;
             writer.Write(len - 4);
             writer.BaseStream.Position = newPos;

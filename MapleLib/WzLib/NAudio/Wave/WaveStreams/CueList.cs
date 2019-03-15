@@ -110,8 +110,8 @@ namespace NAudio.Wave
         {
             get
             {
-                int[] positions = new int[cues.Count];
-                for (int i = 0; i < cues.Count; i++)
+                var positions = new int[cues.Count];
+                for (var i = 0; i < cues.Count; i++)
                 {
                     positions[i] = cues[i].Position;
                 }
@@ -127,8 +127,8 @@ namespace NAudio.Wave
         {
             get
             {
-                string[] labels = new string[cues.Count];
-                for (int i = 0; i < cues.Count; i++)
+                var labels = new string[cues.Count];
+                for (var i = 0; i < cues.Count; i++)
                 {
                     labels[i] = cues[i].Label;
                 }
@@ -143,22 +143,22 @@ namespace NAudio.Wave
         /// <param name="listChunkData">The data contained in the list chunk</param>
         internal CueList(byte[] cueChunkData, byte[] listChunkData)
         {
-            int cueCount = BitConverter.ToInt32(cueChunkData, 0);
-            Dictionary<int, int> cueIndex = new Dictionary<int, int>();
-            int[] positions = new int[cueCount];
-            int cue = 0;
+            var cueCount = BitConverter.ToInt32(cueChunkData, 0);
+            var cueIndex = new Dictionary<int, int>();
+            var positions = new int[cueCount];
+            var cue = 0;
 
-            for (int p = 4; cueChunkData.Length - p >= 24; p += 24, cue++)
+            for (var p = 4; cueChunkData.Length - p >= 24; p += 24, cue++)
             {
                 cueIndex[BitConverter.ToInt32(cueChunkData, p)] = cue;
                 positions[cue] = BitConverter.ToInt32(cueChunkData, p + 20);
             }
 
-            string[] labels = new string[cueCount];
-            int labelLength = 0;
+            var labels = new string[cueCount];
+            var labelLength = 0;
 
             var labelChunkId = ChunkIdentifier.ChunkIdentifierToInt32("labl");
-            for (int p = 4; listChunkData.Length - p >= 16; p += labelLength + labelLength % 2 + 12)
+            for (var p = 4; listChunkData.Length - p >= 16; p += labelLength + labelLength % 2 + 12)
             {
                 if (BitConverter.ToInt32(listChunkData, p) == labelChunkId)
                 {
@@ -169,7 +169,7 @@ namespace NAudio.Wave
                 }
             }
 
-            for (int i = 0; i < cueCount; i++)
+            for (var i = 0; i < cueCount; i++)
             {
                 cues.Add(new Cue(positions[i], labels[i]));
             }
@@ -187,18 +187,18 @@ namespace NAudio.Wave
             }
             var cueChunkLength = 12 + 24 * Count;
             var listChunkLength = 12;
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 var labelChunkLength = this[i].Label.Length + 1;
                 listChunkLength += labelChunkLength + labelChunkLength % 2 + 12;
             }
 
-            byte[] chunks = new byte[cueChunkLength + listChunkLength];
+            var chunks = new byte[cueChunkLength + listChunkLength];
             var cueChunkId = ChunkIdentifier.ChunkIdentifierToInt32("cue ");
-            int dataChunkId = ChunkIdentifier.ChunkIdentifierToInt32("data");
-            int listChunkId = ChunkIdentifier.ChunkIdentifierToInt32("LIST");
-            int adtlTypeId = ChunkIdentifier.ChunkIdentifierToInt32("adtl");
-            int labelChunkId = ChunkIdentifier.ChunkIdentifierToInt32("labl");
+            var dataChunkId = ChunkIdentifier.ChunkIdentifierToInt32("data");
+            var listChunkId = ChunkIdentifier.ChunkIdentifierToInt32("LIST");
+            var adtlTypeId = ChunkIdentifier.ChunkIdentifierToInt32("adtl");
+            var labelChunkId = ChunkIdentifier.ChunkIdentifierToInt32("labl");
 
             using (var stream = new MemoryStream(chunks))
             {
@@ -207,9 +207,9 @@ namespace NAudio.Wave
                     writer.Write(cueChunkId);
                     writer.Write(cueChunkLength - 8);
                     writer.Write(Count);
-                    for (int cue = 0; cue < Count; cue++)
+                    for (var cue = 0; cue < Count; cue++)
                     {
-                        int position = this[cue].Position;
+                        var position = this[cue].Position;
 
                         writer.Write(cue);
                         writer.Write(position);
@@ -220,7 +220,7 @@ namespace NAudio.Wave
                     writer.Write(listChunkId);
                     writer.Write(listChunkLength - 8);
                     writer.Write(adtlTypeId);
-                    for (int cue = 0; cue < Count; cue++)
+                    for (var cue = 0; cue < Count; cue++)
                     {
                         writer.Write(labelChunkId);
                         writer.Write(this[cue].Label.Length + 1 + 4);
@@ -261,7 +261,7 @@ namespace NAudio.Wave
             byte[] cueChunkData = null;
             byte[] listChunkData = null;
 
-            foreach (RiffChunk chunk in reader.ExtraChunks)
+            foreach (var chunk in reader.ExtraChunks)
             {
                 if (chunk.IdentifierAsString.ToLower() == "cue ")
                 {

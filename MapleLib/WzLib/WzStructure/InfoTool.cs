@@ -101,7 +101,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static int? GetOptionalTranslatedInt(WzImageProperty source)
         {
-            string str = InfoTool.GetOptionalString(source);
+            var str = InfoTool.GetOptionalString(source);
             if (str == null) return null;
             return int.Parse(str);
         }

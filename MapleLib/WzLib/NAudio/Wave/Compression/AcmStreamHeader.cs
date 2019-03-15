@@ -44,7 +44,7 @@ namespace NAudio.Wave.Compression
             streamHeader.destBufferLength = destBuffer.Length;
             streamHeader.destBufferPointer = hDestBuffer.AddrOfPinnedObject();
 
-            MmResult result = AcmInterop.acmStreamUnprepareHeader(streamHandle, streamHeader, 0);
+            var result = AcmInterop.acmStreamUnprepareHeader(streamHandle, streamHeader, 0);
             if (result != MmResult.NoError)
             {
                 //if (result == MmResult.AcmHeaderUnprepared)
@@ -64,7 +64,7 @@ namespace NAudio.Wave.Compression
             {
                 streamHeader.sourceBufferLength = bytesToConvert;
                 streamHeader.sourceBufferLengthUsed = bytesToConvert;
-                AcmStreamConvertFlags flags = firstTime ? (AcmStreamConvertFlags.Start | AcmStreamConvertFlags.BlockAlign) : AcmStreamConvertFlags.BlockAlign;
+                var flags = firstTime ? (AcmStreamConvertFlags.Start | AcmStreamConvertFlags.BlockAlign) : AcmStreamConvertFlags.BlockAlign;
                 MmException.Try(AcmInterop.acmStreamConvert(streamHandle, streamHeader, flags), "acmStreamConvert");
                 firstTime = false;
                 System.Diagnostics.Debug.Assert(streamHeader.destBufferLength == destBuffer.Length, "Codecs should not change dest buffer length");

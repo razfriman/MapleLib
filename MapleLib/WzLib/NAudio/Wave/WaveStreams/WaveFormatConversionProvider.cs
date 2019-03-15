@@ -59,7 +59,7 @@ namespace NAudio.Wave
         /// <returns>Number of bytes read</returns>
         public int Read(byte[] buffer, int offset, int count)
         {
-            int bytesRead = 0;
+            var bytesRead = 0;
             if (count % WaveFormat.BlockAlign != 0)
             {
                 //throw new ArgumentException("Must read complete blocks");
@@ -69,7 +69,7 @@ namespace NAudio.Wave
             while (bytesRead < count)
             {
                 // first copy in any leftover destination bytes
-                int readFromLeftoverDest = Math.Min(count - bytesRead, leftoverDestBytes);
+                var readFromLeftoverDest = Math.Min(count - bytesRead, leftoverDestBytes);
                 if (readFromLeftoverDest > 0)
                 {
                     Array.Copy(conversionStream.DestBuffer, leftoverDestOffset, buffer, offset+bytesRead, readFromLeftoverDest);
@@ -89,8 +89,8 @@ namespace NAudio.Wave
 
                 // always read our preferred size, we can always keep leftovers for the next call to Read if we get
                 // too much
-                int sourceBytesRead = sourceProvider.Read(conversionStream.SourceBuffer, leftoverSourceBytes, sourceReadSize);
-                int sourceBytesAvailable = sourceBytesRead + leftoverSourceBytes;
+                var sourceBytesRead = sourceProvider.Read(conversionStream.SourceBuffer, leftoverSourceBytes, sourceReadSize);
+                var sourceBytesAvailable = sourceBytesRead + leftoverSourceBytes;
                 if (sourceBytesAvailable == 0)
                 {
                     // we've reached the end of the input
@@ -98,7 +98,7 @@ namespace NAudio.Wave
                 }
 
                 int sourceBytesConverted;
-                int destBytesConverted = conversionStream.Convert(sourceBytesAvailable, out sourceBytesConverted);
+                var destBytesConverted = conversionStream.Convert(sourceBytesAvailable, out sourceBytesConverted);
                 if (sourceBytesConverted == 0)
                 {
                     Debug.WriteLine($"Warning: couldn't convert anything from {sourceBytesAvailable}");
@@ -116,8 +116,8 @@ namespace NAudio.Wave
 
                 if (destBytesConverted > 0)
                 {
-                    int bytesRequired = count - bytesRead;
-                    int toCopy = Math.Min(destBytesConverted, bytesRequired);
+                    var bytesRequired = count - bytesRead;
+                    var toCopy = Math.Min(destBytesConverted, bytesRequired);
                     
                     // save leftovers
                     if (toCopy < destBytesConverted)

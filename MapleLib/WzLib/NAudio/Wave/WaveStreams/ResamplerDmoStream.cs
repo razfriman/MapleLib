@@ -56,9 +56,9 @@ namespace NAudio.Wave
 
         private long InputToOutputPosition(long inputPosition)
         {
-            double ratio = (double)outputFormat.AverageBytesPerSecond
+            var ratio = (double)outputFormat.AverageBytesPerSecond
                 / inputProvider.WaveFormat.AverageBytesPerSecond;
-            long outputPosition = (long)(inputPosition * ratio);
+            var outputPosition = (long)(inputPosition * ratio);
             if (outputPosition % outputFormat.BlockAlign != 0)
             {
                 outputPosition -= outputPosition % outputFormat.BlockAlign;
@@ -68,9 +68,9 @@ namespace NAudio.Wave
 
         private long OutputToInputPosition(long outputPosition)
         {
-            double ratio = (double)outputFormat.AverageBytesPerSecond
+            var ratio = (double)outputFormat.AverageBytesPerSecond
                 / inputProvider.WaveFormat.AverageBytesPerSecond;
-            long inputPosition = (long)(outputPosition / ratio);
+            var inputPosition = (long)(outputPosition / ratio);
             if (inputPosition % inputProvider.WaveFormat.BlockAlign != 0)
             {
                 inputPosition -= inputPosition % inputProvider.WaveFormat.BlockAlign;
@@ -123,16 +123,16 @@ namespace NAudio.Wave
         /// <returns>Number of bytes read</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int outputBytesProvided = 0;
+            var outputBytesProvided = 0;
 
             while (outputBytesProvided < count)
             {
                 if (dmoResampler.MediaObject.IsAcceptingData(0))
                 {
                     // 1. Read from the input stream 
-                    int inputBytesRequired = (int)OutputToInputPosition(count - outputBytesProvided);
-                    byte[] inputByteArray = new byte[inputBytesRequired];
-                    int inputBytesRead = inputProvider.Read(inputByteArray, 0, inputBytesRequired);
+                    var inputBytesRequired = (int)OutputToInputPosition(count - outputBytesProvided);
+                    var inputByteArray = new byte[inputBytesRequired];
+                    var inputBytesRead = inputProvider.Read(inputByteArray, 0, inputBytesRequired);
                     if (inputBytesRead == 0)
                     {
                         //Debug.WriteLine("ResamplerDmoStream.Read: No input data available");

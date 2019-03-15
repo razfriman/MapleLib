@@ -73,7 +73,7 @@ namespace NAudio.CoreAudioApi
         /// <returns>Device enumerator</returns>
         public IEnumerator<MMDevice> GetEnumerator()
         {            
-            for (int index = 0; index < Count; index++)
+            for (var index = 0; index < Count; index++)
             {
                 yield return this[index];
             }

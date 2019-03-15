@@ -141,14 +141,14 @@ namespace NAudio.Wave
         {
             lock (lockObject)
             {
-                int bytesWritten = 0;
-                WaveBuffer destWaveBuffer = new WaveBuffer(destBuffer);
+                var bytesWritten = 0;
+                var destWaveBuffer = new WaveBuffer(destBuffer);
 
                 // 1. fill with silence
                 if (position < 0)
                 {
                     bytesWritten = (int) Math.Min(numBytes, 0 - position);
-                    for (int n = 0; n < bytesWritten; n++)
+                    for (var n = 0; n < bytesWritten; n++)
                         destBuffer[n + offset] = 0;
                 }
                 if (bytesWritten < numBytes)
@@ -156,7 +156,7 @@ namespace NAudio.Wave
                     sampleProvider.LoadNextChunk(sourceStream, (numBytes - bytesWritten)/8);
                     float left, right;
 
-                    int outIndex = (offset/4) + bytesWritten/4;
+                    var outIndex = (offset/4) + bytesWritten/4;
                     while (this.sampleProvider.GetNextSample(out left, out right) && bytesWritten < numBytes)
                     {
                         // implement better panning laws. 
@@ -217,7 +217,7 @@ namespace NAudio.Wave
         public override bool HasData(int count)
         {
             // Check whether the source stream has data.
-            bool sourceHasData = sourceStream.HasData(count);
+            var sourceHasData = sourceStream.HasData(count);
 
             if (sourceHasData)
             {

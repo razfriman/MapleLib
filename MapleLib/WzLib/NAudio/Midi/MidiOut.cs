@@ -29,8 +29,8 @@ namespace NAudio.Midi
         /// </summary>
         public static MidiOutCapabilities DeviceInfo(int midiOutDeviceNumber)
         {
-            MidiOutCapabilities caps = new MidiOutCapabilities();
-            int structSize = Marshal.SizeOf(caps);
+            var caps = new MidiOutCapabilities();
+            var structSize = Marshal.SizeOf(caps);
             MmException.Try(MidiInterop.midiOutGetDevCaps((IntPtr)midiOutDeviceNumber, out caps, structSize), "midiOutGetDevCaps");
             return caps;
         }
@@ -72,7 +72,7 @@ namespace NAudio.Midi
             // TODO: Volume can be accessed by device ID
             get 
             {
-                int volume = 0;
+                var volume = 0;
                 MmException.Try(MidiInterop.midiOutGetVolume(hMidiOut,ref volume),"midiOutGetVolume");
                 return volume;
             }
@@ -140,7 +140,7 @@ namespace NAudio.Midi
 
             header.dwBufferLength = byteBuffer.Length;
             header.dwBytesRecorded = byteBuffer.Length;
-            int size = Marshal.SizeOf(header);
+            var size = Marshal.SizeOf(header);
             MidiInterop.midiOutPrepareHeader(this.hMidiOut, ref header, size);
             var errcode = MidiInterop.midiOutLongMsg(this.hMidiOut, ref header, size);
             if (errcode != MmResult.NoError)

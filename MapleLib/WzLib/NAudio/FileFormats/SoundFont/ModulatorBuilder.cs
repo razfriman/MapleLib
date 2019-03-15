@@ -5,7 +5,7 @@ namespace NAudio.SoundFont {
 	class ModulatorBuilder : StructureBuilder<Modulator> {
         public override Modulator Read(BinaryReader br)
         {
-			Modulator m = new Modulator();
+			var m = new Modulator();
 			m.SourceModulationData = new ModulatorType(br.ReadUInt16());
 			m.DestinationGenerator = (GeneratorEnum) br.ReadUInt16();
 			m.Amount = br.ReadInt16();

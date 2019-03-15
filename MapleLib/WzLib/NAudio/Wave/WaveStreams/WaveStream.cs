@@ -85,7 +85,7 @@ namespace NAudio.Wave
         /// <param name="seconds">Number of seconds to move, can be negative</param>
         public void Skip(int seconds)
         {
-            long newPosition = Position + WaveFormat.AverageBytesPerSecond*seconds;
+            var newPosition = Position + WaveFormat.AverageBytesPerSecond*seconds;
             if (newPosition > Length)
                 Position = Length;
             else if (newPosition < 0)

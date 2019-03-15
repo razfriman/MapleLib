@@ -57,7 +57,7 @@ namespace NAudio.CoreAudioApi
 
             var channelCount = Count;
             channels = new AudioEndpointVolumeChannel[channelCount];
-            for (int i = 0; i < channelCount; i++)
+            for (var i = 0; i < channelCount; i++)
             {
                 channels[i] = new AudioEndpointVolumeChannel(audioEndPointVolume, i);
             }

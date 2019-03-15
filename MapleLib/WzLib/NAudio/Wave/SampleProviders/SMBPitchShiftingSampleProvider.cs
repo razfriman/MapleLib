@@ -65,7 +65,7 @@ namespace NAudio.Wave.SampleProviders
         /// </summary>
         public int Read(float[] buffer, int offset, int count)
         {
-            int sampRead = sourceStream.Read(buffer, offset, count);
+            var sampRead = sourceStream.Read(buffer, offset, count);
             if (pitch == 1f)
             {
                 //Nothing to do.

@@ -123,7 +123,7 @@ namespace NAudio.Wave
 
                 // try for an ID3v1 tag as well
                 mp3Stream.Position = mp3Stream.Length - 128;
-                byte[] tag = new byte[128];
+                var tag = new byte[128];
                 mp3Stream.Read(tag, 0, 128);
                 if (tag[0] == 'T' && tag[1] == 'A' && tag[2] == 'G')
                 {
@@ -220,16 +220,16 @@ namespace NAudio.Wave
         {
             if (frame.SampleRate != Mp3WaveFormat.SampleRate)
             {
-                string message =
+                var message =
                     String.Format(
                         "Got a frame at sample rate {0}, in an MP3 with sample rate {1}. Mp3FileReader does not support sample rate changes.",
                         frame.SampleRate, Mp3WaveFormat.SampleRate);
                 throw new InvalidOperationException(message);
             }
-            int channels = frame.ChannelMode == ChannelMode.Mono ? 1 : 2;
+            var channels = frame.ChannelMode == ChannelMode.Mono ? 1 : 2;
             if (channels != Mp3WaveFormat.Channels)
             {
-                string message =
+                var message =
                     String.Format(
                         "Got a frame with channel mode {0}, in an MP3 with {1} channels. Mp3FileReader does not support changes to channel count.",
                         frame.ChannelMode, Mp3WaveFormat.Channels);
@@ -319,7 +319,7 @@ namespace NAudio.Wave
                     value = Math.Max(Math.Min(value, Length), 0);
                     var samplePosition = value / bytesPerSample;
                     Mp3Index mp3Index = null;
-                    for (int index = 0; index < tableOfContents.Count; index++)
+                    for (var index = 0; index < tableOfContents.Count; index++)
                     {
                         if (tableOfContents[index].SamplePosition + tableOfContents[index].SampleCount > samplePosition)
                         {
@@ -361,12 +361,12 @@ namespace NAudio.Wave
         /// </summary>
         public override int Read(byte[] sampleBuffer, int offset, int numBytes)
         {
-            int bytesRead = 0;
+            var bytesRead = 0;
             lock (repositionLock)
             {
                 if (decompressLeftovers != 0)
                 {
-                    int toCopy = Math.Min(decompressLeftovers, numBytes);
+                    var toCopy = Math.Min(decompressLeftovers, numBytes);
                     Array.Copy(decompressBuffer, decompressBufferOffset, sampleBuffer, offset, toCopy);
                     decompressLeftovers -= toCopy;
                     if (decompressLeftovers == 0)
@@ -381,7 +381,7 @@ namespace NAudio.Wave
                     offset += toCopy;
                 }
 
-                int targetTocIndex = tocIndex; // the frame index that contains the requested data
+                var targetTocIndex = tocIndex; // the frame index that contains the requested data
 
                 if (repositionedFlag)
                 {
@@ -400,10 +400,10 @@ namespace NAudio.Wave
 
                 while (bytesRead < numBytes)
                 {
-                    Mp3Frame frame = ReadNextFrame(true); // internal read - should not advance position
+                    var frame = ReadNextFrame(true); // internal read - should not advance position
                     if (frame != null)
                     {
-                        int decompressed = decompressor.DecompressFrame(frame, decompressBuffer, 0);
+                        var decompressed = decompressor.DecompressFrame(frame, decompressBuffer, 0);
 
                         if (tocIndex <= targetTocIndex || decompressed == 0)
                         {
@@ -427,7 +427,7 @@ namespace NAudio.Wave
                             decompressed = bytesPerDecodedFrame;
                         }
 
-                        int toCopy = Math.Min(decompressed - decompressBufferOffset, numBytes - bytesRead);
+                        var toCopy = Math.Min(decompressed - decompressBufferOffset, numBytes - bytesRead);
                         Array.Copy(decompressBuffer, decompressBufferOffset, sampleBuffer, offset, toCopy);
                         if ((toCopy + decompressBufferOffset) < decompressed)
                         {

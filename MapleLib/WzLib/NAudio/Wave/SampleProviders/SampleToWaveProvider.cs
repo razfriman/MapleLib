@@ -28,9 +28,9 @@ namespace NAudio.Wave.SampleProviders
         /// </summary>
         public int Read(byte[] buffer, int offset, int count)
         {
-            int samplesNeeded = count / 4;
+            var samplesNeeded = count / 4;
             var wb = new WaveBuffer(buffer);
-            int samplesRead = source.Read(wb.FloatBuffer, offset / 4, samplesNeeded);
+            var samplesRead = source.Read(wb.FloatBuffer, offset / 4, samplesNeeded);
             return samplesRead * 4;
         }
 

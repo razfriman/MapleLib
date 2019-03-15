@@ -54,19 +54,19 @@ namespace NAudio.Wave
         public int Read(byte[] buffer, int offset, int count)
         {
             // always read from the source
-            int bytesRead = sourceProvider.Read(buffer, offset, count);
+            var bytesRead = sourceProvider.Read(buffer, offset, count);
             if (this.volume == 0.0f)
             {
-                for (int n = 0; n < bytesRead; n++)
+                for (var n = 0; n < bytesRead; n++)
                 {
                     buffer[offset++] = 0;
                 }
             }
             else if (this.volume != 1.0f)
             {
-                for (int n = 0; n < bytesRead; n += 2)
+                for (var n = 0; n < bytesRead; n += 2)
                 {
-                    short sample = (short)((buffer[offset + 1] << 8) | buffer[offset]);
+                    var sample = (short)((buffer[offset + 1] << 8) | buffer[offset]);
                     var newSample = sample * this.volume;
                     sample = (short)newSample;
                     // clip if necessary

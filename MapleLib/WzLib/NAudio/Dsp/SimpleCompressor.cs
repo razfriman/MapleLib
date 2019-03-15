@@ -1,4 +1,4 @@
-// based on SimpleComp v1.10 © 2006, ChunkWare Music Software, OPEN-SOURCE
+// based on SimpleComp v1.10 ï¿½ 2006, ChunkWare Music Software, OPEN-SOURCE
 using System;
 using NAudio.Utils;
 
@@ -47,19 +47,19 @@ namespace NAudio.Dsp
             // sidechain
 
             // rectify input
-            double rect1 = Math.Abs( in1 );	// n.b. was fabs
-            double rect2 = Math.Abs( in2 ); // n.b. was fabs
+            var rect1 = Math.Abs( in1 );	// n.b. was fabs
+            var rect2 = Math.Abs( in2 ); // n.b. was fabs
 
             // if desired, one could use another EnvelopeDetector to smooth
             // the rectified signal.
 
-            double link = Math.Max( rect1, rect2 );	// link channels with greater of 2
+            var link = Math.Max( rect1, rect2 );	// link channels with greater of 2
 
             link += DC_OFFSET;					// add DC offset to avoid log( 0 )
-            double keydB = Decibels.LinearToDecibels( link );		// convert linear -> dB
+            var keydB = Decibels.LinearToDecibels( link );		// convert linear -> dB
 
             // threshold
-            double overdB = keydB - Threshold;	// delta over threshold
+            var overdB = keydB - Threshold;	// delta over threshold
             if ( overdB < 0.0 )
                 overdB = 0.0;
 
@@ -78,7 +78,7 @@ namespace NAudio.Dsp
             // a minimum value of 0dB.
     
             // transfer function
-            double gr = overdB * (Ratio - 1.0);	// gain reduction (dB)
+            var gr = overdB * (Ratio - 1.0);	// gain reduction (dB)
             gr = Decibels.DecibelsToLinear(gr) * Decibels.DecibelsToLinear(MakeUpGain); // convert dB -> linear
 
             // output gain

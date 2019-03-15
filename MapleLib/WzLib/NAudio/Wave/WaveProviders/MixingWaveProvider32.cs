@@ -54,8 +54,8 @@ namespace NAudio.Wave
             if (inputs.Count == 0)
             {
                 // first one - set the format
-                int sampleRate = waveProvider.WaveFormat.SampleRate;
-                int channels = waveProvider.WaveFormat.Channels;
+                var sampleRate = waveProvider.WaveFormat.SampleRate;
+                var channels = waveProvider.WaveFormat.Channels;
                 this.waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channels);
             }
             else
@@ -105,15 +105,15 @@ namespace NAudio.Wave
 
             // blank the buffer
             Array.Clear(buffer, offset, count);
-            int bytesRead = 0;
+            var bytesRead = 0;
 
             // sum the channels in
-            byte[] readBuffer = new byte[count];
+            var readBuffer = new byte[count];
             lock (inputs)
             {
                 foreach (var input in inputs)
                 {
-                    int readFromThisStream = input.Read(readBuffer, 0, count);
+                    var readFromThisStream = input.Read(readBuffer, 0, count);
                     // don't worry if input stream returns less than we requested - may indicate we have got to the end
                     bytesRead = Math.Max(bytesRead, readFromThisStream);
                     if (readFromThisStream > 0)
@@ -133,10 +133,10 @@ namespace NAudio.Wave
             fixed (byte* pDestBuffer = &destBuffer[offset],
                       pSourceBuffer = &sourceBuffer[0])
             {
-                float* pfDestBuffer = (float*)pDestBuffer;
-                float* pfReadBuffer = (float*)pSourceBuffer;
-                int samplesRead = bytesRead / 4;
-                for (int n = 0; n < samplesRead; n++)
+                var pfDestBuffer = (float*)pDestBuffer;
+                var pfReadBuffer = (float*)pSourceBuffer;
+                var samplesRead = bytesRead / 4;
+                for (var n = 0; n < samplesRead; n++)
                 {
                     pfDestBuffer[n] += pfReadBuffer[n];
                 }

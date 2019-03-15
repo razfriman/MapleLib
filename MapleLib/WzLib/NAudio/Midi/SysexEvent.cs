@@ -20,15 +20,15 @@ namespace NAudio.Midi
         /// <returns>a new sysex message</returns>
         public static SysexEvent ReadSysexEvent(BinaryReader br) 
         {
-            SysexEvent se = new SysexEvent();
+            var se = new SysexEvent();
             //se.length = ReadVarInt(br);
             //se.data = br.ReadBytes(se.length);
 
-            List<byte> sysexData = new List<byte>();
-            bool loop = true;
+            var sysexData = new List<byte>();
+            var loop = true;
             while(loop) 
             {
-                byte b = br.ReadByte();
+                var b = br.ReadByte();
                 if(b == 0xF7) 
                 {
                     loop = false;
@@ -55,8 +55,8 @@ namespace NAudio.Midi
         /// <returns>A string describing the sysex message</returns>
         public override string ToString() 
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in data)
+            var sb = new StringBuilder();
+            foreach (var b in data)
             {
                 sb.AppendFormat("{0:X2} ", b);
             }

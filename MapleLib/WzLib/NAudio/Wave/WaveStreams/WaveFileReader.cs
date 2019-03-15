@@ -76,9 +76,9 @@ namespace NAudio.Wave
         /// </summary>
         public byte[] GetChunkData(RiffChunk chunk)
         {
-            long oldPosition = waveStream.Position;
+            var oldPosition = waveStream.Position;
             waveStream.Position = chunk.StreamPosition;
-            byte[] data = new byte[chunk.Length];
+            var data = new byte[chunk.Length];
             waveStream.Read(data, 0, data.Length);
             waveStream.Position = oldPosition;
             return data;
@@ -205,13 +205,13 @@ namespace NAudio.Wave
                     throw new InvalidOperationException("Only 16, 24 or 32 bit PCM or IEEE float audio data supported");
             }
             var sampleFrame = new float[waveFormat.Channels];
-            int bytesToRead = waveFormat.Channels*(waveFormat.BitsPerSample/8);
-            byte[] raw = new byte[bytesToRead];
-            int bytesRead = Read(raw, 0, bytesToRead);
+            var bytesToRead = waveFormat.Channels*(waveFormat.BitsPerSample/8);
+            var raw = new byte[bytesToRead];
+            var bytesRead = Read(raw, 0, bytesToRead);
             if (bytesRead == 0) return null; // end of file
             if (bytesRead < bytesToRead) throw new InvalidDataException("Unexpected end of file");
-            int offset = 0;
-            for (int channel = 0; channel < waveFormat.Channels; channel++)
+            var offset = 0;
+            for (var channel = 0; channel < waveFormat.Channels; channel++)
             {
                 if (waveFormat.BitsPerSample == 16)
                 {

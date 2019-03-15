@@ -88,11 +88,11 @@ namespace NAudio.Wave.SampleProviders
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            int sourceSamplesRequired = count / 2;
+            var sourceSamplesRequired = count / 2;
             sourceBuffer = BufferHelpers.Ensure(sourceBuffer, sourceSamplesRequired);
-            int sourceSamplesRead = source.Read(sourceBuffer, 0, sourceSamplesRequired);
-            int outIndex = offset;
-            for (int n = 0; n < sourceSamplesRead; n++)
+            var sourceSamplesRead = source.Read(sourceBuffer, 0, sourceSamplesRequired);
+            var outIndex = offset;
+            for (var n = 0; n < sourceSamplesRead; n++)
             {
                 buffer[outIndex++] = leftMultiplier * sourceBuffer[n];
                 buffer[outIndex++] = rightMultiplier * sourceBuffer[n];
@@ -143,8 +143,8 @@ namespace NAudio.Wave.SampleProviders
         /// <returns>Left and right multipliers</returns>
         public StereoSamplePair GetMultipliers(float pan)
         {
-            float leftChannel = (pan <= 0) ? 1.0f : ((1 - pan) / 2.0f);
-            float rightChannel = (pan >= 0) ? 1.0f : ((pan + 1) / 2.0f);
+            var leftChannel = (pan <= 0) ? 1.0f : ((1 - pan) / 2.0f);
+            var rightChannel = (pan >= 0) ? 1.0f : ((pan + 1) / 2.0f);
             // Console.WriteLine(pan + ": " + leftChannel + "," + rightChannel);
             return new StereoSamplePair() { Left = leftChannel, Right = rightChannel };
         }
@@ -164,9 +164,9 @@ namespace NAudio.Wave.SampleProviders
         public StereoSamplePair GetMultipliers(float pan)
         {
             // -1..+1  -> 1..0
-            float normPan = (-pan + 1) / 2;
-            float leftChannel = (float)Math.Sqrt(normPan);
-            float rightChannel = (float)Math.Sqrt(1 - normPan);
+            var normPan = (-pan + 1) / 2;
+            var leftChannel = (float)Math.Sqrt(normPan);
+            var rightChannel = (float)Math.Sqrt(1 - normPan);
             // Console.WriteLine(pan + ": " + leftChannel + "," + rightChannel);
             return new StereoSamplePair() { Left = leftChannel, Right = rightChannel };
         }
@@ -187,9 +187,9 @@ namespace NAudio.Wave.SampleProviders
         public StereoSamplePair GetMultipliers(float pan)
         {
             // -1..+1  -> 1..0
-            float normPan = (-pan + 1) / 2;
-            float leftChannel = (float)Math.Sin(normPan * HalfPi);
-            float rightChannel = (float)Math.Cos(normPan * HalfPi);
+            var normPan = (-pan + 1) / 2;
+            var leftChannel = (float)Math.Sin(normPan * HalfPi);
+            var rightChannel = (float)Math.Cos(normPan * HalfPi);
             // Console.WriteLine(pan + ": " + leftChannel + "," + rightChannel);
             return new StereoSamplePair() { Left = leftChannel, Right = rightChannel };
         }
@@ -208,9 +208,9 @@ namespace NAudio.Wave.SampleProviders
         public StereoSamplePair GetMultipliers(float pan)
         {
             // -1..+1  -> 1..0
-            float normPan = (-pan + 1) / 2;
-            float leftChannel = normPan;
-            float rightChannel = 1 - normPan;
+            var normPan = (-pan + 1) / 2;
+            var leftChannel = normPan;
+            var rightChannel = 1 - normPan;
             return new StereoSamplePair() { Left = leftChannel, Right = rightChannel };
         }
     }

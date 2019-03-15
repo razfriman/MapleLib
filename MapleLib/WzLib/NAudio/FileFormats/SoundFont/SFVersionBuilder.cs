@@ -13,7 +13,7 @@ namespace NAudio.SoundFont
 		/// </summary>
         public override SFVersion Read(BinaryReader br) 
 		{
-			SFVersion v = new SFVersion();
+			var v = new SFVersion();
 			v.Major = br.ReadInt16();
 			v.Minor = br.ReadInt16();
 			data.Add(v);

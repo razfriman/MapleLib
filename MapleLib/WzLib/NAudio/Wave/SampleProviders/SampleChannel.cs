@@ -33,7 +33,7 @@ namespace NAudio.Wave.SampleProviders
         /// <param name="forceStereo">force mono inputs to become stereo</param>
         public SampleChannel(IWaveProvider waveProvider, bool forceStereo)
         {
-            ISampleProvider sampleProvider = SampleProviderConverters.ConvertWaveProviderIntoSampleProvider(waveProvider);
+            var sampleProvider = SampleProviderConverters.ConvertWaveProviderIntoSampleProvider(waveProvider);
             if (sampleProvider.WaveFormat.Channels == 1 && forceStereo)
             {
                 sampleProvider = new MonoToStereoSampleProvider(sampleProvider);

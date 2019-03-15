@@ -28,12 +28,12 @@ namespace NAudio.Wave
         {
             using (var writer = new AiffFileWriter(filename, sourceProvider.WaveFormat))
             {
-                byte[] buffer = new byte[16384];
+                var buffer = new byte[16384];
 
                 while (sourceProvider.Position < sourceProvider.Length)
                 {
-                    int count = Math.Min((int)(sourceProvider.Length - sourceProvider.Position), buffer.Length);
-                    int bytesRead = sourceProvider.Read(buffer, 0, count);
+                    var count = Math.Min((int)(sourceProvider.Length - sourceProvider.Position), buffer.Length);
+                    var bytesRead = sourceProvider.Read(buffer, 0, count);
 
                     if (bytesRead == 0)
                     {
@@ -195,13 +195,13 @@ namespace NAudio.Wave
         /// <param name="count">the number of bytes to write</param>
         public override void Write(byte[] data, int offset, int count)
         {
-            byte[] swappedData = new byte[data.Length];
+            var swappedData = new byte[data.Length];
 
-            int align = format.BitsPerSample / 8;
+            var align = format.BitsPerSample / 8;
 
-            for (int i = 0; i < data.Length; i++)
+            for (var i = 0; i < data.Length; i++)
             {
-                int pos = (int)Math.Floor((double)i / align) * align + (align - (i % align) - 1);
+                var pos = (int)Math.Floor((double)i / align) * align + (align - (i % align) - 1);
                 swappedData[i] = data[pos];
             }
 
@@ -251,7 +251,7 @@ namespace NAudio.Wave
         /// <param name="count">The number of floating point samples to write</param>
         public void WriteSamples(float[] samples, int offset, int count)
         {
-            for (int n = 0; n < count; n++)
+            for (var n = 0; n < count; n++)
             {
                 WriteSample(samples[offset + n]);
             }
@@ -268,7 +268,7 @@ namespace NAudio.Wave
             // 16 bit PCM data
             if (WaveFormat.BitsPerSample == 16)
             {
-                for (int sample = 0; sample < count; sample++)
+                for (var sample = 0; sample < count; sample++)
                 {
                     writer.Write(SwapEndian(samples[sample + offset]));
                 }
@@ -278,7 +278,7 @@ namespace NAudio.Wave
             else if (WaveFormat.BitsPerSample == 24)
             {
                 byte[] value;
-                for (int sample = 0; sample < count; sample++)
+                for (var sample = 0; sample < count; sample++)
                 {
                     value = BitConverter.GetBytes(UInt16.MaxValue * (Int32)samples[sample + offset]);
                     value24[2] = value[1];
@@ -291,7 +291,7 @@ namespace NAudio.Wave
             // 32 bit PCM data
             else if (WaveFormat.BitsPerSample == 32 && WaveFormat.Encoding == WaveFormatEncoding.Extensible)
             {
-                for (int sample = 0; sample < count; sample++)
+                for (var sample = 0; sample < count; sample++)
                 {
                     writer.Write(SwapEndian(UInt16.MaxValue * (Int32)samples[sample + offset]));
                 }

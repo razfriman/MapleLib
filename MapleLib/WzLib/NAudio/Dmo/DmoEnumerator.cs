@@ -50,7 +50,7 @@ namespace NAudio.Dmo
 
                 if (itemsFetched == 1)
                 {
-                    string name = Marshal.PtrToStringUni(namePointer);
+                    var name = Marshal.PtrToStringUni(namePointer);
                     Marshal.FreeCoTaskMem(namePointer);
                     yield return new DmoDescriptor(name, guid);
                 }

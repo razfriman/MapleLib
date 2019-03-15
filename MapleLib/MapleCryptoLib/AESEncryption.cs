@@ -52,12 +52,12 @@ namespace MapleLib.MapleCryptoLib
                             size = remaining;
                         }
 
-                        for (int x = start; x < (start + size); x++)
+                        for (var x = start; x < (start + size); x++)
                         {
                             if ((x - start) % myIv.Length == 0)
                             {
                                 cryptoStream.Write(myIv, 0, myIv.Length);
-                                byte[] newIv = memStream.ToArray();
+                                var newIv = memStream.ToArray();
                                 Array.Copy(newIv, myIv, myIv.Length);
                                 memStream.Position = 0;
                             }

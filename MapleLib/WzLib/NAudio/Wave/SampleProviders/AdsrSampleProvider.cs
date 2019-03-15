@@ -68,7 +68,7 @@ namespace NAudio.Wave.SampleProviders
         {
             if (adsr.State == EnvelopeGenerator.EnvelopeState.Idle) return 0; // we've finished
             var samples = source.Read(buffer, offset, count);
-            for (int n = 0; n < samples; n++)
+            for (var n = 0; n < samples; n++)
             {
                 buffer[offset++] *= adsr.Process();
             }

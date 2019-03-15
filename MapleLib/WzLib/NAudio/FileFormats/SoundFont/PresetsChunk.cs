@@ -21,7 +21,7 @@ namespace NAudio.SoundFont
 		
 		internal PresetsChunk(RiffChunk chunk) 
 		{
-			string header = chunk.ReadChunkID();
+			var header = chunk.ReadChunkID();
 			if(header != "pdta") 
 			{
 				throw new InvalidDataException(String.Format("Not a presets data chunk ({0})",header));
@@ -120,13 +120,13 @@ namespace NAudio.SoundFont
 		/// </summary>
 		public override string ToString() 
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			sb.Append("Preset Headers:\r\n");
-			foreach(Preset p in presetHeaders.Presets) {
+			foreach(var p in presetHeaders.Presets) {
 				sb.AppendFormat("{0}\r\n",p);
 			}
 			sb.Append("Instruments:\r\n");
-			foreach(Instrument i in instruments.Instruments) {
+			foreach(var i in instruments.Instruments) {
 				sb.AppendFormat("{0}\r\n",i);
 			}
 			return sb.ToString();

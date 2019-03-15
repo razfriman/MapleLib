@@ -54,7 +54,7 @@ namespace NAudio.CoreAudioApi
         {
             get
             {
-                PropertyKey key = Get(index);
+                var key = Get(index);
                 Marshal.ThrowExceptionForHR(storeInterface.GetValue(ref key, out var result));
                 return new PropertyStoreProperty(key, result);
             }
@@ -67,9 +67,9 @@ namespace NAudio.CoreAudioApi
         /// <returns>True if found</returns>
         public bool Contains(PropertyKey key)
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
-                PropertyKey ikey = Get(i);
+                var ikey = Get(i);
                 if ((ikey.formatId == key.formatId) && (ikey.propertyId == key.propertyId))
                 {
                     return true;
@@ -87,9 +87,9 @@ namespace NAudio.CoreAudioApi
         {
             get
             {
-                for (int i = 0; i < Count; i++)
+                for (var i = 0; i < Count; i++)
                 {
-                    PropertyKey ikey = Get(i);
+                    var ikey = Get(i);
                     if ((ikey.formatId == key.formatId) && (ikey.propertyId == key.propertyId))
                     {
                         Marshal.ThrowExceptionForHR(storeInterface.GetValue(ref ikey, out var result));
@@ -118,7 +118,7 @@ namespace NAudio.CoreAudioApi
         /// <returns>Property value</returns>
         public PropVariant GetValue(int index)
         {
-            PropertyKey key = Get(index);
+            var key = Get(index);
             Marshal.ThrowExceptionForHR(storeInterface.GetValue(ref key, out var result));
             return result;
         }

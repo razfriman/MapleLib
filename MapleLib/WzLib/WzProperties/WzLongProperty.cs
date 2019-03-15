@@ -20,7 +20,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override WzImageProperty DeepClone()
         {
-            WzLongProperty clone = new WzLongProperty(name, val);
+            var clone = new WzLongProperty(name, val);
             return clone;
         }
 

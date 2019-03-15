@@ -58,7 +58,7 @@ namespace NAudio.Wave
             int count;
             availableTypes.GetElementCount(out count);
             var mediaTypes = new List<MediaType>(count);
-            for (int n = 0; n < count; n++)
+            for (var n = 0; n < count; n++)
             {
                 object mediaTypeObject;
                 availableTypes.GetElement(n, out mediaTypeObject);
@@ -216,7 +216,7 @@ namespace NAudio.Wave
 
         private void PerformEncode(IMFSinkWriter writer, int streamIndex, IWaveProvider inputProvider)
         {
-            int maxLength = inputProvider.WaveFormat.AverageBytesPerSecond * 4;
+            var maxLength = inputProvider.WaveFormat.AverageBytesPerSecond * 4;
             var managedBuffer = new byte[maxLength];
 
             writer.BeginWriting();
@@ -234,7 +234,7 @@ namespace NAudio.Wave
 
         private static long BytesToNsPosition(int bytes, WaveFormat waveFormat)
         {
-            long nsPosition = (10000000L * bytes) / waveFormat.AverageBytesPerSecond;
+            var nsPosition = (10000000L * bytes) / waveFormat.AverageBytesPerSecond;
             return nsPosition;
         }
 
@@ -242,16 +242,16 @@ namespace NAudio.Wave
         {
             long durationConverted = 0;
             int maxLength;
-            IMFMediaBuffer buffer = MediaFoundationApi.CreateMemoryBuffer(managedBuffer.Length);
+            var buffer = MediaFoundationApi.CreateMemoryBuffer(managedBuffer.Length);
             buffer.GetMaxLength(out maxLength);
 
-            IMFSample sample = MediaFoundationApi.CreateSample();
+            var sample = MediaFoundationApi.CreateSample();
             sample.AddBuffer(buffer);
 
             IntPtr ptr;
             int currentLength;
             buffer.Lock(out ptr, out maxLength, out currentLength);
-            int read = inputProvider.Read(managedBuffer, 0, maxLength);
+            var read = inputProvider.Read(managedBuffer, 0, maxLength);
             if (read > 0)
             {
                 durationConverted = BytesToNsPosition(read, inputProvider.WaveFormat);

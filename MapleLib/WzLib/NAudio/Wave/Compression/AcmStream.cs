@@ -26,11 +26,11 @@ namespace NAudio.Wave.Compression
             {
                 streamHandle = IntPtr.Zero;
                 this.sourceFormat = sourceFormat;
-                int sourceBufferSize = Math.Max(65536, sourceFormat.AverageBytesPerSecond);
+                var sourceBufferSize = Math.Max(65536, sourceFormat.AverageBytesPerSecond);
                 sourceBufferSize -= (sourceBufferSize % sourceFormat.BlockAlign);
                 MmException.Try(AcmInterop.acmStreamOpen(out streamHandle, IntPtr.Zero, sourceFormat, destFormat, null, IntPtr.Zero, IntPtr.Zero, AcmStreamOpenFlags.NonRealTime), "acmStreamOpen");
 
-                int destBufferSize = SourceToDest(sourceBufferSize);
+                var destBufferSize = SourceToDest(sourceBufferSize);
                 streamHeader = new AcmStreamHeader(streamHandle, sourceBufferSize, destBufferSize);
                 driverHandle = IntPtr.Zero;
             }
@@ -51,7 +51,7 @@ namespace NAudio.Wave.Compression
         /// <param name="waveFilter">the wave filter</param>
         public AcmStream(IntPtr driverId, WaveFormat sourceFormat, WaveFilter waveFilter)
         {
-            int sourceBufferSize = Math.Max(16384, sourceFormat.AverageBytesPerSecond);
+            var sourceBufferSize = Math.Max(16384, sourceFormat.AverageBytesPerSecond);
             this.sourceFormat = sourceFormat;
             sourceBufferSize -= (sourceBufferSize % sourceFormat.BlockAlign);
             MmException.Try(AcmInterop.acmDriverOpen(out driverHandle, driverId, 0), "acmDriverOpen");
@@ -99,7 +99,7 @@ namespace NAudio.Wave.Compression
         public static WaveFormat SuggestPcmFormat(WaveFormat compressedFormat)
         {
             // create a PCM format
-            WaveFormat suggestedFormat = new WaveFormat(compressedFormat.SampleRate, 16, compressedFormat.Channels);
+            var suggestedFormat = new WaveFormat(compressedFormat.SampleRate, 16, compressedFormat.Channels);
             MmException.Try(AcmInterop.acmFormatSuggest(IntPtr.Zero, compressedFormat, suggestedFormat, Marshal.SizeOf(suggestedFormat), AcmFormatSuggestFlags.FormatTag), "acmFormatSuggest");
             
             /*IntPtr suggestedFormatPointer = WaveFormat.MarshalToPtr(suggestedFormat);
@@ -161,7 +161,7 @@ namespace NAudio.Wave.Compression
         public int Convert(int bytesToConvert)
         {
             int sourceBytesConverted;
-            int destBytes = Convert(bytesToConvert, out sourceBytesConverted);
+            var destBytes = Convert(bytesToConvert, out sourceBytesConverted);
             if (sourceBytesConverted != bytesToConvert)
             {
                 throw new MmException(MmResult.NotSupported, "AcmStreamHeader.Convert didn't convert everything");
@@ -206,7 +206,7 @@ namespace NAudio.Wave.Compression
 
             if (streamHandle != IntPtr.Zero)
             {
-                MmResult result = AcmInterop.acmStreamClose(streamHandle, 0);
+                var result = AcmInterop.acmStreamClose(streamHandle, 0);
                 streamHandle = IntPtr.Zero;
                 if (result != MmResult.NoError)
                 {

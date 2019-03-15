@@ -41,7 +41,7 @@ namespace NAudio.Utils
                     count = buffer.Length - byteCount;
                 }
                 // write to end
-                int writeToEnd = Math.Min(buffer.Length - writePosition, count);
+                var writeToEnd = Math.Min(buffer.Length - writePosition, count);
                 Array.Copy(data, offset, buffer, writePosition, writeToEnd);
                 writePosition += writeToEnd;
                 writePosition %= buffer.Length;
@@ -74,8 +74,8 @@ namespace NAudio.Utils
                 {
                     count = byteCount;
                 }
-                int bytesRead = 0;
-                int readToEnd = Math.Min(buffer.Length - readPosition, count);
+                var bytesRead = 0;
+                var readToEnd = Math.Min(buffer.Length - readPosition, count);
                 Array.Copy(buffer, readPosition, data, offset, readToEnd);
                 bytesRead += readToEnd;
                 readPosition += readToEnd;

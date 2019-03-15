@@ -42,15 +42,15 @@ namespace NAudio.Wave
         /// <returns>Number of bytes read.</returns>
         public int Read(byte[] destBuffer, int offset, int numBytes)
         {
-            int sourceBytesRequired = numBytes / 2;
+            var sourceBytesRequired = numBytes / 2;
             sourceBuffer = BufferHelpers.Ensure(sourceBuffer, sourceBytesRequired);
-            int sourceBytesRead = sourceProvider.Read(sourceBuffer, offset, sourceBytesRequired);
-            WaveBuffer sourceWaveBuffer = new WaveBuffer(sourceBuffer);
-            WaveBuffer destWaveBuffer = new WaveBuffer(destBuffer);
+            var sourceBytesRead = sourceProvider.Read(sourceBuffer, offset, sourceBytesRequired);
+            var sourceWaveBuffer = new WaveBuffer(sourceBuffer);
+            var destWaveBuffer = new WaveBuffer(destBuffer);
 
-            int sourceSamples = sourceBytesRead / 2;
-            int destOffset = offset / 4;
-            for (int sample = 0; sample < sourceSamples; sample++)
+            var sourceSamples = sourceBytesRead / 2;
+            var destOffset = offset / 4;
+            for (var sample = 0; sample < sourceSamples; sample++)
             {
                 destWaveBuffer.FloatBuffer[destOffset++] = (sourceWaveBuffer.ShortBuffer[sample] / 32768f) * volume;
             }

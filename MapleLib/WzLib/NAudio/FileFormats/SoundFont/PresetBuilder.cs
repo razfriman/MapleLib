@@ -10,8 +10,8 @@ namespace NAudio.SoundFont
 
         public override Preset Read(BinaryReader br) 
 		{
-			Preset p = new Preset();
-			string s = Encoding.UTF8.GetString(br.ReadBytes(20), 0, 20);
+			var p = new Preset();
+			var s = Encoding.UTF8.GetString(br.ReadBytes(20), 0, 20);
 			if(s.IndexOf('\0') >= 0) {
 				s = s.Substring(0,s.IndexOf('\0'));
 			}
@@ -42,9 +42,9 @@ namespace NAudio.SoundFont
 		public void LoadZones(Zone[] presetZones)
 		{
 			// don't do the last preset, which is simply EOP
-			for(int preset = 0; preset < data.Count - 1; preset++)
+			for(var preset = 0; preset < data.Count - 1; preset++)
 			{
-				Preset p = (Preset) data[preset];
+				var p = (Preset) data[preset];
 				p.Zones = new Zone[p.endPresetZoneIndex - p.startPresetZoneIndex + 1];
 				Array.Copy(presetZones,p.startPresetZoneIndex,p.Zones,0,p.Zones.Length);
 			}

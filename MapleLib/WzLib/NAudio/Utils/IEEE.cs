@@ -85,7 +85,7 @@ namespace NAudio.Utils
                 }
             }
 
-            byte[] bytes = new byte[10];
+            var bytes = new byte[10];
 
             bytes[0] = (byte)(expon >> 8);
             bytes[1] = (byte)(expon);

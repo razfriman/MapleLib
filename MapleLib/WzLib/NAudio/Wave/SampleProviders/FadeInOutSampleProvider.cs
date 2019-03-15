@@ -67,7 +67,7 @@
         /// <returns>Number of samples read</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            int sourceSamplesRead = source.Read(buffer, offset, count);
+            var sourceSamplesRead = source.Read(buffer, offset, count);
             lock (lockObject)
             {
                 if (fadeState == FadeState.FadingIn)
@@ -88,7 +88,7 @@
 
         private static void ClearBuffer(float[] buffer, int offset, int count)
         {
-            for (int n = 0; n < count; n++)
+            for (var n = 0; n < count; n++)
             {
                 buffer[n + offset] = 0;
             }
@@ -96,11 +96,11 @@
 
         private void FadeOut(float[] buffer, int offset, int sourceSamplesRead)
         {
-            int sample = 0;
+            var sample = 0;
             while (sample < sourceSamplesRead)
             {
-                float multiplier = 1.0f - (fadeSamplePosition / (float)fadeSampleCount);
-                for (int ch = 0; ch < source.WaveFormat.Channels; ch++)
+                var multiplier = 1.0f - (fadeSamplePosition / (float)fadeSampleCount);
+                for (var ch = 0; ch < source.WaveFormat.Channels; ch++)
                 {
                     buffer[offset + sample++] *= multiplier;
                 }
@@ -117,11 +117,11 @@
 
         private void FadeIn(float[] buffer, int offset, int sourceSamplesRead)
         {
-            int sample = 0;
+            var sample = 0;
             while (sample < sourceSamplesRead)
             {
-                float multiplier = (fadeSamplePosition / (float)fadeSampleCount);
-                for (int ch = 0; ch < source.WaveFormat.Channels; ch++)
+                var multiplier = (fadeSamplePosition / (float)fadeSampleCount);
+                for (var ch = 0; ch < source.WaveFormat.Channels; ch++)
                 {
                     buffer[offset + sample++] *= multiplier;
                 }

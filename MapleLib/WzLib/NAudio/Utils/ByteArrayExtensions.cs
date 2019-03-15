@@ -13,7 +13,7 @@ namespace NAudio.Utils
         /// </summary>
         public static bool IsEntirelyNull(byte[] buffer)
         {
-            foreach (byte b in buffer)
+            foreach (var b in buffer)
                 if (b != 0)
                     return false;
             return true;
@@ -24,9 +24,9 @@ namespace NAudio.Utils
         /// </summary>
         public static string DescribeAsHex(byte[] buffer, string separator, int bytesPerLine)
         {
-            StringBuilder sb = new StringBuilder();
-            int n = 0;
-            foreach (byte b in buffer)
+            var sb = new StringBuilder();
+            var n = 0;
+            foreach (var b in buffer)
             {
                 sb.AppendFormat("{0:X2}{1}", b, separator);
                 if (++n % bytesPerLine == 0)
@@ -41,7 +41,7 @@ namespace NAudio.Utils
         /// </summary>
         public static string DecodeAsString(byte[] buffer, int offset, int length, Encoding encoding)
         {
-            for (int n = 0; n < length; n++)
+            for (var n = 0; n < length; n++)
             {
                 if (buffer[offset + n] == 0)
                     length = n;
@@ -56,8 +56,8 @@ namespace NAudio.Utils
         /// <returns>The concatenated resulting array.</returns>
         public static byte[] Concat(params byte[][] byteArrays)
         {
-            int size = 0;
-            foreach (byte[] btArray in byteArrays)
+            var size = 0;
+            foreach (var btArray in byteArrays)
             {
                 size += btArray.Length;
             }
@@ -67,9 +67,9 @@ namespace NAudio.Utils
                 return new byte[0];
             }
 
-            byte[] result = new byte[size];
-            int idx = 0;
-            foreach (byte[] btArray in byteArrays)
+            var result = new byte[size];
+            var idx = 0;
+            foreach (var btArray in byteArrays)
             {
                 Array.Copy(btArray, 0, result, idx, btArray.Length);
                 idx += btArray.Length;

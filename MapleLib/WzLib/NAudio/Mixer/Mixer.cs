@@ -94,7 +94,7 @@ namespace NAudio.Mixer
         {
             get
             {
-                for (int destination = 0; destination < DestinationCount; destination++)
+                for (var destination = 0; destination < DestinationCount; destination++)
                 {
                     yield return GetDestination(destination);
                 }
@@ -108,7 +108,7 @@ namespace NAudio.Mixer
         {
             get
             {
-                for (int device = 0; device < Mixer.NumberOfDevices; device++)
+                for (var device = 0; device < Mixer.NumberOfDevices; device++)
                 {
                     yield return new Mixer(device);
                 }

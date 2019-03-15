@@ -62,7 +62,7 @@ namespace NAudio.Wave
         {
             if (!CanRead)
                 throw new InvalidOperationException("Stream is not readable.");
-            int val = Read(pv, 0, cb);
+            var val = Read(pv, 0, cb);
             if (pcbRead != IntPtr.Zero)
                 Marshal.WriteInt32(pcbRead, val);
         }
@@ -73,8 +73,8 @@ namespace NAudio.Wave
 
         void IStream.Seek(long dlibMove, int dwOrigin, IntPtr plibNewPosition)
         {
-            SeekOrigin origin = (SeekOrigin) dwOrigin;
-            long val = Seek(dlibMove, origin);
+            var origin = (SeekOrigin) dwOrigin;
+            var val = Seek(dlibMove, origin);
             if (plibNewPosition != IntPtr.Zero)
                 Marshal.WriteInt64(plibNewPosition, val);
         }

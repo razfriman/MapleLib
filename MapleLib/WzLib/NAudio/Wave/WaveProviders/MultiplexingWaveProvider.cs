@@ -82,7 +82,7 @@ namespace NAudio.Wave
             bytesPerSample = WaveFormat.BitsPerSample / 8;
 
             mappings = new List<int>();
-            for (int n = 0; n < outputChannelCount; n++)
+            for (var n = 0; n < outputChannelCount; n++)
             {
                 mappings.Add(n % inputChannelCount);
             }
@@ -102,29 +102,29 @@ namespace NAudio.Wave
         /// <returns>Number of bytes read</returns>
         public int Read(byte[] buffer, int offset, int count)
         {
-            int outputBytesPerFrame = bytesPerSample * outputChannelCount;
-            int sampleFramesRequested = count / outputBytesPerFrame;
-            int inputOffset = 0;
-            int sampleFramesRead = 0;
+            var outputBytesPerFrame = bytesPerSample * outputChannelCount;
+            var sampleFramesRequested = count / outputBytesPerFrame;
+            var inputOffset = 0;
+            var sampleFramesRead = 0;
             // now we must read from all inputs, even if we don't need their data, so they stay in sync
             foreach (var input in inputs)
             {
-                int inputBytesPerFrame = bytesPerSample * input.WaveFormat.Channels;
-                int bytesRequired = sampleFramesRequested * inputBytesPerFrame;
+                var inputBytesPerFrame = bytesPerSample * input.WaveFormat.Channels;
+                var bytesRequired = sampleFramesRequested * inputBytesPerFrame;
                 inputBuffer = BufferHelpers.Ensure(inputBuffer, bytesRequired);
-                int bytesRead = input.Read(inputBuffer, 0, bytesRequired);
+                var bytesRead = input.Read(inputBuffer, 0, bytesRequired);
                 sampleFramesRead = Math.Max(sampleFramesRead, bytesRead / inputBytesPerFrame);
 
-                for (int n = 0; n < input.WaveFormat.Channels; n++)
+                for (var n = 0; n < input.WaveFormat.Channels; n++)
                 {
-                    int inputIndex = inputOffset + n;
-                    for (int outputIndex = 0; outputIndex < outputChannelCount; outputIndex++)
+                    var inputIndex = inputOffset + n;
+                    for (var outputIndex = 0; outputIndex < outputChannelCount; outputIndex++)
                     {
                         if (mappings[outputIndex] == inputIndex)
                         {
-                            int inputBufferOffset = n * bytesPerSample;
-                            int outputBufferOffset = offset + outputIndex * bytesPerSample;
-                            int sample = 0;
+                            var inputBufferOffset = n * bytesPerSample;
+                            var outputBufferOffset = offset + outputIndex * bytesPerSample;
+                            var sample = 0;
                             while (sample < sampleFramesRequested && inputBufferOffset < bytesRead)
                             {
                                 Array.Copy(inputBuffer, inputBufferOffset, buffer, outputBufferOffset, bytesPerSample);

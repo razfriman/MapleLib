@@ -36,7 +36,7 @@ namespace NAudio.Wave
         /// <param name="sizeToAllocateInBytes">The number of bytes. The size of the final buffer will be aligned on 4 Bytes (upper bound)</param>
         public WaveBuffer(int sizeToAllocateInBytes)
         {
-            int aligned4Bytes = sizeToAllocateInBytes%4;
+            var aligned4Bytes = sizeToAllocateInBytes%4;
             sizeToAllocateInBytes = (aligned4Bytes == 0) ? sizeToAllocateInBytes : sizeToAllocateInBytes + 4 - aligned4Bytes;
             // Allocating the byteBuffer is co-allocating the floatBuffer and the intBuffer
             byteBuffer = new byte[sizeToAllocateInBytes];
@@ -226,7 +226,7 @@ namespace NAudio.Wave
         /// <param name="sizeOfValue">The size of value.</param>
         private int CheckValidityCount(string argName, int value, int sizeOfValue)
         {
-            int newNumberOfBytes = value * sizeOfValue;
+            var newNumberOfBytes = value * sizeOfValue;
             if ( (newNumberOfBytes % 4) != 0 )
             {
                 throw new ArgumentOutOfRangeException(argName, String.Format("{0} cannot set a count ({1}) that is not 4 bytes aligned ", argName, newNumberOfBytes));

@@ -228,7 +228,7 @@ namespace MapleLib.PacketLib
 
         public void SendInitialPacket(int version, string patchLoc, byte[] riv, byte[] siv, byte serverType)
         {
-            PacketWriter writer = new PacketWriter();
+            var writer = new PacketWriter();
             writer.WriteShort(patchLoc == "" ? 0x0D : 0x0E);
             writer.WriteShort(version);
             writer.WriteMapleString(patchLoc);

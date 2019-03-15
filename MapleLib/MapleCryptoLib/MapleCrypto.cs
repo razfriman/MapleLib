@@ -60,7 +60,7 @@ namespace MapleLib.MapleCryptoLib
         public static byte[] GetNewIV(byte[] oldIv)
         {
             byte[] start = { 0xf2, 0x53, 0x50, 0xc6 };
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 Shuffle(oldIv[i], start);
             }
@@ -75,24 +75,24 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>The shuffled bytes</returns>
         public static byte[] Shuffle(byte inputByte, byte[] start)
         {
-            byte a = start[1];
-            byte b = a;
+            var a = start[1];
+            var b = a;
             uint c, d;
-            b = CryptoConstants.bShuffle[b];
+            b = CryptoConstants.ShuffleBytes[b];
             b -= inputByte;
             start[0] += b;
             b = start[2];
-            b ^= CryptoConstants.bShuffle[inputByte];
+            b ^= CryptoConstants.ShuffleBytes[inputByte];
             a -= b;
             start[1] = a;
             a = start[3];
             b = a;
             a -= start[0];
-            b = CryptoConstants.bShuffle[b];
+            b = CryptoConstants.ShuffleBytes[b];
             b += inputByte;
             b ^= start[2];
             start[2] = b;
-            a += CryptoConstants.bShuffle[inputByte];
+            a += CryptoConstants.ShuffleBytes[inputByte];
             start[3] = a;
 
             c = (uint)(start[0] + start[1] * 0x100 + start[2] * 0x10000 + start[3] * 0x1000000);
@@ -117,10 +117,10 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>The packet header</returns>
         public byte[] GetHeaderToClient(int size)
         {
-            byte[] header = new byte[4];
-            int a = _iv[3] * 0x100 + _iv[2];
+            var header = new byte[4];
+            var a = _iv[3] * 0x100 + _iv[2];
             a ^= -(_mapleVersion + 1);
-            int b = a ^ size;
+            var b = a ^ size;
             header[0] = (byte)(a % 0x100);
             header[1] = (byte)((a - header[0]) / 0x100);
             header[2] = (byte)(b ^ 0x100);
@@ -135,10 +135,10 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>The packet header</returns>
         public byte[] GetHeaderToServer(int size)
         {
-            byte[] header = new byte[4];
-            int a = IV[3] * 0x100 + IV[2];
+            var header = new byte[4];
+            var a = IV[3] * 0x100 + IV[2];
             a = a ^ (_mapleVersion);
-            int b = a ^ size;
+            var b = a ^ size;
             header[0] = Convert.ToByte(a % 0x100);
             header[1] = Convert.ToByte(a / 0x100);
             header[2] = Convert.ToByte(b % 0x100);
@@ -174,10 +174,10 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>The packet is valid</returns>
         public bool CheckPacketToServer(byte[] packet)
         {
-            int a = packet[0] ^ _iv[2];
+            var a = packet[0] ^ _iv[2];
             int b = _mapleVersion;
-            int c = packet[1] ^ _iv[3];
-            int d = _mapleVersion >> 8;
+            var c = packet[1] ^ _iv[3];
+            var d = _mapleVersion >> 8;
             return (a == b && c == d);
         }
 
@@ -190,8 +190,8 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>The multiplied bytes</returns>
         public static byte[] MultiplyBytes(byte[] input, int count, int mult)
         {
-            byte[] ret = new byte[count * mult];
-            for (int x = 0; x < ret.Length; x++)
+            var ret = new byte[count * mult];
+            for (var x = 0; x < ret.Length; x++)
             {
                 ret[x] = input[x % count];
             }

@@ -75,7 +75,7 @@ namespace NAudio.Midi
         /// <returns>The new track event list</returns>
         public IList<MidiEvent> AddTrack(IList<MidiEvent> initialEvents)
         {
-            List<MidiEvent> events = new List<MidiEvent>();
+            var events = new List<MidiEvent>();
             if (initialEvents != null)
             {
                 events.AddRange(initialEvents);
@@ -180,7 +180,7 @@ namespace NAudio.Midi
 
         private void EnsureTracks(int count)
         {
-            for (int n = trackEvents.Count; n < count; n++)
+            for (var n = trackEvents.Count; n < count; n++)
             {
                 trackEvents.Add(new List<MidiEvent>());
             }
@@ -188,9 +188,9 @@ namespace NAudio.Midi
 
         private void ExplodeToManyTracks()
         {
-            IList<MidiEvent> originalList = trackEvents[0];
+            var originalList = trackEvents[0];
             Clear();
-            foreach (MidiEvent midiEvent in originalList)
+            foreach (var midiEvent in originalList)
             {
                 AddEvent(midiEvent, 0);
             }
@@ -199,10 +199,10 @@ namespace NAudio.Midi
 
         private void FlattenToOneTrack()
         {
-            bool eventsAdded = false;
-            for (int track = 1; track < trackEvents.Count; track++)
+            var eventsAdded = false;
+            for (var track = 1; track < trackEvents.Count; track++)
             {
-                foreach (MidiEvent midiEvent in trackEvents[track])
+                foreach (var midiEvent in trackEvents[track])
                 {
                     if (!MidiEvent.IsEndTrack(midiEvent))
                     {
@@ -211,7 +211,7 @@ namespace NAudio.Midi
                     }
                 }
             }
-            for (int track = trackEvents.Count - 1; track > 0; track--)
+            for (var track = trackEvents.Count - 1; track > 0; track--)
             {
                 RemoveTrack(track);
             }
@@ -233,7 +233,7 @@ namespace NAudio.Midi
                 MergeSort.Sort(list, comparer);
 
                 // 2. remove all End track events except one at the very end
-                int index = 0;
+                var index = 0;
                 while (index < list.Count - 1)
                 {
                     if(MidiEvent.IsEndTrack(list[index]))
@@ -247,7 +247,7 @@ namespace NAudio.Midi
                 }
             }
 
-            int track = 0;
+            var track = 0;
             // 3. remove empty tracks and add missing
             while (track < trackEvents.Count)
             {

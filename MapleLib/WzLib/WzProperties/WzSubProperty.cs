@@ -24,8 +24,8 @@ namespace MapleLib.WzLib.WzProperties
 
         public override WzImageProperty DeepClone()
         {
-            WzSubProperty clone = new WzSubProperty(name);
-            foreach (WzImageProperty prop in properties)
+            var clone = new WzSubProperty(name);
+            foreach (var prop in properties)
                 clone.AddProperty(prop.DeepClone());
             return clone;
         }
@@ -66,7 +66,7 @@ namespace MapleLib.WzLib.WzProperties
             get
             {
 
-                foreach (WzImageProperty iwp in properties)
+                foreach (var iwp in properties)
                     if (iwp.Name.ToLower() == name.ToLower())
                         return iwp;
                 //throw new KeyNotFoundException("A wz property with the specified name was not found");
@@ -89,16 +89,16 @@ namespace MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            string[] segments = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return ((WzImageProperty)Parent)[path.Substring(name.IndexOf('/') + 1)];
             }
             WzImageProperty ret = this;
-            for (int x = 0; x < segments.Length; x++)
+            for (var x = 0; x < segments.Length; x++)
             {
-                bool foundChild = false;
-                foreach (WzImageProperty iwp in ret.WzProperties)
+                var foundChild = false;
+                foreach (var iwp in ret.WzProperties)
                 {
                     if (iwp.Name == segments[x])
                     {
@@ -131,7 +131,7 @@ namespace MapleLib.WzLib.WzProperties
         public override void Dispose()
         {
             name = null;
-            foreach (WzImageProperty prop in properties)
+            foreach (var prop in properties)
                 prop.Dispose();
             properties.Clear();
             properties = null;
@@ -162,7 +162,7 @@ namespace MapleLib.WzLib.WzProperties
         }
         public void AddProperties(List<WzImageProperty> props)
         {
-            foreach (WzImageProperty prop in props)
+            foreach (var prop in props)
             {
                 AddProperty(prop);
             }
@@ -177,7 +177,7 @@ namespace MapleLib.WzLib.WzProperties
         /// </summary>
         public void ClearProperties()
         {
-            foreach (WzImageProperty prop in properties) prop.Parent = null;
+            foreach (var prop in properties) prop.Parent = null;
             properties.Clear();
         }
         #endregion

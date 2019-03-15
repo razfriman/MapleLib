@@ -89,7 +89,7 @@ namespace NAudio.Wave
             base.Serialize(writer);
             writer.Write(samplesPerBlock);
             writer.Write(numCoeff);
-            foreach (short coefficient in coefficients)
+            foreach (var coefficient in coefficients)
             {
                 writer.Write(coefficient);
             }

@@ -46,16 +46,16 @@ namespace NAudio.FileFormats.Wav
                 ReadDs64Chunk(br);
             }
 
-            int dataChunkId = ChunkIdentifier.ChunkIdentifierToInt32("data");
-            int formatChunkId = ChunkIdentifier.ChunkIdentifierToInt32("fmt ");
+            var dataChunkId = ChunkIdentifier.ChunkIdentifierToInt32("data");
+            var formatChunkId = ChunkIdentifier.ChunkIdentifierToInt32("fmt ");
             
             // sometimes a file has more data than is specified after the RIFF header
-            long stopPosition = Math.Min(riffSize + 8, stream.Length);
+            var stopPosition = Math.Min(riffSize + 8, stream.Length);
 
             // this -8 is so we can be sure that there are at least 8 bytes for a chunk id and length
             while (stream.Position <= stopPosition - 8)
             {
-                Int32 chunkIdentifier = br.ReadInt32();
+                var chunkIdentifier = br.ReadInt32();
                 var chunkLength = br.ReadUInt32();
                 if (chunkIdentifier == dataChunkId)
                 {
@@ -111,16 +111,16 @@ namespace NAudio.FileFormats.Wav
         /// </summary>
         private void ReadDs64Chunk(BinaryReader reader)
         {
-            int ds64ChunkId = ChunkIdentifier.ChunkIdentifierToInt32("ds64");
-            int chunkId = reader.ReadInt32();
+            var ds64ChunkId = ChunkIdentifier.ChunkIdentifierToInt32("ds64");
+            var chunkId = reader.ReadInt32();
             if (chunkId != ds64ChunkId)
             {
                 throw new FormatException("Invalid RF64 WAV file - No ds64 chunk found");
             }
-            int chunkSize = reader.ReadInt32();
+            var chunkSize = reader.ReadInt32();
             this.riffSize = reader.ReadInt64();
             this.dataChunkLength = reader.ReadInt64();
-            long sampleCount = reader.ReadInt64(); // replaces the value in the fact chunk
+            var sampleCount = reader.ReadInt64(); // replaces the value in the fact chunk
             reader.ReadBytes(chunkSize - 24); // get to the end of this chunk (should parse extra stuff later)
         }
 
@@ -131,7 +131,7 @@ namespace NAudio.FileFormats.Wav
 
         private void ReadRiffHeader(BinaryReader br)
         {
-            int header = br.ReadInt32();
+            var header = br.ReadInt32();
             if (header == ChunkIdentifier.ChunkIdentifierToInt32("RF64"))
             {
                 this.isRf64 = true;

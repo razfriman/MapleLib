@@ -58,12 +58,12 @@ namespace NAudio.Midi
             var br = new BinaryReader(inputStream);
             try 
             {
-                string chunkHeader = Encoding.UTF8.GetString(br.ReadBytes(4));
+                var chunkHeader = Encoding.UTF8.GetString(br.ReadBytes(4));
                 if(chunkHeader != "MThd") 
                 {
                     throw new FormatException("Not a MIDI file - header chunk missing");
                 }
-                uint chunkSize = SwapUInt32(br.ReadUInt32());
+                var chunkSize = SwapUInt32(br.ReadUInt32());
                 
                 if(chunkSize != 6) 
                 {
@@ -75,14 +75,14 @@ namespace NAudio.Midi
                 deltaTicksPerQuarterNote = SwapUInt16(br.ReadUInt16());
 
                 events = new MidiEventCollection((fileFormat == 0) ? 0 : 1, deltaTicksPerQuarterNote);
-                for (int n = 0; n < tracks; n++)
+                for (var n = 0; n < tracks; n++)
                 {
                     events.AddTrack();
                 }
                 
                 long absoluteTime = 0;
                 
-                for(int track = 0; track < tracks; track++) 
+                for(var track = 0; track < tracks; track++) 
                 {
                     if(fileFormat == 1) 
                     {
@@ -95,7 +95,7 @@ namespace NAudio.Midi
                     }
                     chunkSize = SwapUInt32(br.ReadUInt32());
 
-                    long startPos = br.BaseStream.Position;
+                    var startPos = br.BaseStream.Position;
                     MidiEvent me = null;
                     var outstandingNoteOns = new List<NoteOnEvent>();
                     while(br.BaseStream.Position < startPos + chunkSize) 
@@ -139,7 +139,7 @@ namespace NAudio.Midi
                         }
                         else if(me.CommandCode == MidiCommandCode.MetaEvent) 
                         {
-                            MetaEvent metaEvent = (MetaEvent) me;
+                            var metaEvent = (MetaEvent) me;
                             if(metaEvent.MetaEventType == MetaEventType.EndTrack) 
                             {
                                 //break;
@@ -193,8 +193,8 @@ namespace NAudio.Midi
 
         private void FindNoteOn(NoteEvent offEvent, List<NoteOnEvent> outstandingNoteOns)
         {
-            bool found = false;
-            foreach(NoteOnEvent noteOnEvent in outstandingNoteOns)
+            var found = false;
+            foreach(var noteOnEvent in outstandingNoteOns)
             {
                 if ((noteOnEvent.Channel == offEvent.Channel) && (noteOnEvent.NoteNumber == offEvent.NoteNumber)) 
                 {
@@ -261,15 +261,15 @@ namespace NAudio.Midi
                 writer.Write(SwapUInt16((ushort)events.Tracks));
                 writer.Write(SwapUInt16((ushort)events.DeltaTicksPerQuarterNote));
 
-                for (int track = 0; track < events.Tracks; track++ )
+                for (var track = 0; track < events.Tracks; track++ )
                 {
-                    IList<MidiEvent> eventList = events[track];
+                    var eventList = events[track];
 
                     writer.Write(Encoding.UTF8.GetBytes("MTrk"));
-                    long trackSizePosition = writer.BaseStream.Position;
+                    var trackSizePosition = writer.BaseStream.Position;
                     writer.Write(SwapUInt32(0));
 
-                    long absoluteTime = events.StartAbsoluteTime;
+                    var absoluteTime = events.StartAbsoluteTime;
 
                     // use a stable sort to preserve ordering of MIDI events whose 
                     // absolute times are the same
@@ -283,7 +283,7 @@ namespace NAudio.Midi
                         midiEvent.Export(ref absoluteTime, writer);
                     }
 
-                    uint trackChunkLength = (uint)(writer.BaseStream.Position - trackSizePosition) - 4;
+                    var trackChunkLength = (uint)(writer.BaseStream.Position - trackSizePosition) - 4;
                     writer.BaseStream.Position = trackSizePosition;
                     writer.Write(SwapUInt32(trackChunkLength));
                     writer.BaseStream.Position += trackChunkLength;

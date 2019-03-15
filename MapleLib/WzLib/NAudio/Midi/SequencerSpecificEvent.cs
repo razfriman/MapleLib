@@ -59,7 +59,7 @@ namespace NAudio.Midi
         /// <returns>A string describing this event</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(base.ToString());
             sb.Append(" ");
             foreach (var b in data)

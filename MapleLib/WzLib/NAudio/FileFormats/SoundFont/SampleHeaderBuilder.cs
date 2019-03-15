@@ -9,7 +9,7 @@ namespace NAudio.SoundFont
 	{
         public override SampleHeader Read(BinaryReader br) 
 		{
-			SampleHeader sh = new SampleHeader();
+			var sh = new SampleHeader();
             var s = br.ReadBytes(20);
 
 			sh.SampleName = ByteEncoding.Instance.GetString(s, 0, s.Length);

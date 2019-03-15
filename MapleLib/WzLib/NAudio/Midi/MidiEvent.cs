@@ -24,11 +24,11 @@ namespace NAudio.Midi
         public static MidiEvent FromRawMessage(int rawMessage)
         {
             long absoluteTime = 0;
-            int b = rawMessage & 0xFF;
-            int data1 = (rawMessage >> 8) & 0xFF;
-            int data2 = (rawMessage >> 16) & 0xFF;
+            var b = rawMessage & 0xFF;
+            var data1 = (rawMessage >> 8) & 0xFF;
+            var data2 = (rawMessage >> 16) & 0xFF;
             MidiCommandCode commandCode;
-            int channel = 1;
+            var channel = 1;
 
             if ((b & 0xF0) == 0xF0)
             {
@@ -92,10 +92,10 @@ namespace NAudio.Midi
         /// <returns>A new MidiEvent</returns>
         public static MidiEvent ReadNextEvent(BinaryReader br, MidiEvent previous) 
         {
-            int deltaTime = MidiEvent.ReadVarInt(br);
+            var deltaTime = MidiEvent.ReadVarInt(br);
             MidiCommandCode commandCode;
-            int channel = 1;
-            byte b = br.ReadByte();
+            var channel = 1;
+            var b = br.ReadByte();
             if((b & 0x80) == 0) 
             {
                 // a running command - command & channel are same as previous
@@ -264,7 +264,7 @@ namespace NAudio.Midi
             {
                 if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-                    NoteEvent ne = (NoteEvent)midiEvent;
+                    var ne = (NoteEvent)midiEvent;
                     return (ne.Velocity == 0);
                 }
                 return (midiEvent.CommandCode == MidiCommandCode.NoteOff);
@@ -281,7 +281,7 @@ namespace NAudio.Midi
             {
                 if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-                    NoteEvent ne = (NoteEvent)midiEvent;
+                    var ne = (NoteEvent)midiEvent;
                     return (ne.Velocity > 0);
                 }
             }
@@ -295,7 +295,7 @@ namespace NAudio.Midi
         {
             if (midiEvent != null)
             {
-                MetaEvent me = midiEvent as MetaEvent;
+                var me = midiEvent as MetaEvent;
                 if (me != null)
                 {
                     return me.MetaEventType == MetaEventType.EndTrack;
@@ -324,9 +324,9 @@ namespace NAudio.Midi
         /// <returns>The integer read</returns>
         public static int ReadVarInt(BinaryReader br) 
         {
-            int value = 0;
+            var value = 0;
             byte b;
-            for(int n = 0; n < 4; n++) 
+            for(var n = 0; n < 4; n++) 
             {
                 b = br.ReadByte();
                 value <<= 7;
@@ -355,8 +355,8 @@ namespace NAudio.Midi
                 throw new ArgumentOutOfRangeException("value", value, "Maximum allowed Var Int is 0x0FFFFFFF");
             }
 
-            int n = 0;
-            byte[] buffer = new byte[4];
+            var n = 0;
+            var buffer = new byte[4];
             do
             {
                 buffer[n++] = (byte)(value & 0x7F);
@@ -388,7 +388,7 @@ namespace NAudio.Midi
             }
             WriteVarInt(writer,(int) (this.absoluteTime - absoluteTime));
             absoluteTime = this.absoluteTime;
-            int output = (int) commandCode;
+            var output = (int) commandCode;
             if (commandCode != MidiCommandCode.MetaEvent)
             {
                 output += (channel - 1);

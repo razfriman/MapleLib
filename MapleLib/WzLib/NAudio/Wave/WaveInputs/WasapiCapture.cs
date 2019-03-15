@@ -145,7 +145,7 @@ namespace NAudio.CoreAudioApi
             if (initialized)
                 return;
 
-            long requestedDuration = ReftimesPerMillisec * audioBufferMillisecondsLength;
+            var requestedDuration = ReftimesPerMillisec * audioBufferMillisecondsLength;
 
             if (!audioClient.IsFormatSupported(ShareMode, waveFormat))
             {
@@ -186,7 +186,7 @@ namespace NAudio.CoreAudioApi
                 Guid.Empty);
             }
 
-            int bufferFrameCount = audioClient.BufferSize;
+            var bufferFrameCount = audioClient.BufferSize;
             bytesPerFrame = waveFormat.Channels * waveFormat.BitsPerSample / 8;
             recordBuffer = new byte[bufferFrameCount * bytesPerFrame];
             
@@ -252,20 +252,20 @@ namespace NAudio.CoreAudioApi
         private void DoRecording(AudioClient client)
         {
             //Debug.WriteLine(String.Format("Client buffer frame count: {0}", client.BufferSize));
-            int bufferFrameCount = client.BufferSize;
+            var bufferFrameCount = client.BufferSize;
 
             // Calculate the actual duration of the allocated buffer.
-            long actualDuration = (long)((double)ReftimesPerSec *
+            var actualDuration = (long)((double)ReftimesPerSec *
                              bufferFrameCount / waveFormat.SampleRate);
-            int sleepMilliseconds = (int)(actualDuration / ReftimesPerMillisec / 2);
-            int waitMilliseconds = (int)(3 * actualDuration / ReftimesPerMillisec);
+            var sleepMilliseconds = (int)(actualDuration / ReftimesPerMillisec / 2);
+            var waitMilliseconds = (int)(3 * actualDuration / ReftimesPerMillisec);
 
             var capture = client.AudioCaptureClient;
             client.Start();
             captureState = CaptureState.Capturing;
             while (captureState == CaptureState.Capturing)
             {
-                bool readBuffer = true;
+                var readBuffer = true;
                 if (isUsingEventSync)
                 {
                     readBuffer = frameEventWaitHandle.WaitOne(waitMilliseconds, false);
@@ -301,21 +301,21 @@ namespace NAudio.CoreAudioApi
 
         private void ReadNextPacket(AudioCaptureClient capture)
         {
-            int packetSize = capture.GetNextPacketSize();
-            int recordBufferOffset = 0;
+            var packetSize = capture.GetNextPacketSize();
+            var recordBufferOffset = 0;
             //Debug.WriteLine(string.Format("packet size: {0} samples", packetSize / 4));
 
             while (packetSize != 0)
             {
                 int framesAvailable;
                 AudioClientBufferFlags flags;
-                IntPtr buffer = capture.GetBuffer(out framesAvailable, out flags);
+                var buffer = capture.GetBuffer(out framesAvailable, out flags);
 
-                int bytesAvailable = framesAvailable * bytesPerFrame;
+                var bytesAvailable = framesAvailable * bytesPerFrame;
 
                 // apparently it is sometimes possible to read more frames than we were expecting?
                 // fix suggested by Michael Feld:
-                int spaceRemaining = Math.Max(0, recordBuffer.Length - recordBufferOffset);
+                var spaceRemaining = Math.Max(0, recordBuffer.Length - recordBufferOffset);
                 if (spaceRemaining < bytesAvailable && recordBufferOffset > 0)
                 {
                     if (DataAvailable != null) DataAvailable(this, new WaveInEventArgs(recordBuffer, recordBufferOffset));

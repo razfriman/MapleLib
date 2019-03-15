@@ -64,8 +64,8 @@ namespace NAudio.Wave
         {
             var frame = new Mp3Frame();
             frame.FileOffset = input.Position;
-            byte[] headerBytes = new byte[4];
-            int bytesRead = input.Read(headerBytes, 0, headerBytes.Length);
+            var headerBytes = new byte[4];
+            var bytesRead = input.Read(headerBytes, 0, headerBytes.Length);
             if (bytesRead < headerBytes.Length)
             {
                 // reached end of stream, no more MP3 frames
@@ -88,7 +88,7 @@ namespace NAudio.Wave
             if (this.crcPresent)
                 this.crc = reader.ReadInt16();*/
 
-            int bytesRequired = frame.FrameLength - 4;
+            var bytesRequired = frame.FrameLength - 4;
             if (readData)
             {
                 frame.RawData = new byte[frame.FrameLength];
@@ -141,7 +141,7 @@ namespace NAudio.Wave
                 {
                     return false;
                 }
-                int layerIndex = frame.MpegLayer == MpegLayer.Layer1 ? 0 : frame.MpegLayer == MpegLayer.Layer2 ? 1 : 2;
+                var layerIndex = frame.MpegLayer == MpegLayer.Layer1 ? 0 : frame.MpegLayer == MpegLayer.Layer2 ? 1 : 2;
                 frame.CrcPresent = (headerBytes[1] & 0x01) == 0x00;
                 frame.BitRateIndex = (headerBytes[2] & 0xF0) >> 4;
                 if (frame.BitRateIndex == 15)
@@ -149,13 +149,13 @@ namespace NAudio.Wave
                     // invalid index
                     return false;
                 }
-                int versionIndex = frame.MpegVersion == Wave.MpegVersion.Version1 ? 0 : 1;
+                var versionIndex = frame.MpegVersion == Wave.MpegVersion.Version1 ? 0 : 1;
                 frame.BitRate = bitRates[versionIndex, layerIndex, frame.BitRateIndex]*1000;
                 if (frame.BitRate == 0)
                 {
                     return false;
                 }
-                int sampleFrequencyIndex = (headerBytes[2] & 0x0C) >> 2;
+                var sampleFrequencyIndex = (headerBytes[2] & 0x0C) >> 2;
                 if (sampleFrequencyIndex == 3)
                 {
                     return false;
@@ -175,8 +175,8 @@ namespace NAudio.Wave
                     frame.SampleRate = sampleRatesVersion25[sampleFrequencyIndex];
                 }
 
-                bool padding = (headerBytes[2] & 0x02) == 0x02;
-                bool privateBit = (headerBytes[2] & 0x01) == 0x01;
+                var padding = (headerBytes[2] & 0x02) == 0x02;
+                var privateBit = (headerBytes[2] & 0x01) == 0x01;
                 frame.ChannelMode = (ChannelMode) ((headerBytes[3] & 0xC0) >> 6);
                 frame.ChannelExtension = (headerBytes[3] & 0x30) >> 4;
                 if (frame.ChannelExtension != 0 && frame.ChannelMode != ChannelMode.JointStereo)
@@ -186,13 +186,13 @@ namespace NAudio.Wave
 
 
                 frame.Copyright = (headerBytes[3] & 0x08) == 0x08;
-                bool original = (headerBytes[3] & 0x04) == 0x04;
-                int emphasis = (headerBytes[3] & 0x03);
+                var original = (headerBytes[3] & 0x04) == 0x04;
+                var emphasis = (headerBytes[3] & 0x03);
 
-                int nPadding = padding ? 1 : 0;
+                var nPadding = padding ? 1 : 0;
 
                 frame.SampleCount = samplesPerFrame[versionIndex, layerIndex];
-                int coefficient = frame.SampleCount/8;
+                var coefficient = frame.SampleCount/8;
                 if (frame.MpegLayer == MpegLayer.Layer1)
                 {
                     frame.FrameLength = (coefficient*frame.BitRate/frame.SampleRate + nPadding)*4;

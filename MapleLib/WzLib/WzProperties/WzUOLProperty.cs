@@ -31,7 +31,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override WzImageProperty DeepClone()
         {
-            WzUOLProperty clone = new WzUOLProperty(name, val);
+            var clone = new WzUOLProperty(name, val);
             clone.linkVal = null;
             return clone;
         }
@@ -127,10 +127,10 @@ namespace MapleLib.WzLib.WzProperties
             {
                 if (linkVal == null)
                 {
-                    string[] paths = val.Split('/');
+                    var paths = val.Split('/');
                     linkVal = this.parent;
-                    string asdf = parent.FullPath;
-                    foreach (string path in paths)
+                    var asdf = parent.FullPath;
+                    foreach (var path in paths)
                     {
                         if (path == "..")
                         {
