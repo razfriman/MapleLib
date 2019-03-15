@@ -29,14 +29,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public ModulatorType SourceModulationData 
 		{
-			get 
-			{
-				return sourceModulationData;
-			}
-			set 
-			{
-				sourceModulationData = value;
-			}
+			get => sourceModulationData;
+			set => sourceModulationData = value;
 		}
 		
 		/// <summary>
@@ -44,14 +38,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public GeneratorEnum DestinationGenerator 
 		{
-			get 
-			{
-				return destinationGenerator;
-			}
-			set 
-			{
-				destinationGenerator = value;
-			}
+			get => destinationGenerator;
+			set => destinationGenerator = value;
 		}
 		
 		/// <summary>
@@ -59,14 +47,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public short Amount 
 		{
-			get 
-			{
-				return amount;
-			}
-			set 
-			{
-				amount = value;
-			}
+			get => amount;
+			set => amount = value;
 		}
 		
 		/// <summary>
@@ -74,14 +56,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public ModulatorType SourceModulationAmount 
 		{
-			get 
-			{
-				return sourceModulationAmount;
-			}
-			set 
-			{
-				sourceModulationAmount = value;
-			}
+			get => sourceModulationAmount;
+			set => sourceModulationAmount = value;
 		}
 		
 		/// <summary>
@@ -89,14 +65,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public TransformEnum SourceTransform 
 		{
-			get 
-			{
-				return sourceTransform;
-			}
-			set 
-			{
-				sourceTransform = value;
-			}
+			get => sourceTransform;
+			set => sourceTransform = value;
 		}
 		
 		/// <summary>

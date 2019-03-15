@@ -39,10 +39,7 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public float AttackSeconds
         {
-            get
-            {
-                return attackSeconds;
-            }
+            get => attackSeconds;
             set
             {
                 attackSeconds = value;
@@ -55,10 +52,7 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public float ReleaseSeconds
         {
-            get
-            {
-                return releaseSeconds;
-            }
+            get => releaseSeconds;
             set
             {
                 releaseSeconds = value;
@@ -95,6 +89,6 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// <summary>
         /// The output WaveFormat
         /// </summary>
-        public WaveFormat WaveFormat { get { return source.WaveFormat; } }
+        public WaveFormat WaveFormat => source.WaveFormat;
     }
 }

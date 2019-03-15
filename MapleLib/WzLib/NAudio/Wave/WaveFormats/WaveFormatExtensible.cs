@@ -73,7 +73,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveFormats
         /// <summary>
         /// SubFormat (may be one of AudioMediaSubtypes)
         /// </summary>
-        public Guid SubFormat { get { return subFormat; } }
+        public Guid SubFormat => subFormat;
 
         /// <summary>
         /// Serialize

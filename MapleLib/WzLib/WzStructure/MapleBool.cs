@@ -68,13 +68,7 @@ namespace MapleLib.WzLib.WzStructure
             return (b && (a.val != MapleBool.True)) || (!b && (a.val != MapleBool.False));
         }
 
-        public bool HasValue
-        {
-            get
-            {
-                return val != NotExist;
-            }
-        }
+        public bool HasValue => val != NotExist;
 
         public bool Value
         {

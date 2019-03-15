@@ -37,7 +37,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+        public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -45,21 +47,19 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
-        public override WzPropertyType PropertyType { get { return WzPropertyType.Convex; } }
+        public override WzPropertyType PropertyType => WzPropertyType.Convex;
+
         /// <summary>
         /// The properties contained in the property
         /// </summary>
-        public override List<WzImageProperty> WzProperties
-        {
-            get
-            {
-                return properties; //properties.ConvertAll<IWzImageProperty>(new Converter<IExtended, IWzImageProperty>(delegate(IExtended source) { return (IWzImageProperty)source; }));
-            }
-        }
+        public override List<WzImageProperty> WzProperties => properties;
+
         /// <summary>
         /// The name of this property
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name { get => name;
+            set => name = value;
+        }
         /// <summary>
         /// Gets a wz property by it's name
         /// </summary>

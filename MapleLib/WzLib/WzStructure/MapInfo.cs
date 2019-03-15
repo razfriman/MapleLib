@@ -452,8 +452,8 @@ namespace MapleLib.WzLib.WzStructure
 
         public WzImage Image
         {
-            get { return image; }
-            set { image = value; }
+            get => image;
+            set => image = value;
         }
 
         public struct TimeMob

@@ -38,10 +38,7 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public float Pan
         {
-            get
-            {
-                return pan;
-            }
+            get => pan;
             set
             {
                 if (value < -1.0f || value > 1.0f)
@@ -58,10 +55,7 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public IPanStrategy PanStrategy
         {
-            get
-            {
-                return panStrategy;
-            }
+            get => panStrategy;
             set
             {
                 panStrategy = value;

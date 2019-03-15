@@ -48,7 +48,7 @@ namespace MapleLib.WzLib.WzProperties
             return clone;
         }
 
-        public override object WzValue { get { return GetBytes(false); } }
+        public override object WzValue => GetBytes(false);
 
         public override void SetValue(object value)
         {
@@ -57,7 +57,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+        public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -65,11 +67,14 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name { get => name;
+            set => name = value;
+        }
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
-        public override WzPropertyType PropertyType { get { return WzPropertyType.Sound; } }
+        public override WzPropertyType PropertyType => WzPropertyType.Sound;
+
         public override void WriteValue(WzBinaryWriter writer)
         {
             var data = GetBytes(false);
@@ -98,18 +103,20 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The data of the mp3 header
         /// </summary>
-        public byte[] Header { get { return header; } set { header = value; } }
+        public byte[] Header { get => header;
+            set => header = value;
+        }
         /// <summary>
         /// Length of the mp3 file in milliseconds
         /// </summary>
-        public int Length { get { return len_ms; } set { len_ms = value; } }
+        public int Length { get => len_ms;
+            set => len_ms = value;
+        }
         /// <summary>
         /// Frequency of the mp3 file in Hz
         /// </summary>
-        public int Frequency
-        {
-            get { return wavFormat != null ? wavFormat.SampleRate : 0; }
-        }
+        public int Frequency => wavFormat != null ? wavFormat.SampleRate : 0;
+
         /// <summary>
         /// BPS of the mp3 file
         /// </summary>

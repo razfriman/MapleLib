@@ -22,8 +22,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
 
         public override long Position
         {
-            get { return stream.Position; }
-            set { stream.Position = value; }
+            get => stream.Position;
+            set => stream.Position = value;
         }
 
         public ComStream(Stream stream)

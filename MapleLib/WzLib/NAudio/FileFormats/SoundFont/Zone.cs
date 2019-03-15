@@ -28,14 +28,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public Modulator[] Modulators
 		{
-			get
-			{
-				return modulators;
-			}
-			set
-			{
-				modulators = value;
-			}
+			get => modulators;
+			set => modulators = value;
 		}
 
 		/// <summary>
@@ -43,14 +37,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public Generator[] Generators
 		{
-			get
-			{
-				return generators;
-			}
-			set
-			{
-				generators = value;
-			}
+			get => generators;
+			set => generators = value;
 		}
 
 	}

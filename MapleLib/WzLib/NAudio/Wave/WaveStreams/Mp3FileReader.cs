@@ -332,10 +332,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return position;
-            }
+            get => position;
             set
             {
                 lock (repositionLock)

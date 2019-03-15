@@ -111,47 +111,32 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// Gets the byte buffer.
         /// </summary>
         /// <value>The byte buffer.</value>
-        public byte[] ByteBuffer
-        {
-            get { return byteBuffer; }
-        }
+        public byte[] ByteBuffer => byteBuffer;
 
         /// <summary>
         /// Gets the float buffer.
         /// </summary>
         /// <value>The float buffer.</value>
-        public float[] FloatBuffer
-        {
-            get { return floatBuffer; }
-        }
+        public float[] FloatBuffer => floatBuffer;
 
         /// <summary>
         /// Gets the short buffer.
         /// </summary>
         /// <value>The short buffer.</value>
-        public short[] ShortBuffer
-        {
-            get { return shortBuffer; }
-        }
+        public short[] ShortBuffer => shortBuffer;
 
         /// <summary>
         /// Gets the int buffer.
         /// </summary>
         /// <value>The int buffer.</value>
-        public int[] IntBuffer
-        {
-            get { return intBuffer; }
-        }
+        public int[] IntBuffer => intBuffer;
 
 
         /// <summary>
         /// Gets the max size in bytes of the byte buffer..
         /// </summary>
         /// <value>Maximum number of bytes in the buffer.</value>
-        public int MaxSize
-        {
-            get { return byteBuffer.Length; }
-        }
+        public int MaxSize => byteBuffer.Length;
 
         /// <summary>
         /// Gets or sets the byte buffer count.
@@ -159,11 +144,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <value>The byte buffer count.</value>
         public int ByteBufferCount
         {
-            get { return numberOfBytes; }
-            set
-            {
-                numberOfBytes = CheckValidityCount("ByteBufferCount", value, 1);
-            }
+            get => numberOfBytes;
+            set => numberOfBytes = CheckValidityCount("ByteBufferCount", value, 1);
         }
         /// <summary>
         /// Gets or sets the float buffer count.
@@ -171,11 +153,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <value>The float buffer count.</value>
         public int FloatBufferCount
         {
-            get { return numberOfBytes / 4; }
-            set
-            {
-                numberOfBytes = CheckValidityCount("FloatBufferCount", value, 4);
-            }
+            get => numberOfBytes / 4;
+            set => numberOfBytes = CheckValidityCount("FloatBufferCount", value, 4);
         }
         /// <summary>
         /// Gets or sets the short buffer count.
@@ -183,11 +162,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <value>The short buffer count.</value>
         public int ShortBufferCount
         {
-            get { return numberOfBytes / 2; }
-            set
-            {
-                numberOfBytes = CheckValidityCount("ShortBufferCount", value, 2);
-            }
+            get => numberOfBytes / 2;
+            set => numberOfBytes = CheckValidityCount("ShortBufferCount", value, 2);
         }
         /// <summary>
         /// Gets or sets the int buffer count.
@@ -195,11 +171,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <value>The int buffer count.</value>
         public int IntBufferCount
         {
-            get { return numberOfBytes / 4; }
-            set
-            {
-                numberOfBytes = CheckValidityCount("IntBufferCount", value, 4);
-            }
+            get => numberOfBytes / 4;
+            set => numberOfBytes = CheckValidityCount("IntBufferCount", value, 4);
         }
 
         /// <summary>

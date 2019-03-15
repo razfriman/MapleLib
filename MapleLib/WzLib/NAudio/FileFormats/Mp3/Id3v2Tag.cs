@@ -227,12 +227,6 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
         /// <summary>
         /// Raw data from this tag
         /// </summary>
-        public byte[] RawData
-        {
-            get
-            {
-                return rawData;
-            }
-        }
+        public byte[] RawData => rawData;
     }
 }

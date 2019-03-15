@@ -12,9 +12,10 @@ namespace MapleLib.WzLib
     public abstract class WzImageProperty : WzObject
     {
         #region Virtual\Abstrcat Members
-        public virtual List<WzImageProperty> WzProperties { get { return null; } }
+        public virtual List<WzImageProperty> WzProperties => null;
 
-        public virtual new WzImageProperty this[string name] { get { return null; } set => throw new NotImplementedException(); }
+        public virtual new WzImageProperty this[string name] { get => null;
+            set => throw new NotImplementedException(); }
 
         public virtual WzImageProperty GetFromPath(string path)
         {
@@ -43,7 +44,7 @@ namespace MapleLib.WzLib
             }
         }
 
-        public override WzObjectType ObjectType { get { return WzObjectType.Property; } }
+        public override WzObjectType ObjectType => WzObjectType.Property;
 
         public abstract void WriteValue(WzBinaryWriter writer);
 
@@ -62,10 +63,8 @@ namespace MapleLib.WzLib
             writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag(this.PropertyType.ToString()));
         }
 
-        public override WzFile WzFileParent
-        {
-            get { return ParentImage.WzFileParent; }
-        }
+        public override WzFile WzFileParent => ParentImage.WzFileParent;
+
         #endregion
 
         #region Extended Properties Parsing

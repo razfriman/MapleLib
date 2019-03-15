@@ -141,9 +141,6 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// <summary>
         /// WaveFormat of this SampleProvider
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return source.WaveFormat; }
-        }
+        public WaveFormat WaveFormat => source.WaveFormat;
     }
 }

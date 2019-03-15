@@ -22,15 +22,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public string Name 
 		{
-			get 
-			{
-				return name;
-			}
-			set 
-			{
-				// TODO: validate
-				name = value;
-			}			
+			get => name;
+			set => name = value;
 		}
 		
 		/// <summary>
@@ -38,15 +31,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public ushort PatchNumber 
 		{
-			get 
-			{
-				return patchNumber;			
-			}
-			set 
-			{
-				// TODO: validate
-				patchNumber = value;
-			}
+			get => patchNumber;
+			set => patchNumber = value;
 		}
 		
 		/// <summary>
@@ -54,16 +40,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public ushort Bank 
 		{
-			get 
-			{
-				return bank;
-			}
-			set 
-			{
-				// 0 - 127, GM percussion bank is 128
-				// TODO: validate
-				bank = value;
-			}
+			get => bank;
+			set => bank = value;
 		}
 		
 		/// <summary>
@@ -71,14 +49,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public Zone[] Zones
 		{
-			get
-			{
-				return zones;
-			}
-			set
-			{
-				zones = value;
-			}
+			get => zones;
+			set => zones = value;
 		}
 
 		/// <summary>

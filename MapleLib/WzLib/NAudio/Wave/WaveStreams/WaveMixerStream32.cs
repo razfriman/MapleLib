@@ -213,11 +213,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                // all streams are at the same position
-                return position;
-            }
+            get => position;
             set
             {
                 lock (inputsLock)

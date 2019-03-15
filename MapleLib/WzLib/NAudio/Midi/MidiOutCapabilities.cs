@@ -50,68 +50,32 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <summary>
         /// Gets the manufacturer of this device
         /// </summary>
-        public Manufacturers Manufacturer
-        {
-            get
-            {
-                return (Manufacturers)manufacturerId;
-            }
-        }
+        public Manufacturers Manufacturer => (Manufacturers)manufacturerId;
 
         /// <summary>
         /// Gets the product identifier (manufacturer specific)
         /// </summary>
-        public short ProductId
-        {
-            get
-            {
-                return productId;
-            }
-        }
+        public short ProductId => productId;
 
         /// <summary>
         /// Gets the product name
         /// </summary>
-        public String ProductName
-        {
-            get
-            {
-                return productName;
-            }
-        }
+        public String ProductName => productName;
 
         /// <summary>
         /// Returns the number of supported voices
         /// </summary>
-        public int Voices
-        {
-            get
-            {
-                return wVoices;
-            }
-        }
+        public int Voices => wVoices;
 
         /// <summary>
         /// Gets the polyphony of the device
         /// </summary>
-        public int Notes
-        {
-            get
-            {
-                return wNotes;
-            }
-        }
+        public int Notes => wNotes;
 
         /// <summary>
         /// Returns true if the device supports all channels
         /// </summary>
-        public bool SupportsAllChannels
-        {
-            get
-            {
-                return wChannelMask == 0xFFFF;
-            }
-        }
+        public bool SupportsAllChannels => wChannelMask == 0xFFFF;
 
         /// <summary>
         /// Queries whether a particular channel is supported
@@ -126,57 +90,26 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <summary>
         /// Returns true if the device supports patch caching
         /// </summary>
-        public bool SupportsPatchCaching
-        {
-            get
-            {
-                return (dwSupport & MidiOutCapabilityFlags.PatchCaching) != 0;
-            }
-        }
+        public bool SupportsPatchCaching => (dwSupport & MidiOutCapabilityFlags.PatchCaching) != 0;
 
         /// <summary>
         /// Returns true if the device supports separate left and right volume
         /// </summary>
-        public bool SupportsSeparateLeftAndRightVolume
-        {
-            get
-            {
-                return (dwSupport & MidiOutCapabilityFlags.LeftRightVolume) != 0;
-            }
-        }
+        public bool SupportsSeparateLeftAndRightVolume => (dwSupport & MidiOutCapabilityFlags.LeftRightVolume) != 0;
 
         /// <summary>
         /// Returns true if the device supports MIDI stream out
         /// </summary>
-        public bool SupportsMidiStreamOut
-        {
-            get
-            {
-                return (dwSupport & MidiOutCapabilityFlags.Stream) != 0;
-            }
-        }
+        public bool SupportsMidiStreamOut => (dwSupport & MidiOutCapabilityFlags.Stream) != 0;
 
         /// <summary>
         /// Returns true if the device supports volume control
         /// </summary>
-        public bool SupportsVolumeControl
-        {
-            get
-            {
-                return (dwSupport & MidiOutCapabilityFlags.Volume) != 0;
-            }
-        }
+        public bool SupportsVolumeControl => (dwSupport & MidiOutCapabilityFlags.Volume) != 0;
 
         /// <summary>
         /// Returns the type of technology used by this MIDI out device
         /// </summary>
-        public MidiOutTechnology Technology
-        {
-            get
-            {
-                return (MidiOutTechnology)wTechnology;
-            }
-        }
-
+        public MidiOutTechnology Technology => (MidiOutTechnology)wTechnology;
     }
 }

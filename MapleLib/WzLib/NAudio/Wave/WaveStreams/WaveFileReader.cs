@@ -151,10 +151,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return waveStream.Position - dataPosition;
-            }
+            get => waveStream.Position - dataPosition;
             set
             {
                 lock (lockObject)

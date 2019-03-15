@@ -52,7 +52,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public int AfterTouchPressure
         {
-            get { return afterTouchPressure; }
+            get => afterTouchPressure;
             set
             {
                 if (value < 0 || value > 127)

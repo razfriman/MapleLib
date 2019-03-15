@@ -66,57 +66,27 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// <summary>
 		/// The File Info Chunk
 		/// </summary>
-		public InfoChunk FileInfo 
-		{
-			get 
-			{
-				return info;
-			}
-		}
+		public InfoChunk FileInfo => info;
 
 		/// <summary>
 		/// The Presets
 		/// </summary>
-		public Preset[] Presets 
-		{
-			get 
-			{
-				return presetsChunk.Presets;
-			}
-		}
+		public Preset[] Presets => presetsChunk.Presets;
 
 		/// <summary>
 		/// The Instruments
 		/// </summary>
-		public Instrument[] Instruments
-		{
-			get 
-			{
-				return presetsChunk.Instruments;
-			}
-		}
+		public Instrument[] Instruments => presetsChunk.Instruments;
 
 		/// <summary>
 		/// The Sample Headers
 		/// </summary>
-		public SampleHeader[] SampleHeaders
-		{
-			get
-			{
-				return presetsChunk.SampleHeaders;
-			}
-		}
+		public SampleHeader[] SampleHeaders => presetsChunk.SampleHeaders;
 
 		/// <summary>
 		/// The Sample Data
 		/// </summary>
-		public byte[] SampleData
-		{
-			get
-			{
-				return sampleData.SampleData;
-			}
-		}
+		public byte[] SampleData => sampleData.SampleData;
 
 		/// <summary>
 		/// <see cref="Object.ToString"/>

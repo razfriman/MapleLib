@@ -55,35 +55,17 @@ namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
         /// <summary>
         /// Number of channels supported
         /// </summary>
-        public int Channels
-        {
-            get
-            {
-                return channels;
-            }
-        }
+        public int Channels => channels;
 
         /// <summary>
         /// Whether playback control is supported
         /// </summary>
-        public bool SupportsPlaybackRateControl
-        {
-            get
-            {
-                return (support & WaveOutSupport.PlaybackRate) == WaveOutSupport.PlaybackRate;
-            }
-        }
+        public bool SupportsPlaybackRateControl => (support & WaveOutSupport.PlaybackRate) == WaveOutSupport.PlaybackRate;
 
         /// <summary>
         /// The product name
         /// </summary>
-        public string ProductName
-        {
-            get
-            {
-                return productName;
-            }
-        }
+        public string ProductName => productName;
 
         /// <summary>
         /// Checks to see if a given SupportedWaveFormat is supported
@@ -98,15 +80,17 @@ namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
         /// <summary>
         /// The device name Guid (if provided)
         /// </summary>
-        public Guid NameGuid { get { return nameGuid; } }
+        public Guid NameGuid => nameGuid;
+
         /// <summary>
         /// The product name Guid (if provided)
         /// </summary>
-        public Guid ProductGuid { get { return productGuid; } }
+        public Guid ProductGuid => productGuid;
+
         /// <summary>
         /// The manufacturer guid (if provided)
         /// </summary>
-        public Guid ManufacturerGuid { get { return manufacturerGuid; } }
+        public Guid ManufacturerGuid => manufacturerGuid;
     }
 
     /// <summary>

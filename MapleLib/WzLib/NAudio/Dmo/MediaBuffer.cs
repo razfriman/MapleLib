@@ -107,7 +107,7 @@ namespace MapleLib.WzLib.NAudio.Dmo
         /// </summary>
         public int Length
         {
-            get { return length; }
+            get => length;
             set 
             {
                 if (length > maxLength)

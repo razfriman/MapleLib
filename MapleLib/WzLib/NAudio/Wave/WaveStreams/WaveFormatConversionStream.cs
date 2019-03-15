@@ -63,10 +63,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return position;
-            }
+            get => position;
             set
             {
                 // make sure we don't get out of sync
@@ -116,24 +113,12 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// <summary>
         /// Returns the stream length
         /// </summary>
-        public override long Length
-        {
-            get
-            {
-                return length;
-            }
-        }
+        public override long Length => length;
 
         /// <summary>
         /// Gets the WaveFormat of this stream
         /// </summary>
-        public override WaveFormat WaveFormat
-        {
-            get
-            {
-                return targetFormat;
-            }
-        }
+        public override WaveFormat WaveFormat => targetFormat;
 
         /// <summary>
         /// 

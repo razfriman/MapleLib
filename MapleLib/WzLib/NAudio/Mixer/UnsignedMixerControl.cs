@@ -64,39 +64,21 @@ namespace MapleLib.WzLib.NAudio.Mixer
 		/// <summary>
 		/// The control's minimum value
 		/// </summary>
-		public UInt32 MinValue 
-		{
-			get 
-			{
-				return (uint) mixerControl.Bounds.minimum;
-			}
-		}
+		public UInt32 MinValue => (uint) mixerControl.Bounds.minimum;
 
 		/// <summary>
 		/// The control's maximum value
 		/// </summary>
-		public UInt32 MaxValue 
-		{
-			get 
-			{
-				return (uint) mixerControl.Bounds.maximum;
-			}
-		}
+		public UInt32 MaxValue => (uint) mixerControl.Bounds.maximum;
 
-        /// <summary>
+		/// <summary>
         /// Value of the control represented as a percentage
         /// </summary>
         public double Percent
         {
-            get
-            {
-                return 100.0 * (Value - MinValue) / (double)(MaxValue - MinValue);
-            }
-            set
-            {
-                Value = (uint)(MinValue + (value / 100.0) * (MaxValue - MinValue));
-            }
-        }
+            get => 100.0 * (Value - MinValue) / (double)(MaxValue - MinValue);
+			set => Value = (uint)(MinValue + (value / 100.0) * (MaxValue - MinValue));
+		}
 
         /// <summary>
         /// String Representation for debugging purposes

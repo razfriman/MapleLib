@@ -43,14 +43,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// </summary>
         public TimeSpan BufferDuration
         {
-            get
-            {
-                return TimeSpan.FromSeconds((double)BufferLength / WaveFormat.AverageBytesPerSecond);
-            }
-            set
-            {
-                BufferLength = (int)(value.TotalSeconds * WaveFormat.AverageBytesPerSecond);
-            }
+            get => TimeSpan.FromSeconds((double)BufferLength / WaveFormat.AverageBytesPerSecond);
+            set => BufferLength = (int)(value.TotalSeconds * WaveFormat.AverageBytesPerSecond);
         }
 
         /// <summary>
@@ -62,29 +56,17 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// <summary>
         /// The number of buffered bytes
         /// </summary>
-        public int BufferedBytes
-        {
-            get
-            {
-                return circularBuffer == null ? 0 : circularBuffer.Count;
-            }
-        }
+        public int BufferedBytes => circularBuffer == null ? 0 : circularBuffer.Count;
 
         /// <summary>
         /// Buffered Duration
         /// </summary>
-        public TimeSpan BufferedDuration
-        {
-            get { return TimeSpan.FromSeconds((double)BufferedBytes / WaveFormat.AverageBytesPerSecond); }
-        }
+        public TimeSpan BufferedDuration => TimeSpan.FromSeconds((double)BufferedBytes / WaveFormat.AverageBytesPerSecond);
 
         /// <summary>
         /// Gets the WaveFormat
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return waveFormat; }
-        }
+        public WaveFormat WaveFormat => waveFormat;
 
         /// <summary>
         /// Adds samples. Takes a copy of buffer, so that buffer can be reused if necessary

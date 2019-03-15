@@ -9,27 +9,27 @@
 
         public string Ident
         {
-            get { return ident; }
-            set { ident = value; }
+            get => ident;
+	        set => ident = value;
         }
 
         public string Copyright
         {
-            get { return copyright; }
-            set { copyright = value; }
+            get => copyright;
+	        set => copyright = value;
         }
 
         public ulong FSize
         {
-            get { return fsize; }
-            set { fsize = value; }
+            get => fsize;
+	        set => fsize = value;
         }
 
 		public uint FStart 
         {
-            get { return fstart; }
-            set { fstart = value; }
-        }
+            get => fstart;
+			set => fstart = value;
+		}
 
         public void RecalculateFileStart()
         {

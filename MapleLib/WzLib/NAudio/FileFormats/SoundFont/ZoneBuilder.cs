@@ -42,18 +42,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 			data.RemoveAt(data.Count - 1);
 		}
 
-		public Zone[] Zones
-		{
-			get
-			{
-				return data.ToArray();
-			}
-		}
+		public Zone[] Zones => data.ToArray();
 
-		public override int Length {
-			get {
-				return 4;
-			}
-		}
+		public override int Length => 4;
 	}
 }

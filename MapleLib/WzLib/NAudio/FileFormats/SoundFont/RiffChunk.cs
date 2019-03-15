@@ -121,10 +121,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		
 		public string ChunkID 
 		{
-			get 
-			{
-				return chunkID;
-			}
+			get => chunkID;
 			set 
 			{
 				if(value == null) 
@@ -139,22 +136,10 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 			}
 		}
 		
-		public uint ChunkSize 
-		{
-			get 
-			{
-				return chunkSize;
-			}
-		}
-		
-		public long DataOffset 
-		{
-			get 
-			{
-				return dataOffset;
-			}
-		}
-		
+		public uint ChunkSize => chunkSize;
+
+		public long DataOffset => dataOffset;
+
 		public override string ToString() 
 		{
 			return String.Format("RiffChunk ID: {0} Size: {1} Data Offset: {2}",ChunkID,ChunkSize,DataOffset);

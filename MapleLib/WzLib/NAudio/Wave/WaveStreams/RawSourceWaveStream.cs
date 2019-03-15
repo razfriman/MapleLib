@@ -52,14 +52,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return sourceStream.Position;
-            }
-            set
-            {
-                sourceStream.Position = value - (value % waveFormat.BlockAlign);
-            }
+            get => sourceStream.Position;
+            set => sourceStream.Position = value - (value % waveFormat.BlockAlign);
         }
 
         /// <summary>

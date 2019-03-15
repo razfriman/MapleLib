@@ -85,35 +85,17 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// <summary>
 		/// The Presets contained in this chunk
 		/// </summary>
-		public Preset[] Presets
-		{
-			get
-			{
-				return presetHeaders.Presets;
-			}
-		}
+		public Preset[] Presets => presetHeaders.Presets;
 
 		/// <summary>
 		/// The instruments contained in this chunk
 		/// </summary>
-		public Instrument[] Instruments
-		{
-			get
-			{
-				return instruments.Instruments;
-			}
-		}
+		public Instrument[] Instruments => instruments.Instruments;
 
 		/// <summary>
 		/// The sample headers contained in this chunk
 		/// </summary>
-		public SampleHeader[] SampleHeaders
-		{
-			get
-			{
-				return sampleHeaders.SampleHeaders;
-			}
-		}
+		public SampleHeader[] SampleHeaders => sampleHeaders.SampleHeaders;
 
 		/// <summary>
 		/// <see cref="Object.ToString"/>

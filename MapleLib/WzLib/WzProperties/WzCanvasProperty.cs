@@ -37,29 +37,30 @@ namespace MapleLib.WzLib.WzProperties
             return clone;
         }
 
-        public override object WzValue { get { return PngProperty; } }
+        public override object WzValue => PngProperty;
+
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+        public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
-        public override WzPropertyType PropertyType { get { return WzPropertyType.Canvas; } }
+        public override WzPropertyType PropertyType => WzPropertyType.Canvas;
+
         /// <summary>
         /// The properties contained in this property
         /// </summary>
-        public override List<WzImageProperty> WzProperties
-        {
-            get
-            {
-                return properties;
-            }
-        }
+        public override List<WzImageProperty> WzProperties => properties;
+
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name { get => name;
+            set => name = value;
+        }
         /// <summary>
         /// Gets a wz property by it's name
         /// </summary>
@@ -199,7 +200,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The png image for this canvas property
         /// </summary>
-        public WzPngProperty PngProperty { get { return imageProp; } set { imageProp = value; } }
+        public WzPngProperty PngProperty { get => imageProp;
+            set => imageProp = value;
+        }
         /// <summary>
         /// Creates a blank WzCanvasProperty
         /// </summary>

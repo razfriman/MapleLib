@@ -60,10 +60,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public int Pitch
         {
-            get
-            {
-                return pitch;
-            }
+            get => pitch;
             set
             {
                 if (value < 0 || value >= 0x4000)

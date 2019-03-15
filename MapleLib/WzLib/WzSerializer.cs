@@ -14,8 +14,8 @@ namespace MapleLib.WzLib
     {
         protected int total;
         protected int curr;
-        public int Total { get { return total; } }
-        public int Current { get { return curr; } }
+        public int Total => total;
+        public int Current => curr;
 
         protected static void CreateDirSafe(ref string path)
         {

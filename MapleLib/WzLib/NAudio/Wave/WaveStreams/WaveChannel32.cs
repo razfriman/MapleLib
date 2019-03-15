@@ -107,10 +107,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return position;
-            }
+            get => position;
             set
             {
                 lock (lockObject)
@@ -204,8 +201,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public float Volume
         {
-            get { return volume; }
-            set { volume = value; }
+            get => volume;
+            set => volume = value;
         }
 
         /// <summary>
@@ -213,8 +210,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public float Pan
         {
-            get { return pan; }
-            set { pan = value; }
+            get => pan;
+            set => pan = value;
         }
 
         /// <summary>

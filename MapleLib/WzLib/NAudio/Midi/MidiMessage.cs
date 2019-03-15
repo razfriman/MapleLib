@@ -105,12 +105,6 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <summary>
         /// Returns the raw MIDI message data
         /// </summary>
-        public int RawData
-        {
-            get
-            {
-                return rawData;
-            }
-        }
+        public int RawData => rawData;
     }
 }

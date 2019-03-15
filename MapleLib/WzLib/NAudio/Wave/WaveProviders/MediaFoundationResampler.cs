@@ -141,7 +141,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// </summary>
         public int ResamplerQuality
         {
-            get { return resamplerQuality; }
+            get => resamplerQuality;
             set 
             { 
                 if (value < 1 || value > 60)

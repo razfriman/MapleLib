@@ -68,8 +68,8 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public float Volume
         {
-            get { return volumeProvider.Volume; }
-            set { volumeProvider.Volume = value; }
+            get => volumeProvider.Volume;
+            set => volumeProvider.Volume = value;
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public event EventHandler<StreamVolumeEventArgs> PreVolumeMeter
         {
-            add { preVolumeMeter.StreamVolume += value; }
-            remove { preVolumeMeter.StreamVolume -= value; }
+            add => preVolumeMeter.StreamVolume += value;
+            remove => preVolumeMeter.StreamVolume -= value;
         }
     }
 }

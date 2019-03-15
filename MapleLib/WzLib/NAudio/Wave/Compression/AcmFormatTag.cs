@@ -17,51 +17,31 @@ namespace MapleLib.WzLib.NAudio.Wave.Compression
         /// <summary>
         /// Format Tag Index
         /// </summary>
-        public int FormatTagIndex
-        {
-            get { return formatTagDetails.formatTagIndex; }
-        }
+        public int FormatTagIndex => formatTagDetails.formatTagIndex;
 
         /// <summary>
         /// Format Tag
         /// </summary>
-        public WaveFormatEncoding FormatTag
-        {
-            get { return (WaveFormatEncoding)formatTagDetails.formatTag; }
-        }
+        public WaveFormatEncoding FormatTag => (WaveFormatEncoding)formatTagDetails.formatTag;
 
         /// <summary>
         /// Format Size
         /// </summary>
-        public int FormatSize
-        {
-            get { return formatTagDetails.formatSize; }
-        }
+        public int FormatSize => formatTagDetails.formatSize;
 
         /// <summary>
         /// Support Flags
         /// </summary>
-        public AcmDriverDetailsSupportFlags SupportFlags
-        {
-            get { return formatTagDetails.supportFlags; }
-        }
+        public AcmDriverDetailsSupportFlags SupportFlags => formatTagDetails.supportFlags;
 
         /// <summary>
         /// Standard Formats Count
         /// </summary>
-        public int StandardFormatsCount
-        {
-            get { return formatTagDetails.standardFormatsCount; }
-        }
+        public int StandardFormatsCount => formatTagDetails.standardFormatsCount;
 
         /// <summary>
         /// Format Description
         /// </summary>
-        public string FormatDescription
-        {
-            get { return formatTagDetails.formatDescription; }
-        }
-
-
+        public string FormatDescription => formatTagDetails.formatDescription;
     }
 }

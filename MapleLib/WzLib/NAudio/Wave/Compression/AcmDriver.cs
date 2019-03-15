@@ -214,35 +214,17 @@ namespace MapleLib.WzLib.NAudio.Wave.Compression
         /// <summary>
         /// The short name of this driver
         /// </summary>
-        public string ShortName
-        {
-            get
-            {
-                return details.shortName;
-            }
-        }
+        public string ShortName => details.shortName;
 
         /// <summary>
         /// The full name of this driver
         /// </summary>
-        public string LongName
-        {
-            get
-            {
-                return details.longName;
-            }
-        }
+        public string LongName => details.longName;
 
         /// <summary>
         /// The driver ID
         /// </summary>
-        public IntPtr DriverId
-        {
-            get
-            {
-                return driverId;
-            }
-        }
+        public IntPtr DriverId => driverId;
 
         /// <summary>
         /// ToString

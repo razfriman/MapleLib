@@ -84,8 +84,8 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public float Volume
         {
-            get { return volume; }
-            set { volume = value; }
+            get => volume;
+            set => volume = value;
         }
     }
 }

@@ -20,18 +20,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont {
 			//bw.Write(p.---);
 		}
 
-		public override int Length {
-			get {
-				return 10;
-			}
-		}
+		public override int Length => 10;
 
-		public Modulator[] Modulators
-		{
-			get
-			{
-				return data.ToArray();
-			}
-		}
+		public Modulator[] Modulators => data.ToArray();
 	}
 }

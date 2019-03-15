@@ -41,40 +41,24 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// <summary>
         /// Block alignment of this stream
         /// </summary>
-        public override int BlockAlign
-        {
-            get
-            {
-                // can position to sample level
-                return (WaveFormat.BitsPerSample / 8) * WaveFormat.Channels;
-            }
-        }
+        public override int BlockAlign => (WaveFormat.BitsPerSample / 8) * WaveFormat.Channels;
 
         /// <summary>
         /// Wave Format
         /// </summary>
-        public override WaveFormat WaveFormat
-        {
-            get { return sourceStream.WaveFormat; }
-        }
+        public override WaveFormat WaveFormat => sourceStream.WaveFormat;
 
         /// <summary>
         /// Length of this Stream
         /// </summary>
-        public override long Length
-        {
-            get { return sourceStream.Length; }
-        }
+        public override long Length => sourceStream.Length;
 
         /// <summary>
         /// Current position within stream
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return position;
-            }
+            get => position;
             set
             {
                 lock (lockObject)
@@ -99,14 +83,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
             }
         }
 
-        private long BufferEndPosition
-        {
-            get
-            {
-
-                return bufferStartPosition + circularBuffer.Count;
-            }
-        }
+        private long BufferEndPosition => bufferStartPosition + circularBuffer.Count;
 
         /// <summary>
         /// Disposes this WaveStream

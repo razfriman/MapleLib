@@ -89,7 +89,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get { return SourceToDest(readerStream.Position); }
+            get => SourceToDest(readerStream.Position);
             set { lock (lockObject) { readerStream.Position = DestToSource(value); }  }
         }
 
@@ -128,8 +128,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public float Volume
         {
-            get { return sampleChannel.Volume; }
-            set { sampleChannel.Volume = value; } 
+            get => sampleChannel.Volume;
+            set => sampleChannel.Volume = value;
         }
 
         /// <summary>

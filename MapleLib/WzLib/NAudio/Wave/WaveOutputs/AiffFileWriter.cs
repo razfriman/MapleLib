@@ -110,50 +110,32 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <summary>
         /// The aiff file name or null if not applicable
         /// </summary>
-        public string Filename
-        {
-            get { return filename; }
-        }
+        public string Filename => filename;
 
         /// <summary>
         /// Number of bytes of audio in the data chunk
         /// </summary>
-        public override long Length
-        {
-            get { return dataChunkSize; }
-        }
+        public override long Length => dataChunkSize;
 
         /// <summary>
         /// WaveFormat of this aiff file
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return format; }
-        }
+        public WaveFormat WaveFormat => format;
 
         /// <summary>
         /// Returns false: Cannot read from a AiffFileWriter
         /// </summary>
-        public override bool CanRead
-        {
-            get { return false; }
-        }
+        public override bool CanRead => false;
 
         /// <summary>
         /// Returns true: Can write to a AiffFileWriter
         /// </summary>
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+        public override bool CanWrite => true;
 
         /// <summary>
         /// Returns false: Cannot seek within a AiffFileWriter
         /// </summary>
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+        public override bool CanSeek => false;
 
         /// <summary>
         /// Read is not supported for a AiffFileWriter
@@ -185,8 +167,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// </summary>
         public override long Position
         {
-            get { return dataChunkSize; }
-            set { throw new InvalidOperationException("Repositioning an AiffFileWriter is not supported"); }
+            get => dataChunkSize;
+            set => throw new InvalidOperationException("Repositioning an AiffFileWriter is not supported");
         }
 
         /// <summary>

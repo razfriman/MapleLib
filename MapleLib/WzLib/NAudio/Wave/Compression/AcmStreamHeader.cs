@@ -79,21 +79,9 @@ namespace MapleLib.WzLib.NAudio.Wave.Compression
             return streamHeader.destBufferLengthUsed;
         }
 
-        public byte[] SourceBuffer
-        {
-            get
-            {
-                return sourceBuffer;
-            }
-        }
+        public byte[] SourceBuffer => sourceBuffer;
 
-        public byte[] DestBuffer
-        {
-            get
-            {
-                return destBuffer;
-            }
-        }
+        public byte[] DestBuffer => destBuffer;
 
         #region IDisposable Members
 

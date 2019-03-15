@@ -13,14 +13,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public short Major 
 		{
-			get 
-			{
-				return major;
-			}
-			set 
-			{
-				major = value;			
-			}
+			get => major;
+			set => major = value;
 		}
 
 		/// <summary>
@@ -28,14 +22,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public short Minor 
 		{
-			get 
-			{
-				return minor;
-			}
-			set 
-			{
-				minor = value;			
-			}
+			get => minor;
+			set => minor = value;
 		}
 	}
 }

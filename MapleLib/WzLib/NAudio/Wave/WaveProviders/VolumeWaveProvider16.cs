@@ -37,17 +37,14 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// </summary>
         public float Volume
         {
-            get { return volume; }
-            set { volume = value; }
+            get => volume;
+            set => volume = value;
         }
 
         /// <summary>
         /// WaveFormat of this WaveProvider
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return sourceProvider.WaveFormat; }
-        }
+        public WaveFormat WaveFormat => sourceProvider.WaveFormat;
 
         /// <summary>
         /// Read bytes from this WaveProvider

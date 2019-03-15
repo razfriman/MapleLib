@@ -117,20 +117,15 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveInputs
         /// <summary>
         /// Current Capturing State
         /// </summary>
-        public CaptureState CaptureState {  get { return captureState; } }
+        public CaptureState CaptureState => captureState;
 
         /// <summary>
         /// Capturing wave format
         /// </summary>
         public virtual WaveFormat WaveFormat 
         {
-            get
-            {
-                // for convenience, return a WAVEFORMATEX, instead of the real
-                // WAVEFORMATEXTENSIBLE being used
-                return waveFormat.AsStandardWaveFormat();
-            }
-            set { waveFormat = value; }
+            get => waveFormat.AsStandardWaveFormat();
+            set => waveFormat = value;
         }
 
         /// <summary>

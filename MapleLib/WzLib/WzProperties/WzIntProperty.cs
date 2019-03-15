@@ -28,11 +28,14 @@ namespace MapleLib.WzLib.WzProperties
             return clone;
         }
 
-        public override object WzValue { get { return Value; } }
+        public override object WzValue => Value;
+
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+        public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
         /*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -40,11 +43,14 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
-        public override WzPropertyType PropertyType { get { return WzPropertyType.Int; } }
+        public override WzPropertyType PropertyType => WzPropertyType.Int;
+
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name { get => name;
+            set => name = value;
+        }
         public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
         {
             writer.Write((byte)3);
@@ -67,7 +73,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The value of the property
         /// </summary>
-        public int Value { get { return val; } set { val = value; } }
+        public int Value { get => val;
+            set => val = value;
+        }
         /// <summary>
         /// Creates a blank WzCompressedIntProperty
         /// </summary>

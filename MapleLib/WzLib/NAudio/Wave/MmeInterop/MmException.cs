@@ -44,12 +44,6 @@ namespace MapleLib.WzLib.NAudio.Wave.MmeInterop
         /// <summary>
         /// Returns the Windows API result
         /// </summary>
-        public MmResult Result
-        {
-            get
-            {
-                return result;
-            }
-        }
+        public MmResult Result => result;
     }
 }

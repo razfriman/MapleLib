@@ -37,34 +37,16 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <summary>
         /// Gets the manufacturer of this device
         /// </summary>
-        public Manufacturers Manufacturer
-        {
-            get 
-            {
-                return (Manufacturers)manufacturerId;
-            }
-        }
-        
+        public Manufacturers Manufacturer => (Manufacturers)manufacturerId;
+
         /// <summary>
         /// Gets the product identifier (manufacturer specific)
         /// </summary>
-        public int ProductId 
-        {
-            get 
-            {
-                return productId;
-            }
-        }
-        
+        public int ProductId => productId;
+
         /// <summary>
         /// Gets the product name
         /// </summary>
-        public string ProductName 
-        {
-            get 
-            {
-                return productName;
-            }
-        }
+        public string ProductName => productName;
     }
 }

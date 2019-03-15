@@ -61,10 +61,7 @@ namespace MapleLib.WzLib.NAudio.CoreAudioApi
                 Marshal.ThrowExceptionForHR(audioEndpointVolume.GetChannelVolumeLevel(channel,out var result));
                 return result;
             }
-            set
-            {
-                Marshal.ThrowExceptionForHR(audioEndpointVolume.SetChannelVolumeLevel(channel, value, ref notificationGuid));
-            }
+            set => Marshal.ThrowExceptionForHR(audioEndpointVolume.SetChannelVolumeLevel(channel, value, ref notificationGuid));
         }
 
         /// <summary>
@@ -77,10 +74,7 @@ namespace MapleLib.WzLib.NAudio.CoreAudioApi
                 Marshal.ThrowExceptionForHR(audioEndpointVolume.GetChannelVolumeLevelScalar(channel, out var result));
                 return result;
             }
-            set
-            {
-                Marshal.ThrowExceptionForHR(audioEndpointVolume.SetChannelVolumeLevelScalar(channel, value, ref notificationGuid));
-            }
+            set => Marshal.ThrowExceptionForHR(audioEndpointVolume.SetChannelVolumeLevelScalar(channel, value, ref notificationGuid));
         }
 
     }

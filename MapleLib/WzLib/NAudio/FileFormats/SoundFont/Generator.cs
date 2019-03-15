@@ -17,14 +17,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public GeneratorEnum GeneratorType 
 		{
-			get 
-			{
-				return generatorType;
-			}
-			set 
-			{
-				generatorType = value;
-			}
+			get => generatorType;
+			set => generatorType = value;
 		}
 		
 		/// <summary>
@@ -32,14 +26,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public ushort UInt16Amount 
 		{
-			get 
-			{
-				return rawAmount;
-			}
-			set 
-			{
-				rawAmount = value;
-			}
+			get => rawAmount;
+			set => rawAmount = value;
 		}
 		
 		/// <summary>
@@ -47,14 +35,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public short Int16Amount 
 		{
-			get 
-			{
-				return (short) rawAmount;
-			}
-			set 
-			{
-				rawAmount = (ushort) value;
-			}
+			get => (short) rawAmount;
+			set => rawAmount = (ushort) value;
 		}
 		
 		/// <summary>
@@ -62,10 +44,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public byte LowByteAmount 
 		{
-			get 
-			{
-				return (byte) (rawAmount & 0x00FF);
-			}
+			get => (byte) (rawAmount & 0x00FF);
 			set 
 			{
 				rawAmount &= 0xFF00;
@@ -78,10 +57,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public byte HighByteAmount 
 		{
-			get 
-			{
-				return (byte) ((rawAmount & 0xFF00) >> 8);
-			}
+			get => (byte) ((rawAmount & 0xFF00) >> 8);
 			set 
 			{
 				rawAmount &= 0x00FF;
@@ -94,14 +70,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public Instrument Instrument
 		{
-			get
-			{
-				return instrument;
-			}
-			set
-			{
-				instrument = value;
-			}
+			get => instrument;
+			set => instrument = value;
 		}
 
 		/// <summary>
@@ -109,14 +79,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public SampleHeader SampleHeader
 		{
-			get
-			{
-				return sampleHeader;
-			}
-			set
-			{
-				sampleHeader = value;
-			}
+			get => sampleHeader;
+			set => sampleHeader = value;
 		}
 
 		/// <summary>

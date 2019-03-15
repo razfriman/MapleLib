@@ -94,10 +94,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// <summary>
         /// The number of inputs to this mixer
         /// </summary>
-        public int InputCount
-        {
-            get { return this.inputs.Count; }
-        }
+        public int InputCount => this.inputs.Count;
 
         /// <summary>
         /// Reads bytes from this wave stream
@@ -157,9 +154,6 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// <summary>
         /// <see cref="WaveStream.WaveFormat"/>
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return this.waveFormat; }
-        }
+        public WaveFormat WaveFormat => this.waveFormat;
     }
 }

@@ -57,10 +57,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public virtual int NoteNumber
         {
-            get
-            {
-                return noteNumber;
-            }
+            get => noteNumber;
             set
             {
                 if (value < 0 || value > 127)
@@ -76,10 +73,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public int Velocity
         {
-            get
-            {
-                return velocity;
-            }
+            get => velocity;
             set
             {
                 if (value < 0 || value > 127)

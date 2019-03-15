@@ -60,9 +60,6 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveProviders
         /// <summary>
         /// The Wave Format
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return waveFormat; }
-        }
+        public WaveFormat WaveFormat => waveFormat;
     }
 }

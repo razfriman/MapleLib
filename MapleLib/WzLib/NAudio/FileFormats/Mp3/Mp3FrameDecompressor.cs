@@ -35,7 +35,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
         /// <summary>
         /// Output format (PCM)
         /// </summary>
-        public WaveFormat OutputFormat { get { return pcmFormat; } }
+        public WaveFormat OutputFormat => pcmFormat;
 
         /// <summary>
         /// Decompresses a frame

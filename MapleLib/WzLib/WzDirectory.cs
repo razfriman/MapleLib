@@ -27,20 +27,21 @@ namespace MapleLib.WzLib
 		/// <summary>  
 		/// The parent of the object
 		/// </summary>
-		public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+		public override WzObject Parent { get => parent;
+			internal set => parent = value;
+		}
 		/// <summary>
 		/// The name of the directory
 		/// </summary>
-		public override string Name { get { return name; } set { name = value; } }
+		public override string Name { get => name;
+			set => name = value;
+		}
 		/// <summary>
 		/// The WzObjectType of the directory
 		/// </summary>
-		public override WzObjectType ObjectType { get { return WzObjectType.Directory; } }
+		public override WzObjectType ObjectType => WzObjectType.Directory;
 
-        public override /*I*/WzFile WzFileParent
-        {
-            get { return wzFile; }
-        }
+		public override /*I*/WzFile WzFileParent => wzFile;
 
 		/// <summary>
 		/// Disposes the obejct
@@ -70,23 +71,31 @@ namespace MapleLib.WzLib
         /// <summary>
 		/// The size of the directory in the wz file
 		/// </summary>
-		public int BlockSize { get { return size; } set { size = value; } }
+		public int BlockSize { get => size;
+	        set => size = value;
+        }
 		/// <summary>
 		/// The directory's chceksum
 		/// </summary>
-		public int Checksum { get { return checksum; } set { checksum = value; } }
+		public int Checksum { get => checksum;
+			set => checksum = value;
+		}
 		/// <summary>
 		/// The wz images contained in the directory
 		/// </summary>
-		public List<WzImage> WzImages { get { return images; } }
+		public List<WzImage> WzImages => images;
+
 		/// <summary>
 		/// The sub directories contained in the directory
 		/// </summary>
-		public List<WzDirectory> WzDirectories { get { return subDirs; } }
+		public List<WzDirectory> WzDirectories => subDirs;
+
 		/// <summary>
 		/// Offset of the folder
 		/// </summary>
-		public uint Offset { get { return offset; } set { offset = value; } }
+		public uint Offset { get => offset;
+			set => offset = value;
+		}
 		/// <summary>
 		/// Returns a WzImage or a WzDirectory with the given name
 		/// </summary>

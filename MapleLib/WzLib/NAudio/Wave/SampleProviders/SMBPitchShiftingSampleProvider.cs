@@ -126,8 +126,8 @@ namespace MapleLib.WzLib.NAudio.Wave.SampleProviders
         /// </summary>
         public float PitchFactor
         {
-            get { return pitch; }
-            set { pitch = value; }
+            get => pitch;
+            set => pitch = value;
         }
 
         private float Limiter(float sample)

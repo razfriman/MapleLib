@@ -34,18 +34,13 @@ namespace MapleLib.WzLib.NAudio.Dmo
         /// <summary>
         /// Number of input streams
         /// </summary>
-        public int InputStreamCount
-        {
-            get { return inputStreams; }
-        }
+        public int InputStreamCount => inputStreams;
 
         /// <summary>
         /// Number of output streams
         /// </summary>
-        public int OutputStreamCount
-        {
-            get { return outputStreams; }
-        }
+        public int OutputStreamCount => outputStreams;
+
         #endregion
 
         #region Get Input and Output Types

@@ -37,10 +37,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public double MakeUpGain
         {
-            get 
-            { 
-                return simpleCompressor.MakeUpGain; 
-            }
+            get => simpleCompressor.MakeUpGain;
             set 
             {
                 lock (lockObject)
@@ -55,10 +52,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public double Threshold
         {
-            get 
-            { 
-                return simpleCompressor.Threshold; 
-            }
+            get => simpleCompressor.Threshold;
             set 
             {
                 lock (lockObject)
@@ -73,10 +67,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public double Ratio
         {
-            get 
-            { 
-                return simpleCompressor.Ratio; 
-            }
+            get => simpleCompressor.Ratio;
             set 
             {
                 lock (lockObject)
@@ -91,10 +82,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public double Attack
         {
-            get
-            {
-                return simpleCompressor.Attack;
-            }
+            get => simpleCompressor.Attack;
             set
             {
                 lock (lockObject)
@@ -109,10 +97,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public double Release
         {
-            get
-            {
-                return simpleCompressor.Release;
-            }
+            get => simpleCompressor.Release;
             set
             {
                 lock (lockObject)
@@ -150,10 +135,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// </summary>
         public override long Position
         {
-            get
-            {
-                return sourceStream.Position;
-            }
+            get => sourceStream.Position;
             set
             {
                 lock (lockObject)
@@ -283,14 +265,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// <summary>
         /// Gets the block alignment for this stream
         /// </summary>
-        public override int BlockAlign
-        {
-            get
-            {
-                // TODO: investigate forcing 20ms
-                return sourceStream.BlockAlign;
-            }
-        }
+        public override int BlockAlign => sourceStream.BlockAlign;
     }
 }
 

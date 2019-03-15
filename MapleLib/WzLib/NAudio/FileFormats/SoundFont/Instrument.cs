@@ -17,15 +17,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public string Name 
 		{
-			get 
-			{
-				return name;
-			}
-			set 
-			{
-				// TODO: validate
-				name = value;
-			}
+			get => name;
+			set => name = value;
 		}
 
 		/// <summary>
@@ -33,14 +26,8 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 		/// </summary>
 		public Zone[] Zones
 		{
-			get
-			{
-				return zones;
-			}
-			set
-			{
-				zones = value;
-			}
+			get => zones;
+			set => zones = value;
 		}
 
 		/// <summary>

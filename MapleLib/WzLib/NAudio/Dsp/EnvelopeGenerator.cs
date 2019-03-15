@@ -70,10 +70,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
         /// </summary>
         public float AttackRate
         {
-            get
-            {
-                return attackRate;
-            }
+            get => attackRate;
             set
             {
                 attackRate = value;
@@ -87,10 +84,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
         /// </summary>
         public float DecayRate
         {
-            get
-            {
-                return decayRate;
-            }
+            get => decayRate;
             set
             {
                 decayRate = value;
@@ -104,10 +98,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
         /// </summary>
         public float ReleaseRate
         {
-            get
-            {
-                return releaseRate;
-            }
+            get => releaseRate;
             set
             {
                 releaseRate = value;
@@ -126,10 +117,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
         /// </summary>
         public float SustainLevel
         {
-            get
-            {
-                return sustainLevel;
-            }
+            get => sustainLevel;
             set
             {
                 sustainLevel = value;
@@ -225,13 +213,7 @@ namespace MapleLib.WzLib.NAudio.Dsp
         /// <summary>
         /// Current envelope state
         /// </summary>
-        public EnvelopeState State
-        {
-            get
-            {
-                return state;
-            }
-        }
+        public EnvelopeState State => state;
 
         /// <summary>
         /// Reset to idle state

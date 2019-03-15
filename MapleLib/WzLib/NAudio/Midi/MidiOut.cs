@@ -16,13 +16,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <summary>
         /// Gets the number of MIDI devices available in the system
         /// </summary>
-        public static int NumberOfDevices 
-        {
-            get 
-            {
-                return MidiInterop.midiOutGetNumDevs();
-            }
-        }
+        public static int NumberOfDevices => MidiInterop.midiOutGetNumDevs();
 
         /// <summary>
         /// Gets the MIDI Out device info
@@ -76,10 +70,7 @@ namespace MapleLib.WzLib.NAudio.Midi
                 MmException.Try(MidiInterop.midiOutGetVolume(hMidiOut,ref volume),"midiOutGetVolume");
                 return volume;
             }
-            set 
-            {
-                MmException.Try(MidiInterop.midiOutSetVolume(hMidiOut,value),"midiOutSetVolume");
-            }
+            set => MmException.Try(MidiInterop.midiOutSetVolume(hMidiOut,value),"midiOutSetVolume");
         }
 
         /// <summary>

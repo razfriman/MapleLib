@@ -76,10 +76,7 @@ namespace MapleLib.WzLib.NAudio.CoreAudioApi
                 Marshal.ThrowExceptionForHR(simpleAudioVolume.GetMute(out var result));
                 return result;
             }
-            set
-            {
-                Marshal.ThrowExceptionForHR(simpleAudioVolume.SetMute(value, Guid.Empty));
-            }
+            set => Marshal.ThrowExceptionForHR(simpleAudioVolume.SetMute(value, Guid.Empty));
         }
     }
 }

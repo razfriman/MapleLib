@@ -80,8 +80,8 @@ namespace MapleLib.WzLib
         /// </summary>
         public virtual object HCTag
         {
-            get { return tag; }
-            set { tag = value; }
+            get => tag;
+            set => tag = value;
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace MapleLib.WzLib
         /// </summary>
         public virtual object MSTag
         {
-            get { return tag2; }
-            set { tag2 = value; }
+            get => tag2;
+            set => tag2 = value;
         }
 
         /// <summary>
@@ -98,13 +98,13 @@ namespace MapleLib.WzLib
         /// </summary>
         public virtual object HRTag
         {
-            get { return tag3; }
-            set { tag3 = value; }
+            get => tag3;
+            set => tag3 = value;
         }
 
-        public virtual object WzValue { get { return null; } }
+        public virtual object WzValue => null;
 
-        public abstract void Remove();
+	    public abstract void Remove();
 
         //Credits to BluePoop for the idea of using cast overriding
         //2015 - That is the worst idea ever, removed and replaced with Get* methods

@@ -74,33 +74,49 @@ namespace MapleLib.WzLib
         /// <summary>
 		/// The parent of the object
 		/// </summary>
-		public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+		public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
         /// <summary>
         /// The name of the image
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
-        public override WzFile WzFileParent { get { return Parent != null ? Parent.WzFileParent : null; } }
+        public override string Name { get => name;
+            set => name = value;
+        }
+        public override WzFile WzFileParent => Parent != null ? Parent.WzFileParent : null;
+
         /// <summary>
         /// Is the object parsed
         /// </summary>
-        public bool Parsed { get { return parsed; } set { parsed = value; } }
+        public bool Parsed { get => parsed;
+            set => parsed = value;
+        }
         /// <summary>
         /// Was the image changed
         /// </summary>
-        public bool Changed { get { return changed; } set { changed = value; } }
+        public bool Changed { get => changed;
+            set => changed = value;
+        }
         /// <summary>
         /// The size in the wz file of the image
         /// </summary>
-        public int BlockSize { get { return size; } set { size = value; } }
+        public int BlockSize { get => size;
+            set => size = value;
+        }
         /// <summary>
         /// The checksum of the image
         /// </summary>
-        public int Checksum { get { return checksum; } set { checksum = value; } }
+        public int Checksum { get => checksum;
+            set => checksum = value;
+        }
         /// <summary>
         /// The offset of the image
         /// </summary>
-        public uint Offset { get { return offset; } set { offset = value; } }
-        public int BlockStart { get { return blockStart; } }
+        public uint Offset { get => offset;
+            set => offset = value;
+        }
+        public int BlockStart => blockStart;
+
         /// <summary>
         /// The WzObjectType of the image
         /// </summary>

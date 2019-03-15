@@ -41,10 +41,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public byte[] Data
         {
-            get
-            {
-                return this.data;
-            }
+            get => this.data;
             set
             {
                 this.data = value;

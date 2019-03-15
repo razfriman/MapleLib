@@ -189,18 +189,11 @@ namespace MapleLib.WzLib.NAudio.FileFormats.Mp3
         /// <summary>
         /// VBR Scale property
         /// </summary>
-        public int VbrScale
-        {
-            get { return vbrScale; }
-        }
+        public int VbrScale => vbrScale;
 
         /// <summary>
         /// The MP3 frame
         /// </summary>
-        public Mp3Frame Mp3Frame
-        {
-            get { return frame; }
-        }
-
+        public Mp3Frame Mp3Frame => frame;
     }
 }

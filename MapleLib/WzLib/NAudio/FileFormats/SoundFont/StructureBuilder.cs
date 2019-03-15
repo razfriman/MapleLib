@@ -25,13 +25,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 			data = new List<T>();
 		}
 		
-		public T[] Data 
-		{ 
-			get
-			{
-				return data.ToArray();
-			}
-		}
+		public T[] Data => data.ToArray();
 	}
 
 }

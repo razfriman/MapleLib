@@ -315,28 +315,19 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveStreams
         /// <summary>
         /// WaveFormat of this stream (n.b. this is after converting to PCM)
         /// </summary>
-        public override WaveFormat WaveFormat
-        {
-            get { return waveFormat; }
-        }
+        public override WaveFormat WaveFormat => waveFormat;
 
         /// <summary>
         /// The bytesRequired of this stream in bytes (n.b may not be accurate)
         /// </summary>
-        public override long Length
-        {
-            get
-            {
-                return length;
-            }
-        }
+        public override long Length => length;
 
         /// <summary>
         /// Current position within this stream
         /// </summary>
         public override long Position
         {
-            get { return position; }
+            get => position;
             set
             {
                 if (value < 0)

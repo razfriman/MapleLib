@@ -13,14 +13,8 @@ namespace MapleLib.WzLib.NAudio.Mixer
         private MixerFlags mixerHandleType;
 		
 		/// <summary>The number of mixer devices available</summary>	
-		public static int NumberOfDevices 
-		{
-			get 
-			{
-				return MixerInterop.mixerGetNumDevs();
-			}
-		}
-		
+		public static int NumberOfDevices => MixerInterop.mixerGetNumDevs();
+
 		/// <summary>Connects to the specified mixer</summary>
         /// <param name="mixerIndex">The index of the mixer to use. 
 		/// This should be between zero and NumberOfDevices - 1</param>
@@ -40,41 +34,17 @@ namespace MapleLib.WzLib.NAudio.Mixer
 		}
 
 		/// <summary>The number of destinations this mixer supports</summary>
-		public int DestinationCount 
-		{
-			get 
-			{
-				return (int) caps.cDestinations;
-			}
-		}
-		
+		public int DestinationCount => (int) caps.cDestinations;
+
 		/// <summary>The name of this mixer device</summary>
-		public String Name 
-		{
-			get 
-			{
-				return caps.szPname;
-			}
-		}
-		
+		public String Name => caps.szPname;
+
 		/// <summary>The manufacturer code for this mixer device</summary>
-		public Manufacturers Manufacturer 
-		{
-			get 
-			{
-				return (Manufacturers) caps.wMid;
-			}
-		}
+		public Manufacturers Manufacturer => (Manufacturers) caps.wMid;
 
 		/// <summary>The product identifier code for this mixer device</summary>
-		public int ProductID 
-		{
-			get 
-			{
-				return caps.wPid;
-			}
-		}
-		
+		public int ProductID => caps.wPid;
+
 		/// <summary>Retrieve the specified MixerDestination object</summary>
         /// <param name="destinationIndex">The ID of the destination to use.
 		/// Should be between 0 and DestinationCount - 1</param>

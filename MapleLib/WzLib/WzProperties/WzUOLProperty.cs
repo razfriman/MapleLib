@@ -50,7 +50,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+        public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
 
         /*/// <summary>
 		/// The image that this property is contained in
@@ -60,26 +62,15 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The name of the property
         /// </summary>
-        public override string Name { get { return name; } set { name = value; } }
+        public override string Name { get => name;
+            set => name = value;
+        }
 
 #if UOLRES
-        public override List<WzImageProperty> WzProperties
-        {
-            get
-            {
-                return LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue).WzProperties : null;
-            }
-        }
+        public override List<WzImageProperty> WzProperties => LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue).WzProperties : null;
 
 
-        public override WzImageProperty this[string name]
-        {
-            get
-            {
-
-                return LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue)[name] : LinkValue is WzImage ? ((WzImage)LinkValue)[name] : null;
-            }
-        }
+        public override WzImageProperty this[string name] => LinkValue is WzImageProperty ? ((WzImageProperty)LinkValue)[name] : LinkValue is WzImage ? ((WzImage)LinkValue)[name] : null;
 
         public override WzImageProperty GetFromPath(string path)
         {
@@ -90,7 +81,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
-        public override WzPropertyType PropertyType { get { return WzPropertyType.UOL; } }
+        public override WzPropertyType PropertyType => WzPropertyType.UOL;
 
         public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
         {
@@ -118,7 +109,9 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The value of the property
         /// </summary>
-        public string Value { get { return val; } set { val = value; } }
+        public string Value { get => val;
+            set => val = value;
+        }
 
 #if UOLRES
         public WzObject LinkValue

@@ -26,14 +26,8 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// <summary>
         /// Gets the number of MIDI input devices available in the system
         /// </summary>
-        public static int NumberOfDevices 
-        {
-            get 
-            {
-                return MidiInterop.midiInGetNumDevs();
-            }
-        }
-        
+        public static int NumberOfDevices => MidiInterop.midiInGetNumDevs();
+
         /// <summary>
         /// Opens a specified MIDI in device
         /// </summary>

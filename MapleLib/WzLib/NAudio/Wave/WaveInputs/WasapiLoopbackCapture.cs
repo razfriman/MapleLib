@@ -43,8 +43,8 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveInputs
         /// </summary>
         public override WaveFormat WaveFormat
         {
-            get { return base.WaveFormat; }
-            set { throw new InvalidOperationException("WaveFormat cannot be set for WASAPI Loopback Capture"); }
+            get => base.WaveFormat;
+            set => throw new InvalidOperationException("WaveFormat cannot be set for WASAPI Loopback Capture");
         }
         
         /// <summary>

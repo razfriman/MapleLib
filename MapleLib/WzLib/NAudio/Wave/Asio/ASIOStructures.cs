@@ -34,7 +34,7 @@ namespace MapleLib.WzLib.NAudio.Wave.Asio
 
         public AsioError Error
         {
-            get { return error; }
+            get => error;
             set
             {
                 error = value;

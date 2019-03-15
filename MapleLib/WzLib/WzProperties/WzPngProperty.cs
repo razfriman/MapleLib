@@ -49,11 +49,14 @@ namespace MapleLib.WzLib.WzProperties
             return clone;
         }
 
-        public override object WzValue { get { return GetPNG(false); } }
+        public override object WzValue => GetPNG(false);
+
         /// <summary>
         /// The parent of the object
         /// </summary>
-        public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+        public override WzObject Parent { get => parent;
+            internal set => parent = value;
+        }
         /*/// <summary>
         /// The image that this property is contained in
         /// </summary>
@@ -65,7 +68,8 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The WzPropertyType of the property
         /// </summary>
-        public override WzPropertyType PropertyType { get { return WzPropertyType.PNG; } }
+        public override WzPropertyType PropertyType => WzPropertyType.PNG;
+
         public override void WriteValue(WzBinaryWriter writer)
         {
             throw new NotImplementedException("Cannot write a PngProperty");
@@ -88,17 +92,23 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The width of the bitmap
         /// </summary>
-        public int Width { get { return width; } set { width = value; } }
+        public int Width { get => width;
+            set => width = value;
+        }
         /// <summary>
         /// The height of the bitmap
         /// </summary>
-        public int Height { get { return height; } set { height = value; } }
+        public int Height { get => height;
+            set => height = value;
+        }
         /// <summary>
         /// The format of the bitmap
         /// </summary>
-        public int Format { get { return format + format2; } set { format = value; format2 = 0; } }
+        public int Format { get => format + format2;
+            set { format = value; format2 = 0; } }
 
-        public bool ListWzUsed { get { return listWzUsed; } set { if (value != listWzUsed) { listWzUsed = value; CompressPng(GetPNG(false)); } } }
+        public bool ListWzUsed { get => listWzUsed;
+            set { if (value != listWzUsed) { listWzUsed = value; CompressPng(GetPNG(false)); } } }
         /// <summary>
         /// The actual bitmap
         /// </summary>
@@ -112,13 +122,7 @@ namespace MapleLib.WzLib.WzProperties
         }
 
         [Obsolete("To enable more control over memory usage, this property was superseded by the GetCompressedBytes method and will be removed in the future")]
-        public byte[] CompressedBytes
-        {
-            get
-            {
-                return GetCompressedBytes(false);
-            }
-        }
+        public byte[] CompressedBytes => GetCompressedBytes(false);
 
         /// <summary>
         /// Creates a blank WzPngProperty

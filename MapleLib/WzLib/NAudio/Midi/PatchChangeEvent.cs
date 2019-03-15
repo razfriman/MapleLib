@@ -70,10 +70,7 @@ namespace MapleLib.WzLib.NAudio.Midi
         /// </summary>
         public int Patch
         {
-            get
-            {
-                return patch;
-            }
+            get => patch;
             set
             {
                 if (value < 0 || value > 127)

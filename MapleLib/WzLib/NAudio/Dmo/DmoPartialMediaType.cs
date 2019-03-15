@@ -12,14 +12,14 @@ namespace MapleLib.WzLib.NAudio.Dmo
 
         public Guid Type
         {
-            get { return type; }
-            internal set { type = value; }
+            get => type;
+            internal set => type = value;
         }
 
         public Guid Subtype
         {
-            get { return subtype; }
-            internal set { subtype = value; }
+            get => subtype;
+            internal set => subtype = value;
         }
     }
 }

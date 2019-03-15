@@ -31,49 +31,47 @@ namespace MapleLib.WzLib
         /// <summary>
         /// The parsed IWzDir after having called ParseWzDirectory(), this can either be a WzDirectory or a WzListDirectory
         /// </summary>
-        public WzDirectory WzDirectory
-        {
-            get { return wzDir; }
-        }
+        public WzDirectory WzDirectory => wzDir;
 
         /// <summary>
         /// Name of the WzFile
         /// </summary>
         public override string Name
         {
-            get { return name; }
-            set { name = value; }
+            get => name;
+            set => name = value;
         }
 
         /// <summary>
         /// The WzObjectType of the file
         /// </summary>
-        public override WzObjectType ObjectType
-        {
-            get { return WzObjectType.File; }
-        }
+        public override WzObjectType ObjectType => WzObjectType.File;
 
         /// <summary>
         /// Returns WzDirectory[name]
         /// </summary>
         /// <param name="name">Name</param>
         /// <returns>WzDirectory[name]</returns>
-        public new WzObject this[string name]
-        {
-            get { return WzDirectory[name]; }
+        public new WzObject this[string name] => WzDirectory[name];
+
+        public WzHeader Header { get => header;
+            set => header = value;
         }
 
-        public WzHeader Header { get { return header; } set { header = value; } }
+        public short Version { get => fileVersion;
+            set => fileVersion = value;
+        }
 
-        public short Version { get { return fileVersion; } set { fileVersion = value; } }
+        public string FilePath => path;
 
-        public string FilePath { get { return path; } }
+        public WzMapleVersion MapleVersion { get => mapleVersion;
+            set => mapleVersion = value;
+        }
 
-        public WzMapleVersion MapleVersion { get { return mapleVersion; } set { mapleVersion = value; } }
+        public override WzObject Parent { get => null;
+            internal set { } }
 
-        public override WzObject Parent { get { return null; } internal set { } }
-
-        public override WzFile WzFileParent { get { return this; } }
+        public override WzFile WzFileParent => this;
 
         public override void Dispose()
         {

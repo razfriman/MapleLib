@@ -29,7 +29,9 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The parent of the object
 		/// </summary>
-		public override WzObject Parent { get { return parent; } internal set { parent = value; } }
+		public override WzObject Parent { get => parent;
+			internal set => parent = value;
+		}
 		/*/// <summary>
 		/// The image that this property is contained in
 		/// </summary>
@@ -37,16 +39,20 @@ namespace MapleLib.WzLib.WzProperties
 		/// <summary>
 		/// The WzPropertyType of the property
 		/// </summary>
-		public override WzPropertyType PropertyType { get { return WzPropertyType.Null; } }
+		public override WzPropertyType PropertyType => WzPropertyType.Null;
+
 		/// <summary>
 		/// The name of the property
 		/// </summary>
 		/// 
-		public override string Name { get { return name; } set { name = value; } }
+		public override string Name { get => name;
+			set => name = value;
+		}
 		/// <summary>
 		/// The WzObjectType of the property
 		/// </summary>
-		public override WzObjectType ObjectType { get { return WzObjectType.Property; } }
+		public override WzObjectType ObjectType => WzObjectType.Property;
+
 		public override void WriteValue(MapleLib.WzLib.Util.WzBinaryWriter writer)
 		{
 			writer.Write((byte)0);

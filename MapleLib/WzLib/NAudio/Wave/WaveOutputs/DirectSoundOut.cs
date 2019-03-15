@@ -338,10 +338,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// Current playback state
         /// </summary>
         /// <value></value>
-        public PlaybackState PlaybackState
-        {
-            get { return playbackState; }
-        }
+        public PlaybackState PlaybackState => playbackState;
 
         /// <summary>
         /// The volume 1.0 is full scale
@@ -349,11 +346,7 @@ namespace MapleLib.WzLib.NAudio.Wave.WaveOutputs
         /// <value></value>
         public float Volume
         {
-            get
-            {
-                return 1.0f;
-                //return 1 + (secondaryBuffer.GetVolume()) / 10000.0f;
-            }
+            get => 1.0f;
             set
             {
                 if (value != 1.0f)

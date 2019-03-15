@@ -36,11 +36,7 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
         {			
 		}
 
-		public override int Length {
-			get {
-				return 38;
-			}
-		}
+		public override int Length => 38;
 
 		public void LoadZones(Zone[] presetZones)
 		{
@@ -55,12 +51,6 @@ namespace MapleLib.WzLib.NAudio.FileFormats.SoundFont
 			data.RemoveAt(data.Count - 1);
 		}
 
-		public Preset[] Presets
-		{
-			get
-			{
-				return data.ToArray();
-			}
-		}
+		public Preset[] Presets => data.ToArray();
 	}
 }
