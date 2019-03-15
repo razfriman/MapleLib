@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.IO;
+using System.Linq;
 using MapleLib.MapleCryptoLib;
 
 namespace MapleLib.WzLib.Util
@@ -80,11 +81,7 @@ namespace MapleLib.WzLib.Util
             }
             else
             {
-                var unicode = false;
-                for (var i = 0; i < value.Length; i++)
-                {
-                    unicode |= value[i] > sbyte.MaxValue;
-                }
+                var unicode = value.Aggregate(false, (current, t) => current | t > sbyte.MaxValue);
 
                 if (unicode)
                 {
@@ -120,7 +117,7 @@ namespace MapleLib.WzLib.Util
                     }
                     else
                     {
-                        Write((sbyte) (-value.Length));
+                        Write((sbyte) -value.Length);
                     }
 
                     for (var i = 0; i < value.Length; i++)
@@ -155,7 +152,7 @@ namespace MapleLib.WzLib.Util
             var outputChars = new char[stringToDecrypt.Length];
             for (var i = 0; i < stringToDecrypt.Length; i++)
             {
-                outputChars[i] = (char) (stringToDecrypt[i] ^ ((char) ((WzKey[i * 2 + 1] << 8) + WzKey[i * 2])));
+                outputChars[i] = (char) (stringToDecrypt[i] ^ (char) ((WzKey[i * 2 + 1] << 8) + WzKey[i * 2]));
             }
 
             return outputChars;
@@ -174,9 +171,9 @@ namespace MapleLib.WzLib.Util
 
         public void WriteNullTerminatedString(string value)
         {
-            for (var i = 0; i < value.Length; i++)
+            foreach (var chr in value)
             {
-                Write((byte) value[i]);
+                Write((byte) chr);
             }
 
             Write((byte) 0);
@@ -215,19 +212,13 @@ namespace MapleLib.WzLib.Util
             encOffset *= Hash;
             encOffset -= CryptoConstants.WzOffsetConstant;
             encOffset = RotateLeft(encOffset, (byte) (encOffset & 0x1F));
-            var writeOffset = encOffset ^ (value - (Header.FStart * 2));
+            var writeOffset = encOffset ^ (value - Header.FStart * 2);
             Write(writeOffset);
         }
 
-        private uint RotateLeft(uint x, byte n)
-        {
-            return ((x) << (n)) | ((x) >> (32 - (n)));
-        }
+        private static uint RotateLeft(uint x, byte n) => (x << n) | (x >> (32 - n));
 
-        private uint RotateRight(uint x, byte n)
-        {
-            return ((x) >> (n)) | ((x) << (32 - (n)));
-        }
+        private static uint RotateRight(uint x, byte n) => (x >> n) | (x << (32 - n));
 
         public override void Close()
         {

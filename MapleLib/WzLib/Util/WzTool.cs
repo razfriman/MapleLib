@@ -9,14 +9,14 @@ namespace MapleLib.WzLib.Util
     {
         public static Hashtable StringCache = new Hashtable();
 
-        public static UInt32 RotateLeft(UInt32 x, byte n)
+        public static uint RotateLeft(uint x, byte n)
         {
-            return ((x) << (n)) | ((x) >> (32 - (n)));
+            return (x << n) | (x >> (32 - n));
         }
 
-        public static UInt32 RotateRight(UInt32 x, byte n)
+        public static uint RotateRight(uint x, byte n)
         {
-            return ((x) >> (n)) | ((x) << (32 - (n)));
+            return (x >> n) | (x << (32 - n));
         }
 
         public static int GetCompressedIntLength(int i)

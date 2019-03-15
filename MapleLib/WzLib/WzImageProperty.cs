@@ -15,16 +15,13 @@ namespace MapleLib.WzLib
 
         public virtual List<WzImageProperty> WzProperties => null;
 
-        public virtual new WzImageProperty this[string name]
+        public new virtual WzImageProperty this[string name]
         {
             get => null;
             set => throw new NotImplementedException();
         }
 
-        public virtual WzImageProperty GetFromPath(string path)
-        {
-            return null;
-        }
+        public virtual WzImageProperty GetFromPath(string path) => null;
 
         public abstract WzPropertyType PropertyType { get; }
 

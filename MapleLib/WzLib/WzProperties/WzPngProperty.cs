@@ -278,27 +278,29 @@ namespace MapleLib.WzLib.WzProperties
             return buffer;
         }
 
-        internal byte[] Compress(byte[] decompressedBuffer)
+        internal static byte[] Compress(byte[] decompressedBuffer)
         {
-            var memStream = new MemoryStream();
-            var zip = new DeflateStream(memStream, CompressionMode.Compress, true);
-            zip.Write(decompressedBuffer, 0, decompressedBuffer.Length);
-            zip.Close();
-            memStream.Position = 0;
-            var buffer = new byte[memStream.Length + 2];
-            memStream.Read(buffer, 2, buffer.Length - 2);
-            memStream.Close();
-            memStream.Dispose();
-            zip.Dispose();
-            Buffer.BlockCopy(new byte[] {0x78, 0x9C}, 0, buffer, 0, 2);
-            return buffer;
+            using (var memStream = new MemoryStream())
+            {
+                var zip = new DeflateStream(memStream, CompressionMode.Compress, true);
+                zip.Write(decompressedBuffer, 0, decompressedBuffer.Length);
+                zip.Close();
+                memStream.Position = 0;
+                var buffer = new byte[memStream.Length + 2];
+                memStream.Read(buffer, 2, buffer.Length - 2);
+                memStream.Close();
+                memStream.Dispose();
+                zip.Dispose();
+                Buffer.BlockCopy(new byte[] {0x78, 0x9C}, 0, buffer, 0, 2);
+                return buffer;
+            }
         }
 
         internal void ParsePng()
         {
             DeflateStream zlib;
-            var uncompressedSize = 0;
-            int x = 0, y = 0, b = 0, g = 0;
+            int uncompressedSize;
+            int x = 0, y = 0;
             Bitmap bmp = null;
             BitmapData bmpData;
             var imgParent = ParentImage;
@@ -315,12 +317,11 @@ namespace MapleLib.WzLib.WzProperties
             {
                 reader.BaseStream.Position -= 2;
                 var dataStream = new MemoryStream();
-                var blocksize = 0;
                 var endOfPng = compressedBytes.Length;
 
                 while (reader.BaseStream.Position < endOfPng)
                 {
-                    blocksize = reader.ReadInt32();
+                    var blocksize = reader.ReadInt32();
                     for (var i = 0; i < blocksize; i++)
                     {
                         dataStream.WriteByte((byte) (reader.ReadByte() ^ imgParent.reader.WzKey[i]));
@@ -340,14 +341,14 @@ namespace MapleLib.WzLib.WzProperties
                     uncompressedSize = width * height * 2;
                     decBuf = new byte[uncompressedSize];
                     zlib.Read(decBuf, 0, uncompressedSize);
-                    var argb = new Byte[uncompressedSize * 2];
+                    var argb = new byte[uncompressedSize * 2];
                     for (var i = 0; i < uncompressedSize; i++)
                     {
-                        b = decBuf[i] & 0x0F;
-                        b |= (b << 4);
+                        var b = decBuf[i] & 0x0F;
+                        b |= b << 4;
                         argb[i * 2] = (byte) b;
-                        g = decBuf[i] & 0xF0;
-                        g |= (g >> 4);
+                        var g = decBuf[i] & 0xF0;
+                        g |= g >> 4;
                         argb[i * 2 + 1] = (byte) g;
                     }
 
@@ -365,25 +366,23 @@ namespace MapleLib.WzLib.WzProperties
                     bmp.UnlockBits(bmpData);
                     break;
                 case 3: // thanks to Elem8100 
-                    uncompressedSize = ((int) Math.Ceiling(width / 4.0)) * 4 * ((int) Math.Ceiling(height / 4.0)) * 4 /
+                    uncompressedSize = (int) Math.Ceiling(width / 4.0) * 4 * (int) Math.Ceiling(height / 4.0) * 4 /
                                        8;
                     decBuf = new byte[uncompressedSize];
                     zlib.Read(decBuf, 0, uncompressedSize);
                     bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
                     var argb2 = new int[width * height];
                 {
-                    int index;
-                    int index2;
-                    int p;
-                    var w = ((int) Math.Ceiling(width / 4.0));
-                    var h = ((int) Math.Ceiling(height / 4.0));
+                    var w = (int) Math.Ceiling(width / 4.0);
+                    var h = (int) Math.Ceiling(height / 4.0);
                     for (var i = 0; i < h; i++)
                     {
+                        int index2;
                         for (var j = 0; j < w; j++)
                         {
-                            index = (j + i * w) * 2;
+                            var index = (j + i * w) * 2;
                             index2 = j * 4 + i * width * 4;
-                            p = (decBuf[index] & 0x0F) | ((decBuf[index] & 0x0F) << 4);
+                            var p = (decBuf[index] & 0x0F) | ((decBuf[index] & 0x0F) << 4);
                             p |= ((decBuf[index] & 0xF0) | ((decBuf[index] & 0xF0) >> 4)) << 8;
                             p |= ((decBuf[index + 1] & 0x0F) | ((decBuf[index + 1] & 0x0F) << 4)) << 16;
                             p |= ((decBuf[index + 1] & 0xF0) | ((decBuf[index] & 0xF0) >> 4)) << 24;
@@ -437,12 +436,11 @@ namespace MapleLib.WzLib.WzProperties
                     uncompressedSize = width * height / 128;
                     decBuf = new byte[uncompressedSize];
                     zlib.Read(decBuf, 0, uncompressedSize);
-                    byte iB = 0;
                     for (var i = 0; i < uncompressedSize; i++)
                     {
                         for (byte j = 0; j < 8; j++)
                         {
-                            iB = Convert.ToByte(((decBuf[i] & (0x01 << (7 - j))) >> (7 - j)) * 0xFF);
+                            var iB = Convert.ToByte(((decBuf[i] & (0x01 << (7 - j))) >> (7 - j)) * 0xFF);
                             for (var k = 0; k < 16; k++)
                             {
                                 if (x == width)
@@ -681,7 +679,7 @@ namespace MapleLib.WzLib.WzProperties
         {
             for (var i = 0; i < 16; i += 4, offset++)
             {
-                colorIndex[i + 0] = (rawData[offset] & 0x03);
+                colorIndex[i + 0] = rawData[offset] & 0x03;
                 colorIndex[i + 1] = (rawData[offset] & 0x0c) >> 2;
                 colorIndex[i + 2] = (rawData[offset] & 0x30) >> 4;
                 colorIndex[i + 3] = (rawData[offset] & 0xc0) >> 6;
@@ -709,7 +707,7 @@ namespace MapleLib.WzLib.WzProperties
             const int rgb565_mask_b = 0x001f;
             var r = (val & rgb565_mask_r) >> 11;
             var g = (val & rgb565_mask_g) >> 5;
-            var b = (val & rgb565_mask_b);
+            var b = val & rgb565_mask_b;
             var c = Color.FromArgb(
                 (r << 3) | (r >> 2),
                 (g << 2) | (g >> 4),

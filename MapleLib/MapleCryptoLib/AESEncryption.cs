@@ -52,7 +52,7 @@ namespace MapleLib.MapleCryptoLib
                             size = remaining;
                         }
 
-                        for (var x = start; x < (start + size); x++)
+                        for (var x = start; x < start + size; x++)
                         {
                             if ((x - start) % myIv.Length == 0)
                             {

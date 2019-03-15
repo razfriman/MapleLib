@@ -39,7 +39,6 @@ namespace MapleLib.WzLib
             {
                 var settingName = fieldInfo.Name;
                 var settingProp = settingsImage[settingName];
-                byte[] argb;
                 if (settingProp == null)
                 {
                     SaveField(settingsImage, fieldInfo);
@@ -50,6 +49,7 @@ namespace MapleLib.WzLib
                 }
                 else
                 {
+                    byte[] argb;
                     switch (fieldInfo.FieldType.FullName)
                     {
                         //case "Microsoft.Xna.Framework.Graphics.Color":
@@ -104,7 +104,7 @@ namespace MapleLib.WzLib
             }
         }
 
-        private void CreateWzProp(IPropertyContainer parent, WzPropertyType propType, string propName, object value)
+        private static void CreateWzProp(IPropertyContainer parent, WzPropertyType propType, string propName, object value)
         {
             WzImageProperty addedProp;
             switch (propType)

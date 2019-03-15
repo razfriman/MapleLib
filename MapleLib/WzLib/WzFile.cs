@@ -278,30 +278,19 @@ namespace MapleLib.WzLib
             }
         }
 
-        private uint GetVersionHash(int encver, int realver)
+        private static uint GetVersionHash(int encver, int realver)
         {
-            var EncryptedVersionNumber = encver;
-            var VersionNumber = realver;
-            var VersionHash = 0;
-            var DecryptedVersionNumber = 0;
-            string VersionNumberStr;
-            int a = 0, b = 0, c = 0, d = 0, l = 0;
+            var encryptedVersionNumber = encver;
+            var versionNumber = realver;
+            var versionNumberStr = versionNumber.ToString();
+            var versionHash = versionNumberStr.Aggregate(0, (current, t) => 32 * current + t + 1);
+            var a = (versionHash >> 24) & 0xFF;
+            var b = (versionHash >> 16) & 0xFF;
+            var c = (versionHash >> 8) & 0xFF;
+            var d = versionHash & 0xFF;
+            var decryptedVersionNumber = 0xff ^ a ^ b ^ c ^ d;
 
-            VersionNumberStr = VersionNumber.ToString();
-
-            l = VersionNumberStr.Length;
-            for (var i = 0; i < l; i++)
-            {
-                VersionHash = (32 * VersionHash) + VersionNumberStr[i] + 1;
-            }
-
-            a = (VersionHash >> 24) & 0xFF;
-            b = (VersionHash >> 16) & 0xFF;
-            c = (VersionHash >> 8) & 0xFF;
-            d = VersionHash & 0xFF;
-            DecryptedVersionNumber = (0xff ^ a ^ b ^ c ^ d);
-
-            return EncryptedVersionNumber == DecryptedVersionNumber ? Convert.ToUInt32(VersionHash) : 0;
+            return encryptedVersionNumber == decryptedVersionNumber ? Convert.ToUInt32(versionHash) : 0;
         }
 
         private void CreateVersionHash()
@@ -309,7 +298,7 @@ namespace MapleLib.WzLib
             versionHash = 0;
             foreach (var ch in fileVersion.ToString())
             {
-                versionHash = (versionHash * 32) + (byte) ch + 1;
+                versionHash = versionHash * 32 + (byte) ch + 1;
             }
 
             uint a = (versionHash >> 24) & 0xFF,
@@ -546,7 +535,7 @@ namespace MapleLib.WzLib
             return objList;
         }
 
-        public List<WzObject> GetObjectsFromProperty(WzImageProperty prop)
+        public static List<WzObject> GetObjectsFromProperty(WzImageProperty prop)
         {
             var objList = new List<WzObject>();
             switch (prop.PropertyType)
@@ -630,7 +619,7 @@ namespace MapleLib.WzLib
             return objList;
         }
 
-        internal List<string> GetPathsFromProperty(WzImageProperty prop, string curPath)
+        internal static List<string> GetPathsFromProperty(WzImageProperty prop, string curPath)
         {
             var objList = new List<string>();
             switch (prop.PropertyType)
@@ -765,6 +754,7 @@ namespace MapleLib.WzLib
                     return true;
                 }
             }
+
             if (strWildCard[0] == strCompare[0])
             {
                 {

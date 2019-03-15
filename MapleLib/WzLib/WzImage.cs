@@ -265,7 +265,7 @@ namespace MapleLib.WzLib
             foreach (var segment in segments)
             {
                 var foundChild = false;
-                foreach (var iwp in (ret == null ? properties : ret.WzProperties))
+                foreach (var iwp in ret == null ? properties : ret.WzProperties)
                 {
                     if (iwp.Name == segment)
                     {

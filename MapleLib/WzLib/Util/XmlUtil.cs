@@ -1,24 +1,21 @@
-﻿using System;
-
-namespace MapleLib.WzLib.Util
+﻿namespace MapleLib.WzLib.Util
 {
     public static class XmlUtil
     {
-        private static readonly char[] specialCharacters = {'"', '\'', '&', '<', '>'};
-        private static readonly string[] replacementStrings = {"&quot;", "&apos;", "&amp;", "&lt;", "&gt;"};
+        private static readonly char[] SpecialCharacters = {'"', '\'', '&', '<', '>'};
+        private static readonly string[] ReplacementStrings = {"&quot;", "&apos;", "&amp;", "&lt;", "&gt;"};
 
         public static string SanitizeText(string text)
         {
             var fixedText = "";
-            bool charFixed;
-            for (var i = 0; i < text.Length; i++)
+            foreach (var chr in text)
             {
-                charFixed = false;
-                for (var k = 0; k < specialCharacters.Length; k++)
+                var charFixed = false;
+                for (var k = 0; k < SpecialCharacters.Length; k++)
                 {
-                    if (text[i] == specialCharacters[k])
+                    if (chr == SpecialCharacters[k])
                     {
-                        fixedText += replacementStrings[k];
+                        fixedText += ReplacementStrings[k];
                         charFixed = true;
                         break;
                     }
@@ -26,7 +23,7 @@ namespace MapleLib.WzLib.Util
 
                 if (!charFixed)
                 {
-                    fixedText += text[i];
+                    fixedText += chr;
                 }
             }
 
@@ -45,12 +42,12 @@ namespace MapleLib.WzLib.Util
 
         public static string OpenNamedTag(string tag, string name, bool finish, bool empty = false)
         {
-            return "<" + tag + " name=\"" + name + "\"" + (finish ? (empty ? "/>" : ">") : " ");
+            return "<" + tag + " name=\"" + name + "\"" + (finish ? empty ? "/>" : ">" : " ");
         }
 
         public static string Attrib(string name, string value, bool closeTag = false, bool empty = false)
         {
-            return name + "=\"" + SanitizeText(value) + "\"" + (closeTag ? (empty ? "/>" : ">") : " ");
+            return name + "=\"" + SanitizeText(value) + "\"" + (closeTag ? empty ? "/>" : ">" : " ");
         }
 
         public static string CloseTag(string tag)
@@ -66,7 +63,7 @@ namespace MapleLib.WzLib.Util
                 indent[i] = '\t';
             }
 
-            return new String(indent);
+            return new string(indent);
         }
     }
 }

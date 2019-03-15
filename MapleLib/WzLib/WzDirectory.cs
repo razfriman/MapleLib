@@ -296,22 +296,20 @@ namespace MapleLib.WzLib
             if (entryCount == 0)
             {
                 offsetSize = 1;
-                return (size = 0);
+                return size = 0;
             }
 
             size = WzTool.GetCompressedIntLength(entryCount);
             offsetSize = WzTool.GetCompressedIntLength(entryCount);
 
             WzBinaryWriter imgWriter = null;
-            MemoryStream memStream = null;
             var fileWrite = new FileStream(fileName, FileMode.Append, FileAccess.Write);
-            WzImage img;
             foreach (var image in images)
             {
-                img = image;
+                var img = image;
                 if (img.Changed)
                 {
-                    memStream = new MemoryStream();
+                    var memStream = new MemoryStream();
                     imgWriter = new WzBinaryWriter(memStream, WzIv);
                     img.SaveImage(imgWriter);
                     img.checksum = 0;

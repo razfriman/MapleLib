@@ -129,7 +129,7 @@ namespace MapleLib.MapleCryptoLib
         {
             var header = new byte[4];
             var a = IV[3] * 0x100 + IV[2];
-            a = a ^ (_mapleVersion);
+            a = a ^ _mapleVersion;
             var b = a ^ size;
             header[0] = Convert.ToByte(a % 0x100);
             header[1] = Convert.ToByte(a / 0x100);
@@ -170,7 +170,7 @@ namespace MapleLib.MapleCryptoLib
             int b = _mapleVersion;
             var c = packet[1] ^ IV[3];
             var d = _mapleVersion >> 8;
-            return (a == b && c == d);
+            return a == b && c == d;
         }
 
         /// <summary>

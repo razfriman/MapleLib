@@ -14,21 +14,6 @@ namespace MapleLib.PacketLib
         public static ILogger Log = LogManager.Log;
 
         /// <summary>
-        /// The Session's socket
-        /// </summary>
-        private readonly Socket _socket;
-
-        /// <summary>
-        /// The Recieved packet crypto manager
-        /// </summary>
-        private MapleCrypto _riv;
-
-        /// <summary>
-        /// The Sent packet crypto manager
-        /// </summary>
-        private MapleCrypto _siv;
-
-        /// <summary>
         /// Method to handle packets received
         /// </summary>
         public delegate void PacketReceivedHandler(PacketReader packet, bool isInit);
@@ -55,25 +40,17 @@ namespace MapleLib.PacketLib
         /// <summary>
         /// The Recieved packet crypto manager
         /// </summary>
-        public MapleCrypto RIV
-        {
-            get => _riv;
-            set => _riv = value;
-        }
+        public MapleCrypto RIV { get; set; }
 
         /// <summary>
         /// The Sent packet crypto manager
         /// </summary>
-        public MapleCrypto SIV
-        {
-            get => _siv;
-            set => _siv = value;
-        }
+        public MapleCrypto SIV { get; set; }
 
         /// <summary>
         /// The Session's socket
         /// </summary>
-        public Socket Socket => _socket;
+        public Socket Socket { get; }
 
         public SessionType Type { get; }
 
@@ -83,16 +60,16 @@ namespace MapleLib.PacketLib
         /// <param name="socket">Socket connection of the session</param>
         public Session(Socket socket, SessionType type)
         {
-            _socket = socket;
+            Socket = socket;
             Type = type;
         }
 
         /// <summary>
         /// Waits for more data to arrive
         /// </summary>
-        public void WaitForData() => WaitForData(new SocketInfo(_socket, 4));
+        public void WaitForData() => WaitForData(new SocketInfo(Socket, 4));
 
-        public void WaitForDataNoEncryption() => WaitForData(new SocketInfo(_socket, 2, true));
+        public void WaitForDataNoEncryption() => WaitForData(new SocketInfo(Socket, 2, true));
 
         /// <summary>
         /// Waits for more data to arrive
@@ -102,7 +79,7 @@ namespace MapleLib.PacketLib
         {
             try
             {
-                _socket.BeginReceive(socketInfo.DataBuffer,
+                Socket.BeginReceive(socketInfo.DataBuffer,
                     socketInfo.Index,
                     socketInfo.DataBuffer.Length - socketInfo.Index,
                     SocketFlags.None,
@@ -154,7 +131,7 @@ namespace MapleLib.PacketLib
                                 var packetHeader = headerReader.ReadInt();
                                 var packetLength = (short) MapleCrypto.GetPacketLength(packetHeader);
                                 if (Type == SessionType.SERVER_TO_CLIENT &&
-                                    !_riv.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
+                                    !RIV.CheckPacketToServer(BitConverter.GetBytes(packetHeader)))
                                 {
                                     Log.LogError("Packet check failed. Disconnecting client");
                                     Socket.Close();
@@ -176,8 +153,8 @@ namespace MapleLib.PacketLib
                                 var reader = new PacketReader(data);
                                 var version = reader.ReadShort();
                                 var unknown = reader.ReadMapleString();
-                                _siv = new MapleCrypto(reader.ReadBytes(4), version);
-                                _riv = new MapleCrypto(reader.ReadBytes(4), version);
+                                SIV = new MapleCrypto(reader.ReadBytes(4), version);
+                                RIV = new MapleCrypto(reader.ReadBytes(4), version);
                                 var serverType = reader.ReadByte();
 
                                 if (Type == SessionType.CLIENT_TO_SERVER)
@@ -190,7 +167,7 @@ namespace MapleLib.PacketLib
                             }
                             else
                             {
-                                _riv.Crypt(data);
+                                RIV.Crypt(data);
                                 MapleCustomEncryption.Decrypt(data);
 
                                 if (data.Length != 0)
@@ -254,11 +231,11 @@ namespace MapleLib.PacketLib
             var cryptData = input;
             var sendData = new byte[cryptData.Length + 4];
             var header = Type == SessionType.SERVER_TO_CLIENT
-                ? _siv.GetHeaderToClient(cryptData.Length)
-                : _siv.GetHeaderToServer(cryptData.Length);
+                ? SIV.GetHeaderToClient(cryptData.Length)
+                : SIV.GetHeaderToServer(cryptData.Length);
 
             MapleCustomEncryption.Encrypt(cryptData);
-            _siv.Crypt(cryptData);
+            SIV.Crypt(cryptData);
 
             Buffer.BlockCopy(header, 0, sendData, 0, 4);
             Buffer.BlockCopy(cryptData, 0, sendData, 4, cryptData.Length);
@@ -275,6 +252,6 @@ namespace MapleLib.PacketLib
         /// Sends a raw buffer to the client.
         /// </summary>
         /// <param name="buffer">The buffer to be sent.</param>
-        public void SendRawPacket(byte[] buffer) => _socket.Send(buffer);
+        public void SendRawPacket(byte[] buffer) => Socket.Send(buffer);
     }
 }

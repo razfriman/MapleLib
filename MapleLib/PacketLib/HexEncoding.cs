@@ -13,20 +13,19 @@ namespace MapleLib.PacketLib
         /// </summary>
         /// <param name="pChar">Char to check</param>
         /// <returns>Char is a hex digit</returns>
-        public static bool IsHexDigit(Char pChar)
+        public static bool IsHexDigit(char pChar)
         {
-            int numChar;
             var numA = Convert.ToInt32('A');
             var num1 = Convert.ToInt32('0');
-            pChar = Char.ToUpper(pChar);
-            numChar = Convert.ToInt32(pChar);
+            pChar = char.ToUpper(pChar);
+            var numChar = Convert.ToInt32(pChar);
 
-            if (numChar >= numA && numChar < (numA + 6))
+            if (numChar >= numA && numChar < numA + 6)
             {
                 return true;
             }
 
-            return numChar >= num1 && numChar < (num1 + 10);
+            return numChar >= num1 && numChar < num1 + 10;
         }
 
         /// <summary>
@@ -53,12 +52,9 @@ namespace MapleLib.PacketLib
         public static byte[] GetBytes(string hexString)
         {
             var newString = string.Empty;
-            char c;
-
             // remove all none A-F, 0-9, characters
-            for (var i = 0; i < hexString.Length; i++)
+            foreach (var c in hexString)
             {
-                c = hexString[i];
                 if (IsHexDigit(c))
                 {
                     newString += c;
@@ -73,12 +69,11 @@ namespace MapleLib.PacketLib
 
             var byteLength = newString.Length / 2;
             var bytes = new byte[byteLength];
-            string hex;
             var j = 0;
 
             for (var i = 0; i < bytes.Length; i++)
             {
-                hex = new String(new[] {newString[j], newString[j + 1]});
+                var hex = new string(new[] {newString[j], newString[j + 1]});
                 bytes[i] = HexToByte(hex);
                 j = j + 2;
             }
@@ -96,7 +91,7 @@ namespace MapleLib.PacketLib
             var ret = new char[bytes.Length];
             for (var x = 0; x < bytes.Length; x++)
             {
-                if (bytes[x] < 32 && bytes[x] >= 0)
+                if (bytes[x] < 32)
                 {
                     ret[x] = '.';
                 }

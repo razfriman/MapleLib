@@ -55,7 +55,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static bool operator ==(MapleBool a, bool b)
         {
-            return (b && (a.val == True)) || (!b && (a.val == False));
+            return b && a.val == True || !b && a.val == False;
         }
 
         public static bool operator !=(MapleBool a, MapleBool b)
@@ -65,7 +65,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static bool operator !=(MapleBool a, bool b)
         {
-            return (b && (a.val != True)) || (!b && (a.val != False));
+            return b && a.val != True || !b && a.val != False;
         }
 
         public bool HasValue => val != NotExist;

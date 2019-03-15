@@ -21,18 +21,18 @@ namespace MapleLib.WzLib.WzStructure
         public MapInfo(WzImage image, string strMapName, string strStreetName, string strCategoryName)
         {
             Image = image;
-            int? startHour;
-            int? endHour;
             this.strMapName = strMapName;
             this.strStreetName = strStreetName;
             this.strCategoryName = strCategoryName;
             var file = image.WzFileParent;
-            var loggerSuffix = ", map " + image.Name + ((file != null)
-                                   ? (" of version " + Enum.GetName(typeof(WzMapleVersion), file.MapleVersion) + ", v" +
-                                      file.Version)
+            var loggerSuffix = ", map " + image.Name + (file != null
+                                   ? " of version " + Enum.GetName(typeof(WzMapleVersion), file.MapleVersion) + ", v" +
+                                     file.Version
                                    : "");
             foreach (var prop in image["info"].WzProperties)
             {
+                int? startHour;
+                int? endHour;
                 switch (prop.Name)
                 {
                     case "bgm":
@@ -149,7 +149,7 @@ namespace MapleLib.WzLib.WzStructure
                         endHour = InfoTool.GetOptionalInt(prop["endHour"]);
                         var propId = InfoTool.GetOptionalInt(prop["id"]);
                         var message = InfoTool.GetOptionalString(prop["message"]);
-                        if (propId == null || message == null || (startHour == null ^ endHour == null))
+                        if (propId == null || message == null || startHour == null ^ endHour == null)
                         {
                             Log.LogError("timeMob is missing data");
                         }
