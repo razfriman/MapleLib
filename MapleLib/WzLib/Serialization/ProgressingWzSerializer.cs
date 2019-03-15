@@ -1,10 +1,8 @@
-﻿namespace MapleLib.WzLib
+﻿namespace MapleLib.WzLib.Serialization
 {
     public abstract class ProgressingWzSerializer
     {
-        protected int total;
-        protected int curr;
-        public int Total => total;
-        public int Current => curr;
+        public int Total { get; protected set; }
+        public int Current { get; protected set; }
     }
 }

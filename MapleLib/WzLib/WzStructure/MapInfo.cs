@@ -27,7 +27,7 @@ namespace MapleLib.WzLib.WzStructure
             var file = image.WzFileParent;
             var loggerSuffix = ", map " + image.Name + (file != null
                                    ? " of version " + Enum.GetName(typeof(WzMapleVersion), file.MapleVersion) + ", v" +
-                                     file.Version
+                                     file.FileVersion
                                    : "");
             foreach (var prop in image["info"].WzProperties)
             {

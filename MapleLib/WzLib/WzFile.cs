@@ -7,6 +7,8 @@ using MapleLib.Helper;
 using MapleLib.WzLib.Util;
 using MapleLib.WzLib.WzProperties;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MapleLib.WzLib
 {
@@ -19,14 +21,9 @@ namespace MapleLib.WzLib
 
         #region Fields
 
-        internal string path;
         internal WzDirectory wzDir;
-        internal WzHeader header;
-        internal string name = "";
-        internal short version;
         internal uint versionHash;
-        internal short fileVersion;
-        internal WzMapleVersion mapleVersion;
+        internal short version;
         internal byte[] WzIv;
 
         #endregion
@@ -39,11 +36,7 @@ namespace MapleLib.WzLib
         /// <summary>
         /// Name of the WzFile
         /// </summary>
-        public override string Name
-        {
-            get => name;
-            set => name = value;
-        }
+        public override string Name { get; set; }
 
         /// <summary>
         /// The WzObjectType of the file
@@ -55,34 +48,25 @@ namespace MapleLib.WzLib
         /// </summary>
         /// <param name="name">Name</param>
         /// <returns>WzDirectory[name]</returns>
+        [JsonIgnore]
         public new WzObject this[string name] => WzDirectory[name];
 
-        public WzHeader Header
-        {
-            get => header;
-            set => header = value;
-        }
+        public WzHeader Header { get; set; }
 
-        public short Version
-        {
-            get => fileVersion;
-            set => fileVersion = value;
-        }
+        public short FileVersion { get; set; }
 
-        public string FilePath => path;
+        public string FilePath { get; private set; }
 
-        public WzMapleVersion MapleVersion
-        {
-            get => mapleVersion;
-            set => mapleVersion = value;
-        }
+        public WzMapleVersion MapleVersion { get; set; }
 
+        [JsonIgnore]
         public override WzObject Parent
         {
             get => null;
             internal set { }
         }
 
+        [JsonIgnore]
         public override WzFile WzFileParent => this;
 
         public override void Dispose()
@@ -96,8 +80,8 @@ namespace MapleLib.WzLib
 
             wzDir.reader.Close();
             Header = null;
-            path = null;
-            name = null;
+            FilePath = null;
+            Name = null;
             WzDirectory.Dispose();
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -107,8 +91,8 @@ namespace MapleLib.WzLib
         {
             wzDir = new WzDirectory();
             Header = WzHeader.GetDefault();
-            fileVersion = gameVersion;
-            mapleVersion = version;
+            FileVersion = gameVersion;
+            MapleVersion = version;
             WzIv = WzTool.GetIvByMapleVersion(version);
             wzDir.WzIv = WzIv;
         }
@@ -119,10 +103,10 @@ namespace MapleLib.WzLib
         /// <param name="filePath">Path to the wz file</param>
         public WzFile(string filePath, WzMapleVersion version)
         {
-            name = Path.GetFileName(filePath);
-            path = filePath;
-            fileVersion = -1;
-            mapleVersion = version;
+            Name = Path.GetFileName(filePath);
+            FilePath = filePath;
+            FileVersion = -1;
+            MapleVersion = version;
             if (version == WzMapleVersion.GetFromZlz)
             {
                 var zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
@@ -143,10 +127,10 @@ namespace MapleLib.WzLib
         /// <param name="filePath">Path to the wz file</param>
         public WzFile(string filePath, short gameVersion, WzMapleVersion version)
         {
-            name = Path.GetFileName(filePath);
-            path = filePath;
-            fileVersion = gameVersion;
-            mapleVersion = version;
+            Name = Path.GetFileName(filePath);
+            FilePath = filePath;
+            FileVersion = gameVersion;
+            MapleVersion = version;
             if (version == WzMapleVersion.GetFromZlz)
             {
                 var zlzStream = File.OpenRead(Path.Combine(Path.GetDirectoryName(filePath), "ZLZ.dll"));
@@ -166,7 +150,7 @@ namespace MapleLib.WzLib
         /// </summary>
         public void ParseWzFile()
         {
-            if (mapleVersion == WzMapleVersion.Generate)
+            if (MapleVersion == WzMapleVersion.Generate)
             {
                 {
                     throw new InvalidOperationException("Cannot call ParseWzFile() if WZ file type is GENERATE");
@@ -180,7 +164,7 @@ namespace MapleLib.WzLib
 
         public void ParseWzFile(byte[] WzIv)
         {
-            if (mapleVersion != WzMapleVersion.Generate)
+            if (MapleVersion != WzMapleVersion.Generate)
             {
                 {
                     throw new InvalidOperationException(
@@ -196,13 +180,13 @@ namespace MapleLib.WzLib
 
         internal void ParseMainWzDirectory()
         {
-            if (path == null)
+            if (FilePath == null)
             {
                 Log.LogCritical("Path is null");
                 return;
             }
 
-            var reader = new WzBinaryReader(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read), WzIv);
+            var reader = new WzBinaryReader(File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read), WzIv);
 
             Header = new WzHeader
             {
@@ -214,12 +198,12 @@ namespace MapleLib.WzLib
             reader.ReadBytes((int) (Header.FStart - reader.BaseStream.Position));
             reader.Header = Header;
             version = reader.ReadInt16();
-            if (fileVersion == -1)
+            if (FileVersion == -1)
             {
                 for (var j = 0; j < short.MaxValue; j++)
                 {
-                    fileVersion = (short) j;
-                    versionHash = GetVersionHash(version, fileVersion);
+                    FileVersion = (short) j;
+                    versionHash = GetVersionHash(version, FileVersion);
                     if (versionHash != 0)
                     {
                         reader.Hash = versionHash;
@@ -227,7 +211,7 @@ namespace MapleLib.WzLib
                         WzDirectory testDirectory;
                         try
                         {
-                            testDirectory = new WzDirectory(reader, name, versionHash, WzIv, this);
+                            testDirectory = new WzDirectory(reader, Name, versionHash, WzIv, this);
                             testDirectory.ParseDirectory();
                         }
                         catch
@@ -249,7 +233,7 @@ namespace MapleLib.WzLib
                                 case 0x73:
                                 case 0x1b:
                                 {
-                                    var directory = new WzDirectory(reader, name, versionHash, WzIv, this);
+                                    var directory = new WzDirectory(reader, Name, versionHash, WzIv, this);
                                     directory.ParseDirectory();
                                     wzDir = directory;
                                     return;
@@ -270,9 +254,9 @@ namespace MapleLib.WzLib
             }
 
             {
-                versionHash = GetVersionHash(version, fileVersion);
+                versionHash = GetVersionHash(version, FileVersion);
                 reader.Hash = versionHash;
-                var directory = new WzDirectory(reader, name, versionHash, WzIv, this);
+                var directory = new WzDirectory(reader, Name, versionHash, WzIv, this);
                 directory.ParseDirectory();
                 wzDir = directory;
             }
@@ -296,7 +280,7 @@ namespace MapleLib.WzLib
         private void CreateVersionHash()
         {
             versionHash = 0;
-            foreach (var ch in fileVersion.ToString())
+            foreach (var ch in FileVersion.ToString())
             {
                 versionHash = versionHash * 32 + (byte) ch + 1;
             }
@@ -314,7 +298,7 @@ namespace MapleLib.WzLib
         /// <param name="path">Path to the output wz file</param>
         public void SaveToDisk(string path)
         {
-            WzIv = WzTool.GetIvByMapleVersion(mapleVersion);
+            WzIv = WzTool.GetIvByMapleVersion(MapleVersion);
             CreateVersionHash();
             wzDir.SetHash(versionHash);
             var tempFile = Path.GetFileNameWithoutExtension(path) + ".TEMP";
@@ -354,23 +338,25 @@ namespace MapleLib.WzLib
             GC.WaitForPendingFinalizers();
         }
 
-        public void ExportXml(string path, bool oneFile)
+        public void ExportJson(string path, bool oneFile)
         {
+            var serializer = new JsonSerializer();
+            serializer.Converters.Add(new JavaScriptDateTimeConverter());
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+            
             if (oneFile)
             {
-                var fs = File.Create(path + "/" + name + ".xml");
-                var writer = new StreamWriter(fs);
-
-                var level = 0;
-                writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.OpenNamedTag("WzFile", name, true));
-                wzDir.ExportXml(writer, oneFile, level, false);
-                writer.WriteLine(XmlUtil.Indentation(level) + XmlUtil.CloseTag("WzFile"));
-
-                writer.Close();
+                using (var sw = new StreamWriter(Path.Combine(path, $"{Name}.json")))
+                {
+                    using (var writer = new JsonTextWriter(sw))
+                    {
+                        serializer.Serialize(writer, this);
+                    }
+                }
             }
             else
             {
-                throw new Exception("Under Construction");
+                throw new NotImplementedException("Under Construction");
             }
         }
 
@@ -384,7 +370,7 @@ namespace MapleLib.WzLib
         /// <returns>An array of IWzObjects containing the found objects</returns>
         public List<WzObject> GetObjectsFromWildcardPath(string path)
         {
-            if (path.ToLower() == name.ToLower())
+            if (path.ToLower() == Name.ToLower())
             {
                 {
                     return new List<WzObject> {WzDirectory};
@@ -420,7 +406,7 @@ namespace MapleLib.WzLib
             foreach (var img in WzDirectory.WzImages)
             {
                 {
-                    foreach (var spath in GetPathsFromImage(img, name + "/" + img.Name))
+                    foreach (var spath in GetPathsFromImage(img, Name + "/" + img.Name))
                     {
                         {
                             if (StrMatch(path, spath))
@@ -437,7 +423,7 @@ namespace MapleLib.WzLib
             foreach (var dir in wzDir.WzDirectories)
             {
                 {
-                    foreach (var spath in GetPathsFromDirectory(dir, name + "/" + dir.Name))
+                    foreach (var spath in GetPathsFromDirectory(dir, Name + "/" + dir.Name))
                     {
                         {
                             if (StrMatch(path, spath))
@@ -458,7 +444,7 @@ namespace MapleLib.WzLib
 
         public List<WzObject> GetObjectsFromRegexPath(string path)
         {
-            if (path.ToLower() == name.ToLower())
+            if (path.ToLower() == Name.ToLower())
             {
                 {
                     return new List<WzObject> {WzDirectory};
@@ -469,7 +455,7 @@ namespace MapleLib.WzLib
             foreach (var img in WzDirectory.WzImages)
             {
                 {
-                    foreach (var spath in GetPathsFromImage(img, name + "/" + img.Name))
+                    foreach (var spath in GetPathsFromImage(img, Name + "/" + img.Name))
                     {
                         {
                             if (Regex.Match(spath, path).Success)
@@ -486,7 +472,7 @@ namespace MapleLib.WzLib
             foreach (var dir in wzDir.WzDirectories)
             {
                 {
-                    foreach (var spath in GetPathsFromDirectory(dir, name + "/" + dir.Name))
+                    foreach (var spath in GetPathsFromDirectory(dir, Name + "/" + dir.Name))
                     {
                         {
                             if (Regex.Match(spath, path).Success)
@@ -660,8 +646,8 @@ namespace MapleLib.WzLib
 
         public WzObject GetObjectFromPath(string path)
         {
-            var seperatedPath = path.Split("/".ToCharArray());
-            if (seperatedPath[0].ToLower() != wzDir.name.ToLower() && seperatedPath[0].ToLower() !=
+            var separatedPath = path.Split("/".ToCharArray());
+            if (separatedPath[0].ToLower() != wzDir.name.ToLower() && separatedPath[0].ToLower() !=
                 wzDir.name.Substring(0, wzDir.name.Length - 3).ToLower())
             {
                 {
@@ -669,7 +655,7 @@ namespace MapleLib.WzLib
                 }
             }
 
-            if (seperatedPath.Length == 1)
+            if (separatedPath.Length == 1)
             {
                 {
                     return WzDirectory;
@@ -677,7 +663,7 @@ namespace MapleLib.WzLib
             }
 
             WzObject curObj = WzDirectory;
-            for (var i = 1; i < seperatedPath.Length; i++)
+            for (var i = 1; i < separatedPath.Length; i++)
             {
                 if (curObj == null)
                 {
@@ -687,30 +673,30 @@ namespace MapleLib.WzLib
                 switch (curObj.ObjectType)
                 {
                     case WzObjectType.Directory:
-                        curObj = ((WzDirectory) curObj)[seperatedPath[i]];
+                        curObj = ((WzDirectory) curObj)[separatedPath[i]];
                         continue;
                     case WzObjectType.Image:
-                        curObj = ((WzImage) curObj)[seperatedPath[i]];
+                        curObj = ((WzImage) curObj)[separatedPath[i]];
                         continue;
                     case WzObjectType.Property:
                         switch (((WzImageProperty) curObj).PropertyType)
                         {
                             case WzPropertyType.Canvas:
-                                curObj = ((WzCanvasProperty) curObj)[seperatedPath[i]];
+                                curObj = ((WzCanvasProperty) curObj)[separatedPath[i]];
                                 continue;
                             case WzPropertyType.Convex:
-                                curObj = ((WzConvexProperty) curObj)[seperatedPath[i]];
+                                curObj = ((WzConvexProperty) curObj)[separatedPath[i]];
                                 continue;
                             case WzPropertyType.SubProperty:
-                                curObj = ((WzSubProperty) curObj)[seperatedPath[i]];
+                                curObj = ((WzSubProperty) curObj)[separatedPath[i]];
                                 continue;
                             case WzPropertyType.Vector:
-                                if (seperatedPath[i] == "X")
+                                if (separatedPath[i] == "X")
                                 {
                                     return ((WzVectorProperty) curObj).X;
                                 }
 
-                                if (seperatedPath[i] == "Y")
+                                if (separatedPath[i] == "Y")
                                 {
                                     return ((WzVectorProperty) curObj).Y;
                                 }
@@ -765,9 +751,6 @@ namespace MapleLib.WzLib
             return false;
         }
 
-        public override void Remove()
-        {
-            Dispose();
-        }
+        public override void Remove() => Dispose();
     }
 }

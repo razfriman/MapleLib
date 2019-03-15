@@ -31,10 +31,10 @@ namespace MapleLib.WzLib.Serialization
             var doc = new XmlDocument();
             doc.Load(path);
             var mainElement = (XmlElement) doc.ChildNodes[1];
-            curr = 0;
+            Current = 0;
             if (mainElement.Name == "xmldump")
             {
-                total = CountImgs(mainElement);
+                Total = CountImgs(mainElement);
                 foreach (XmlElement subelement in mainElement)
                 {
                     if (subelement.Name == "wzdir")
@@ -59,9 +59,9 @@ namespace MapleLib.WzLib.Serialization
             }
             else if (mainElement.Name == "imgdir")
             {
-                total = 1;
+                Total = 1;
                 result.Add(ParseXMLWzImg(mainElement));
-                curr++;
+                Current++;
             }
             else
             {

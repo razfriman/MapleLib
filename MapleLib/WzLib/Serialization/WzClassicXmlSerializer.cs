@@ -21,7 +21,7 @@ namespace MapleLib.WzLib.Serialization
                 }
             }
 
-            curr++;
+            Current++;
             TextWriter tw = new StreamWriter(path);
             tw.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" + lineBreak);
             tw.Write($"<imgdir name=\"{XmlUtil.SanitizeText(img.Name)}\">{lineBreak}");
@@ -70,8 +70,8 @@ namespace MapleLib.WzLib.Serialization
 
         public void SerializeImage(WzImage img, string path)
         {
-            total = 1;
-            curr = 0;
+            Total = 1;
+            Current = 0;
             if (Path.GetExtension(path) != ".xml")
             {
                 {
@@ -84,8 +84,8 @@ namespace MapleLib.WzLib.Serialization
 
         public void SerializeDirectory(WzDirectory dir, string path)
         {
-            total = dir.CountImages();
-            curr = 0;
+            Total = dir.CountImages();
+            Current = 0;
             ExportDirXmlInternal(dir, path);
         }
 

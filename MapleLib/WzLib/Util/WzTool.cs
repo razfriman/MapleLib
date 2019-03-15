@@ -133,7 +133,7 @@ namespace MapleLib.WzLib.Util
             wzf.ParseWzFile();
             if (version == null)
             {
-                version = wzf.Version;
+                version = wzf.version;
             }
 
             var recognizedChars = 0;
@@ -164,7 +164,7 @@ namespace MapleLib.WzLib.Util
                 GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.Ems, ref version));
             mapleVersionSuccessRates.Add(WzMapleVersion.Bms,
                 GetDecryptionSuccessRate(wzFilePath, WzMapleVersion.Bms, ref version));
-            fileVersion = (short) version;
+            fileVersion = version.Value;
             var mostSuitableVersion = WzMapleVersion.Gms;
             double maxSuccessRate = 0;
             foreach (DictionaryEntry mapleVersionEntry in mapleVersionSuccessRates)

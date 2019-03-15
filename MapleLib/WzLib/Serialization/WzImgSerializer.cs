@@ -25,15 +25,15 @@ namespace MapleLib.WzLib.Serialization
 
         public byte[] SerializeImage(WzImage img)
         {
-            total = 1;
-            curr = 0;
+            Total = 1;
+            Current = 0;
             return SerializeImageInternal(img);
         }
 
         public void SerializeImage(WzImage img, string outPath)
         {
-            total = 1;
-            curr = 0;
+            Total = 1;
+            Current = 0;
             if (Path.GetExtension(outPath) != ".img")
             {
                 {
@@ -46,8 +46,8 @@ namespace MapleLib.WzLib.Serialization
 
         public void SerializeDirectory(WzDirectory dir, string outPath)
         {
-            total = dir.CountImages();
-            curr = 0;
+            Total = dir.CountImages();
+            Current = 0;
             Directory.CreateDirectory(outPath);
 
             if (outPath.Substring(outPath.Length - 1, 1) != @"\")

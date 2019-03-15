@@ -21,7 +21,7 @@ namespace MapleLib.WzLib.Serialization
                 }
             }
 
-            curr++;
+            Current++;
             tw.Write($"{depth}<wzimg name=\"{XmlUtil.SanitizeText(img.Name)}\">{lineBreak}");
             var newDepth = depth + indent;
             foreach (var property in img.Properties.WzProperties)
@@ -62,8 +62,8 @@ namespace MapleLib.WzLib.Serialization
 
         public void ExportCombinedXml(List<WzObject> objects, string path)
         {
-            total = 1;
-            curr = 0;
+            Total = 1;
+            Current = 0;
             if (Path.GetExtension(path) != ".xml")
             {
                 {
@@ -76,13 +76,13 @@ namespace MapleLib.WzLib.Serialization
                 if (obj is WzImage)
                 {
                     {
-                        total++;
+                        Total++;
                     }
                 }
                 else if (obj is WzDirectory directory)
                 {
                     {
-                        total += directory.CountImages();
+                        Total += directory.CountImages();
                     }
                 }
             }

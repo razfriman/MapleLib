@@ -12,8 +12,8 @@ namespace MapleLib.WzLib.Serialization
         public void SerializeObject(WzObject obj, string outPath)
         {
             //imagesToUnparse.Clear();
-            total = 0;
-            curr = 0;
+            Total = 0;
+            Current = 0;
             this.outPath = outPath;
             Directory.CreateDirectory(outPath);
 
@@ -24,7 +24,7 @@ namespace MapleLib.WzLib.Serialization
                 }
             }
 
-            total = CalculateTotal(obj);
+            Total = CalculateTotal(obj);
             ExportRecursion(obj, outPath);
             /*foreach (WzImage img in imagesToUnparse)
                 img.UnparseImage();
@@ -141,12 +141,12 @@ namespace MapleLib.WzLib.Serialization
                     }
                 }
 
-                curr++;
+                Current++;
             }
-            else if (currObj is IPropertyContainer)
+            else if (currObj is IPropertyContainer container)
             {
                 exportOutPath += currObj.Name + ".";
-                foreach (var subprop in ((IPropertyContainer) currObj).WzProperties)
+                foreach (var subprop in container.WzProperties)
                 {
                     {
                         ExportRecursion(subprop, exportOutPath);
