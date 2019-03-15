@@ -1,11 +1,12 @@
 ﻿#define UOLRES
 
-using System.IO;
 using System.Collections.Generic;
-using MapleLib.WzLib.Util;
 using System.DrawingCore;
-using Microsoft.Extensions.Logging;
+using System.IO;
 using MapleLib.Helper;
+using MapleLib.WzLib.Util;
+using Microsoft.Extensions.Logging;
+using Point = System.Drawing.Point;
 
 namespace MapleLib.WzLib.WzProperties
 {
@@ -232,7 +233,7 @@ namespace MapleLib.WzLib.WzProperties
             return LinkValue.GetString();
         }
 
-        public override System.Drawing.Point GetPoint()
+        public override Point GetPoint()
         {
             return LinkValue.GetPoint();
         }

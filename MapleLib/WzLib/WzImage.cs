@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
 using MapleLib.WzLib.Util;
 using MapleLib.WzLib.WzProperties;
 

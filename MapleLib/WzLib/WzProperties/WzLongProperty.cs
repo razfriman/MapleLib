@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using MapleLib.WzLib.Util;
 
 namespace MapleLib.WzLib.WzProperties
@@ -19,7 +20,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void SetValue(object value)
         {
-            val = System.Convert.ToInt64(value);
+            val = Convert.ToInt64(value);
         }
 
         public override WzImageProperty DeepClone()

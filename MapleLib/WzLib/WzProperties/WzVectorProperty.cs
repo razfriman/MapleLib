@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using MapleLib.WzLib.Util;
 
 namespace MapleLib.WzLib.WzProperties
@@ -22,15 +23,15 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void SetValue(object value)
         {
-            if (value is System.Drawing.Point)
+            if (value is Point)
             {
-                x.val = ((System.Drawing.Point) value).X;
-                y.val = ((System.Drawing.Point) value).Y;
+                x.val = ((Point) value).X;
+                y.val = ((Point) value).Y;
             }
             else
             {
-                x.val = ((System.Drawing.Size) value).Width;
-                y.val = ((System.Drawing.Size) value).Height;
+                x.val = ((Size) value).Width;
+                y.val = ((Size) value).Height;
             }
         }
 
@@ -40,7 +41,7 @@ namespace MapleLib.WzLib.WzProperties
             return clone;
         }
 
-        public override object WzValue => new System.Drawing.Point(x.Value, y.Value);
+        public override object WzValue => new Point(x.Value, y.Value);
 
         /// <summary>
         /// The parent of the object
@@ -120,7 +121,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <summary>
         /// The Point of the Vector2D created from the X and Y
         /// </summary>
-        public System.Drawing.Point Pos => new System.Drawing.Point(X.Value, Y.Value);
+        public Point Pos => new Point(X.Value, Y.Value);
 
         /// <summary>
         /// Creates a blank WzVectorProperty
@@ -155,9 +156,9 @@ namespace MapleLib.WzLib.WzProperties
 
         #region Cast Values
 
-        public override System.Drawing.Point GetPoint()
+        public override Point GetPoint()
         {
-            return new System.Drawing.Point(x.val, y.val);
+            return new Point(x.val, y.val);
         }
 
         public override string ToString()

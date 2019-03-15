@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace MapleLib.PacketLib
 {
@@ -40,7 +41,7 @@ namespace MapleLib.PacketLib
                 throw new ArgumentException("hex must be 1 or 2 characters in length");
             }
 
-            var newByte = byte.Parse(pHex, System.Globalization.NumberStyles.HexNumber);
+            var newByte = byte.Parse(pHex, NumberStyles.HexNumber);
             return newByte;
         }
 

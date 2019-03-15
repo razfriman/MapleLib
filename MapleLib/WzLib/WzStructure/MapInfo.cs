@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DrawingCore;
+using MapleLib.Helper;
 using MapleLib.WzLib.WzProperties;
 using MapleLib.WzLib.WzStructure.Data;
-using System.DrawingCore;
 using Microsoft.Extensions.Logging;
-using MapleLib.Helper;
 
 namespace MapleLib.WzLib.WzStructure
 {
@@ -20,7 +20,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public MapInfo(WzImage image, string strMapName, string strStreetName, string strCategoryName)
         {
-            this.Image = image;
+            Image = image;
             int? startHour;
             int? endHour;
             this.strMapName = strMapName;

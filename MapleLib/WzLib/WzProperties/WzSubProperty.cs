@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using MapleLib.WzLib.Util;
 
@@ -23,7 +24,7 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void SetValue(object value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override WzImageProperty DeepClone()
@@ -106,7 +107,7 @@ namespace MapleLib.WzLib.WzProperties
         /// <returns>the wz property with the specified name</returns>
         public override WzImageProperty GetFromPath(string path)
         {
-            var segments = path.Split(new[] {'/'}, System.StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return ((WzImageProperty) Parent)[path.Substring(name.IndexOf('/') + 1)];

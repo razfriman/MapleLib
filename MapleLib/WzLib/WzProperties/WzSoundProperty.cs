@@ -1,11 +1,11 @@
-﻿using System.IO;
-using System;
-using MapleLib.WzLib.Util;
-using System.Text;
+﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using Microsoft.Extensions.Logging;
+using System.Text;
 using MapleLib.Helper;
+using MapleLib.WzLib.Util;
+using Microsoft.Extensions.Logging;
 using NAudio.Wave;
 
 namespace MapleLib.WzLib.WzProperties
@@ -58,7 +58,6 @@ namespace MapleLib.WzLib.WzProperties
 
         public override void SetValue(object value)
         {
-            return;
         }
 
         /// <summary>
@@ -298,7 +297,7 @@ namespace MapleLib.WzLib.WzProperties
             try
             {
                 var obj = (T) FormatterServices.GetUninitializedObject(typeof(T));
-                Marshal.PtrToStructure<T>(handle.AddrOfPinnedObject(), obj);
+                Marshal.PtrToStructure(handle.AddrOfPinnedObject(), obj);
                 return obj;
             }
             finally

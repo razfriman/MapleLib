@@ -1,8 +1,9 @@
 ﻿using System;
-using MapleLib.WzLib.WzProperties;
-using System.Reflection;
-using MapleLib.WzLib.WzStructure;
+using System.Drawing;
 using System.IO;
+using System.Reflection;
+using MapleLib.WzLib.WzProperties;
+using MapleLib.WzLib.WzStructure;
 
 namespace MapleLib.WzLib
 {
@@ -64,7 +65,7 @@ namespace MapleLib.WzLib
                             break;
                         case "System.Drawing.Color":
                             argb = BitConverter.GetBytes((uint) ((WzDoubleProperty) settingProp).Value);
-                            fieldInfo.SetValue(null, System.Drawing.Color.FromArgb(argb[3], argb[2], argb[1], argb[0]));
+                            fieldInfo.SetValue(null, Color.FromArgb(argb[3], argb[2], argb[1], argb[0]));
                             break;
                         case "System.Int32":
                             fieldInfo.SetValue(null, InfoTool.GetInt(settingProp));
@@ -87,7 +88,7 @@ namespace MapleLib.WzLib
                             break;*/
                         case "System.Drawing.Size":
                             fieldInfo.SetValue(null,
-                                new System.Drawing.Size(((WzVectorProperty) settingProp).X.Value,
+                                new Size(((WzVectorProperty) settingProp).X.Value,
                                     ((WzVectorProperty) settingProp).Y.Value));
                             break;
                         case "System.String":
@@ -200,7 +201,7 @@ namespace MapleLib.WzLib
                         break;
                     case "System.Drawing.Color":
                         SetWzProperty(settingsImage, settingName, WzPropertyType.Double,
-                            (double) ((System.Drawing.Color) fieldInfo.GetValue(null)).ToArgb());
+                            (double) ((Color) fieldInfo.GetValue(null)).ToArgb());
                         break;
                     case "System.Int32":
                         SetWzProperty(settingsImage, settingName, WzPropertyType.Int, fieldInfo.GetValue(null));

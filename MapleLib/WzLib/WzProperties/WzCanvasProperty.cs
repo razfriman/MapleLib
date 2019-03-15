@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.DrawingCore;
 using System.IO;
 using MapleLib.WzLib.Util;
-using System;
-using System.DrawingCore;
 
 namespace MapleLib.WzLib.WzProperties
 {

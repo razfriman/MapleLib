@@ -4,6 +4,7 @@ using System.DrawingCore;
 using System.DrawingCore.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Xml;
 using MapleLib.WzLib.Util;
 using MapleLib.WzLib.WzProperties;
@@ -263,8 +264,8 @@ namespace MapleLib.WzLib
         {
         }
 
-        protected NoBase64DataException(System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context)
+        protected NoBase64DataException(SerializationInfo info,
+            StreamingContext context)
         {
         }
     }

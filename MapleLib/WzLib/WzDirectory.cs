@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using MapleLib.WzLib.Util;
-using System;
 
 namespace MapleLib.WzLib
 {
@@ -230,8 +230,6 @@ namespace MapleLib.WzLib
                     case 4:
                         fname = reader.ReadString();
                         rememberPos = reader.BaseStream.Position;
-                        break;
-                    default:
                         break;
                 }
 

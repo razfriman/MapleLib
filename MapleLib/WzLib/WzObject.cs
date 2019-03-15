@@ -1,5 +1,6 @@
 ﻿using System;
 using System.DrawingCore;
+using Point = System.Drawing.Point;
 
 namespace MapleLib.WzLib
 {
@@ -133,7 +134,7 @@ namespace MapleLib.WzLib
             throw new NotImplementedException();
         }
 
-        public virtual System.Drawing.Point GetPoint()
+        public virtual Point GetPoint()
         {
             throw new NotImplementedException();
         }
