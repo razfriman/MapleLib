@@ -191,9 +191,9 @@ namespace MapleLib.PacketLib
                                 _riv.Crypt(data);
                                 MapleCustomEncryption.Decrypt(data);
 
-                                if (data.Length != 0 && OnPacketReceived != null)
+                                if (data.Length != 0)
                                 {
-                                    OnPacketReceived(new PacketReader(data), false);
+                                    OnPacketReceived?.Invoke(new PacketReader(data), false);
                                 }
 
                                 WaitForData();

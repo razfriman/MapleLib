@@ -21,12 +21,8 @@ namespace MapleLib.WzLib.Util
         #endregion
 
         #region Methods
-        public string ReadStringAtOffset(long Offset)
-        {
-            return ReadStringAtOffset(Offset, false);
-        }
 
-        public string ReadStringAtOffset(long Offset, bool readByte)
+        public string ReadStringAtOffset(long Offset, bool readByte = false)
         {
             var CurrentOffset = BaseStream.Position;
             BaseStream.Position = Offset;
@@ -53,14 +49,7 @@ namespace MapleLib.WzLib.Util
             if (smallLength > 0) // Unicode
             {
                 ushort mask = 0xAAAA;
-                if (smallLength == sbyte.MaxValue)
-                {
-                    length = ReadInt32();
-                }
-                else
-                {
-                    length = smallLength;
-                }
+                length = smallLength == sbyte.MaxValue ? ReadInt32() : smallLength;
                 if (length <= 0)
                 {
                     return string.Empty;
@@ -127,21 +116,13 @@ namespace MapleLib.WzLib.Util
         public int ReadCompressedInt()
         {
             var sb = base.ReadSByte();
-            if (sb == sbyte.MinValue)
-            {
-                return ReadInt32();
-            }
-            return sb;
+            return sb == sbyte.MinValue ? ReadInt32() : sb;
         }
 
         public long ReadLong()
         {
             var sb = base.ReadSByte();
-            if (sb == sbyte.MinValue)
-            {
-                return ReadInt64();
-            }
-            return sb;
+            return sb == sbyte.MinValue ? ReadInt64() : sb;
         }
 
         public uint ReadOffset()

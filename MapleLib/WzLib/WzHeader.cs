@@ -17,11 +17,10 @@
 
 		public static WzHeader GetDefault()
 		{
-			var header = new WzHeader();
-			header.Ident = "PKG1";
-			header.Copyright = "Package file v1.0 Copyright 2002 Wizet, ZMS";
-			header.FStart = 60;
-			header.FSize = 0;
+			var header = new WzHeader
+			{
+				Ident = "PKG1", Copyright = "Package file v1.0 Copyright 2002 Wizet, ZMS", FStart = 60, FSize = 0
+			};
 			return header;
 		}
 	}

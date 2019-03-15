@@ -18,10 +18,8 @@ namespace MapleLib.WzLib.Util
         #endregion
 
         #region Constructors
-        public WzBinaryWriter(Stream output, byte[] WzIv)
-            : this(output, WzIv, false) { }
 
-        public WzBinaryWriter(Stream output, byte[] WzIv, bool leaveOpen)
+        public WzBinaryWriter(Stream output, byte[] WzIv, bool leaveOpen = false)
             : base(output)
         {
             WzKey = WzKeyGenerator.GenerateWzKey(WzIv);

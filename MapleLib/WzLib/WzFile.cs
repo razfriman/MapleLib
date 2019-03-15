@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using System;
+using System.Linq;
 using MapleLib.WzLib.Util;
 using MapleLib.WzLib.WzProperties;
 using Microsoft.Extensions.Logging;
@@ -192,11 +193,13 @@ namespace MapleLib.WzLib
 
             var reader = new WzBinaryReader(File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read), WzIv);
 
-            Header = new WzHeader();
-            Header.Ident = reader.ReadString(4);
-            Header.FSize = reader.ReadUInt64();
-            Header.FStart = reader.ReadUInt32();
-            Header.Copyright = reader.ReadNullTerminatedString();
+            Header = new WzHeader
+            {
+                Ident = reader.ReadString(4),
+                FSize = reader.ReadUInt64(),
+                FStart = reader.ReadUInt32(),
+                Copyright = reader.ReadNullTerminatedString()
+            };
             reader.ReadBytes((int)(Header.FStart - reader.BaseStream.Position));
             reader.Header = Header;
             version = reader.ReadInt16();
@@ -282,12 +285,7 @@ namespace MapleLib.WzLib
             d = VersionHash & 0xFF;
             DecryptedVersionNumber = (0xff ^ a ^ b ^ c ^ d);
 
-            if (EncryptedVersionNumber == DecryptedVersionNumber)
-            {
-                return Convert.ToUInt32(VersionHash);
-            }
-
-            return 0;
+            return EncryptedVersionNumber == DecryptedVersionNumber ? Convert.ToUInt32(VersionHash) : (uint) 0;
         }
 
         private void CreateVersionHash()
@@ -318,8 +316,7 @@ namespace MapleLib.WzLib
             wzDir.GenerateDataFile(tempFile);
             WzTool.StringCache.Clear();
             var totalLen = wzDir.GetImgOffsets(wzDir.GetOffsets(Header.FStart + 2));
-            var wzWriter = new WzBinaryWriter(File.Create(path), WzIv);
-            wzWriter.Hash = versionHash;
+            var wzWriter = new WzBinaryWriter(File.Create(path), WzIv) {Hash = versionHash};
             Header.FSize = totalLen - Header.FStart;
             for (var i = 0; i < 4; i++)
             {
@@ -705,10 +702,7 @@ namespace MapleLib.WzLib
                         }
                 }
             }
-            if (curObj == null)
-            {
-                return null;
-            }
+
             return curObj;
         }
 
@@ -730,15 +724,7 @@ namespace MapleLib.WzLib
 
             if (strWildCard[0] == '*' && strWildCard.Length > 1)
             {
-                for (var index = 0; index < strCompare.Length; index++)
-                {
-                    if (StrMatch(strWildCard.Substring(1), strCompare.Substring(index)))
-                    {
-                        {
-                            return true;
-                        }
-                    }
-                }
+                return strCompare.Where((t, index) => StrMatch(strWildCard.Substring(1), strCompare.Substring(index))).Any();
             }
             else if (strWildCard[0] == '*')
             {

@@ -218,12 +218,11 @@ namespace MapleLib.WzLib
                 dirOffset = reader.ReadOffset();
                 if (type == 3)
                 {
-                    var subDir = new WzDirectory(reader, fname, hash, WzIv, wzFile);
-                    subDir.BlockSize = fsize;
-                    subDir.Checksum = dirChecksum;
-                    subDir.Offset = dirOffset;
-                    subDir.Parent = this;
-                    subDirs.Add(subDir);
+	                var subDir = new WzDirectory(reader, fname, hash, WzIv, wzFile)
+	                {
+		                BlockSize = fsize, Checksum = dirChecksum, Offset = dirOffset, Parent = this
+	                };
+	                subDirs.Add(subDir);
                 }
                 else
                 {
@@ -283,30 +282,30 @@ namespace MapleLib.WzLib
 			MemoryStream memStream = null;
 			var fileWrite = new FileStream(fileName, FileMode.Append, FileAccess.Write);
             WzImage img;
-			for (var i = 0; i < images.Count; i++)
+			foreach (var image in images)
 			{
-                img = images[i];
-                if (img.Changed)
-                {
-                    memStream = new MemoryStream();
-                    imgWriter = new WzBinaryWriter(memStream, WzIv);
-                    img.SaveImage(imgWriter);
-                    img.checksum = 0;
-                    foreach (var b in memStream.ToArray())
-                    {
-                        img.checksum += b;
-                    }
-                    img.tempFileStart = fileWrite.Position;
-                    fileWrite.Write(memStream.ToArray(), 0, (int)memStream.Length);
-                    img.tempFileEnd = fileWrite.Position;
-                    memStream.Dispose();
-                }
-                else
-                {
-                    img.tempFileStart = img.offset;
-                    img.tempFileEnd = img.offset + img.size;
-                }
-                img.UnparseImage();
+				img = image;
+				if (img.Changed)
+				{
+					memStream = new MemoryStream();
+					imgWriter = new WzBinaryWriter(memStream, WzIv);
+					img.SaveImage(imgWriter);
+					img.checksum = 0;
+					foreach (var b in memStream.ToArray())
+					{
+						img.checksum += b;
+					}
+					img.tempFileStart = fileWrite.Position;
+					fileWrite.Write(memStream.ToArray(), 0, (int)memStream.Length);
+					img.tempFileEnd = fileWrite.Position;
+					memStream.Dispose();
+				}
+				else
+				{
+					img.tempFileStart = img.offset;
+					img.tempFileEnd = img.offset + img.size;
+				}
+				img.UnparseImage();
 
 				var nameLen = WzTool.GetWzObjectValueLength(img.name, 4);
 				size += nameLen;
@@ -319,26 +318,24 @@ namespace MapleLib.WzLib
 				offsetSize += WzTool.GetCompressedIntLength(imgLen);
 				offsetSize += WzTool.GetCompressedIntLength(img.Checksum);
 				offsetSize += 4;
-                if (img.Changed)
-                {
-	                imgWriter.Close();
-                }
+				if (img.Changed)
+				{
+					imgWriter.Close();
+				}
 			}
 			fileWrite.Close();
 
-            WzDirectory dir;
-			for (var i = 0; i < subDirs.Count; i++)
+			foreach (var subDir in subDirs)
 			{
-                dir = subDirs[i];
-				var nameLen = WzTool.GetWzObjectValueLength(dir.name, 3);
+				var nameLen = WzTool.GetWzObjectValueLength(subDir.name, 3);
 				size += nameLen;
-				size += subDirs[i].GenerateDataFile(fileName);
-				size += WzTool.GetCompressedIntLength(dir.size);
-				size += WzTool.GetCompressedIntLength(dir.checksum);
+				size += subDir.GenerateDataFile(fileName);
+				size += WzTool.GetCompressedIntLength(subDir.size);
+				size += WzTool.GetCompressedIntLength(subDir.checksum);
 				size += 4;
 				offsetSize += nameLen;
-				offsetSize += WzTool.GetCompressedIntLength(dir.size);
-				offsetSize += WzTool.GetCompressedIntLength(dir.checksum);
+				offsetSize += WzTool.GetCompressedIntLength(subDir.size);
+				offsetSize += WzTool.GetCompressedIntLength(subDir.checksum);
 				offsetSize += 4;
 			}
 			return size;

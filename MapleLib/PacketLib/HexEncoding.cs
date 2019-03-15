@@ -26,12 +26,7 @@ namespace MapleLib.PacketLib
                 return true;
             }
 
-            if (numChar >= num1 && numChar < (num1 + 10))
-            {
-                return true;
-            }
-
-            return false;
+            return numChar >= num1 && numChar < (num1 + 10);
         }
 
         /// <summary>

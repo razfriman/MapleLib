@@ -14,6 +14,7 @@ namespace MapleLib.WzLib
         //TODO: nest wzproperties in a wzsubproperty inside of WzImage
 
         #region Fields
+
         internal bool parsed;
         internal string name;
         internal int size, checksum;
@@ -26,13 +27,18 @@ namespace MapleLib.WzLib
         internal long tempFileEnd;
         internal bool changed;
         internal bool parseEverything;
+
         #endregion
 
         #region Constructors\Destructors
+
         /// <summary>
         /// Creates a blank WzImage
         /// </summary>
-        public WzImage() { }
+        public WzImage()
+        {
+        }
+
         /// <summary>
         /// Creates a WzImage with the given name
         /// </summary>
@@ -41,16 +47,18 @@ namespace MapleLib.WzLib
         {
             this.name = name;
         }
+
         public WzImage(string name, Stream dataStream, WzMapleVersion mapleVersion)
         {
             this.name = name;
             reader = new WzBinaryReader(dataStream, WzTool.GetIvByMapleVersion(mapleVersion));
         }
+
         internal WzImage(string name, WzBinaryReader reader)
         {
             this.name = name;
             this.reader = reader;
-            blockStart = (int)reader.BaseStream.Position;
+            blockStart = (int) reader.BaseStream.Position;
         }
 
         public override void Dispose()
@@ -68,67 +76,97 @@ namespace MapleLib.WzLib
                 properties = null;
             }
         }
+
         #endregion
 
         #region Inherited Members
+
         /// <summary>
-		/// The parent of the object
-		/// </summary>
-		public override WzObject Parent { get => parent;
+        /// The parent of the object
+        /// </summary>
+        public override WzObject Parent
+        {
+            get => parent;
             internal set => parent = value;
         }
+
         /// <summary>
         /// The name of the image
         /// </summary>
-        public override string Name { get => name;
+        public override string Name
+        {
+            get => name;
             set => name = value;
         }
+
         public override WzFile WzFileParent => Parent?.WzFileParent;
 
         /// <summary>
         /// Is the object parsed
         /// </summary>
-        public bool Parsed { get => parsed;
+        public bool Parsed
+        {
+            get => parsed;
             set => parsed = value;
         }
+
         /// <summary>
         /// Was the image changed
         /// </summary>
-        public bool Changed { get => changed;
+        public bool Changed
+        {
+            get => changed;
             set => changed = value;
         }
+
         /// <summary>
         /// The size in the wz file of the image
         /// </summary>
-        public int BlockSize { get => size;
+        public int BlockSize
+        {
+            get => size;
             set => size = value;
         }
+
         /// <summary>
         /// The checksum of the image
         /// </summary>
-        public int Checksum { get => checksum;
+        public int Checksum
+        {
+            get => checksum;
             set => checksum = value;
         }
+
         /// <summary>
         /// The offset of the image
         /// </summary>
-        public uint Offset { get => offset;
+        public uint Offset
+        {
+            get => offset;
             set => offset = value;
         }
+
         public int BlockStart => blockStart;
 
         /// <summary>
         /// The WzObjectType of the image
         /// </summary>
-        public override WzObjectType ObjectType { get { if (reader != null)
+        public override WzObjectType ObjectType
+        {
+            get
             {
-                if (!parsed)
+                if (reader != null)
                 {
-                    ParseImage();
+                    if (!parsed)
+                    {
+                        ParseImage();
+                    }
                 }
-            }
 
-            return WzObjectType.Image; } }
+                return WzObjectType.Image;
+            }
+        }
+
         /// <summary>
         /// The properties contained in the image
         /// </summary>
@@ -140,6 +178,7 @@ namespace MapleLib.WzLib
                 {
                     ParseImage();
                 }
+
                 return properties;
             }
         }
@@ -151,8 +190,7 @@ namespace MapleLib.WzLib
                 ParseImage();
             }
 
-            var clone = new WzImage(name);
-            clone.changed = true;
+            var clone = new WzImage(name) {changed = true};
             foreach (var prop in properties)
             {
                 clone.AddProperty(prop.DeepClone());
@@ -197,15 +235,17 @@ namespace MapleLib.WzLib
                 }
             }
         }
-        #endregion 
+
+        #endregion
 
         #region Custom Members
+
         /// <summary>
-		/// Gets a WzImageProperty from a path
-		/// </summary>
-		/// <param name="path">path to object</param>
-		/// <returns>the selected WzImageProperty</returns>
-		public WzImageProperty GetFromPath(string path)
+        /// Gets a WzImageProperty from a path
+        /// </summary>
+        /// <param name="path">path to object</param>
+        /// <returns>the selected WzImageProperty</returns>
+        public WzImageProperty GetFromPath(string path)
         {
             if (reader != null)
             {
@@ -215,7 +255,7 @@ namespace MapleLib.WzLib
                 }
             }
 
-            var segments = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var segments = path.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             if (segments[0] == "..")
             {
                 return null;
@@ -234,11 +274,13 @@ namespace MapleLib.WzLib
                         break;
                     }
                 }
+
                 if (!foundChild)
                 {
                     return null;
                 }
             }
+
             return ret;
         }
 
@@ -256,6 +298,7 @@ namespace MapleLib.WzLib
 
             properties.Add(prop);
         }
+
         public void AddProperties(List<WzImageProperty> props)
         {
             foreach (var prop in props)
@@ -263,6 +306,7 @@ namespace MapleLib.WzLib
                 AddProperty(prop);
             }
         }
+
         /// <summary>
         /// Removes a property by name
         /// </summary>
@@ -277,6 +321,7 @@ namespace MapleLib.WzLib
             prop.Parent = null;
             properties.Remove(prop);
         }
+
         public void ClearProperties()
         {
             foreach (var prop in properties)
@@ -289,24 +334,29 @@ namespace MapleLib.WzLib
 
         public override void Remove()
         {
-            ((WzDirectory)Parent).RemoveImage(this);
+            ((WzDirectory) Parent).RemoveImage(this);
         }
+
         #endregion
 
         #region Parsing Methods
+
         /// <summary>
-		/// Parses the image from the wz filetod
-		/// </summary>
+        /// Parses the image from the wz filetod
+        /// </summary>
         public void ParseImage(bool parseEverything)
         {
             if (Parsed)
             {
                 return;
             }
+
             if (Changed)
             {
-                Parsed = true; return;
+                Parsed = true;
+                return;
             }
+
             this.parseEverything = parseEverything;
             var originalPos = reader.BaseStream.Position;
             reader.BaseStream.Position = offset;
@@ -321,15 +371,21 @@ namespace MapleLib.WzLib
         }
 
         /// <summary>
-		/// Parses the image from the wz filetod
-		/// </summary>
-		public void ParseImage()
+        /// Parses the image from the wz filetod
+        /// </summary>
+        public void ParseImage()
         {
             if (Parsed)
             {
                 return;
             }
-            if (Changed) { Parsed = true; return; }
+
+            if (Changed)
+            {
+                Parsed = true;
+                return;
+            }
+
             parseEverything = false;
             var originalPos = reader.BaseStream.Position;
             reader.BaseStream.Position = offset;
@@ -353,6 +409,7 @@ namespace MapleLib.WzLib
                     blockData = reader.ReadBytes(size);
                     reader.BaseStream.Position = blockStart;
                 }
+
                 return blockData;
             }
         }
@@ -377,7 +434,7 @@ namespace MapleLib.WzLib
                 imgProp.AddProperties(WzProperties);
                 imgProp.WriteValue(writer);
                 writer.StringCache.Clear();
-                size = (int)(writer.BaseStream.Position - startPos);
+                size = (int) (writer.BaseStream.Position - startPos);
             }
             else
             {
@@ -401,6 +458,7 @@ namespace MapleLib.WzLib
                 throw new Exception("Under Construction");
             }
         }
+
         #endregion
     }
 }

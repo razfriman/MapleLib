@@ -112,12 +112,7 @@ namespace MapleLib.WzLib.WzStructure
 
         public static WzStringProperty SetOptionalTranslatedInt(int? value)
         {
-            if (value.HasValue)
-            {
-                return SetString(value.Value.ToString());
-            }
-
-            return null;
+            return value.HasValue ? SetString(value.Value.ToString()) : null;
         }
     }
 }

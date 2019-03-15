@@ -8,11 +8,6 @@ namespace MapleLib.MapleCryptoLib
     public class MapleCrypto
     {
         /// <summary>
-        /// (private) IV used in the packet encryption
-        /// </summary>
-        private byte[] _iv;
-
-        /// <summary>
         /// Version of MapleStory used in encryption
         /// </summary>
         private short _mapleVersion;
@@ -20,11 +15,7 @@ namespace MapleLib.MapleCryptoLib
         /// <summary>
         /// (public) IV used in the packet encryption
         /// </summary>
-        public byte[] IV
-        {
-            get => _iv;
-            set => _iv = value;
-        }
+        public byte[] IV { get; set; }
 
         /// <summary>
         /// Creates a new MapleCrypto class
@@ -33,14 +24,14 @@ namespace MapleLib.MapleCryptoLib
         /// <param name="mapleVersion">Version of MapleStory</param>
         public MapleCrypto(byte[] iv, short mapleVersion)
         {
-            _iv = iv;
+            IV = iv;
             _mapleVersion = mapleVersion;
         }
 
         /// <summary>
         /// Updates the current IV
         /// </summary>
-        public void UpdateIV() => _iv = GetNewIV(_iv);
+        public void UpdateIV() => IV = GetNewIV(IV);
 
         /// <summary>
         /// Encrypts data with AES and updates the IV
@@ -48,7 +39,7 @@ namespace MapleLib.MapleCryptoLib
         /// <param name="data">The data to crypt</param>
         public void Crypt(byte[] data)
         {
-            AesEncryption.AesCrypt(_iv, data, data.Length);
+            AesEncryption.AesCrypt(IV, data, data.Length);
             UpdateIV();
         }
 
@@ -118,7 +109,7 @@ namespace MapleLib.MapleCryptoLib
         public byte[] GetHeaderToClient(int size)
         {
             var header = new byte[4];
-            var a = _iv[3] * 0x100 + _iv[2];
+            var a = IV[3] * 0x100 + IV[2];
             a ^= -(_mapleVersion + 1);
             var b = a ^ size;
             header[0] = (byte)(a % 0x100);
@@ -174,9 +165,9 @@ namespace MapleLib.MapleCryptoLib
         /// <returns>The packet is valid</returns>
         public bool CheckPacketToServer(byte[] packet)
         {
-            var a = packet[0] ^ _iv[2];
+            var a = packet[0] ^ IV[2];
             int b = _mapleVersion;
-            var c = packet[1] ^ _iv[3];
+            var c = packet[1] ^ IV[3];
             var d = _mapleVersion >> 8;
             return (a == b && c == d);
         }

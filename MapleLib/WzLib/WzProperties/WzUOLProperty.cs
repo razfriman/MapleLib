@@ -29,12 +29,7 @@ namespace MapleLib.WzLib.WzProperties
             val = (string)value;
         }
 
-        public override WzImageProperty DeepClone()
-        {
-            var clone = new WzUOLProperty(name, val);
-            clone.linkVal = null;
-            return clone;
-        }
+        public override WzImageProperty DeepClone() => new WzUOLProperty(name, val) {linkVal = null};
 
         public override object WzValue
         {

@@ -17,16 +17,6 @@ namespace MapleLib.PacketLib
         private readonly Socket _socket;
 
 		/// <summary>
-		/// The Recieved packet crypto manager
-		/// </summary>
-        private MapleCrypto _riv;
-
-		/// <summary>
-		/// The Sent packet crypto manager
-		/// </summary>
-        private MapleCrypto _siv;
-
-		/// <summary>
 		/// Method to handle packets received
 		/// </summary>
         public delegate void PacketReceivedHandler(PacketReader packet);
@@ -44,22 +34,14 @@ namespace MapleLib.PacketLib
 		/// <summary>
 		/// The Recieved packet crypto manager
 		/// </summary>
-		public MapleCrypto RIV
-		{
-            get => _riv;
-			set => _riv = value;
-		}
+		public MapleCrypto RIV { get; set; }
 
 		/// <summary>
 		/// The Sent packet crypto manager
 		/// </summary>
-		public MapleCrypto SIV
-		{
-			get => _siv;
-			set => _siv = value;
-		}
+		public MapleCrypto SIV { get; set; }
 
-        /// <summary>
+		/// <summary>
         /// The Monitor's socket
         /// </summary>
         public Socket Socket => _socket;

@@ -126,15 +126,7 @@ namespace MapleLib.WzLib.Util
 
         private static double GetDecryptionSuccessRate(string wzPath, WzMapleVersion encVersion, ref short? version)
         {
-            WzFile wzf;
-            if (version == null)
-            {
-                wzf = new WzFile(wzPath, encVersion);
-            }
-            else
-            {
-                wzf = new WzFile(wzPath, (short)version, encVersion);
-            }
+            var wzf = version == null ? new WzFile(wzPath, encVersion) : new WzFile(wzPath, (short)version, encVersion);
 
             wzf.ParseWzFile();
             if (version == null)
