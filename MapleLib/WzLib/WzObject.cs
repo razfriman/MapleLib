@@ -1,137 +1,161 @@
 ﻿using System;
 using System.DrawingCore;
-using Point = System.Drawing.Point;
+using System.IO;
+using MapleLib.WzLib;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace MapleLib.WzLib
+/// <summary>
+/// An abstract class for wz objects
+/// </summary>
+public abstract class WzObject : IDisposable
 {
-    /// <inheritdoc />
     /// <summary>
-    /// An abstract class for wz objects
+    /// Returns the parent object
     /// </summary>
-    public abstract class WzObject : IDisposable
+    [JsonIgnore]
+    public WzObject Parent { get; internal set; }
+
+    /// <summary>
+    /// The name of the object
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// The WzObjectType of the object
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public abstract WzObjectType ObjectType { get; }
+
+    /// <summary>
+    /// Returns the parent WZ File
+    /// </summary>
+    [JsonIgnore]
+    public abstract WzFile WzFileParent { get; }
+
+    public abstract void Dispose();
+
+    public abstract void Remove();
+
+    public WzObject this[string name]
     {
-        public abstract void Dispose();
-
-        /// <summary>
-        /// The name of the object
-        /// </summary>
-        public abstract string Name { get; set; }
-
-        /// <summary>
-        /// The WzObjectType of the object
-        /// </summary>
-        public abstract WzObjectType ObjectType { get; }
-
-        /// <summary>
-        /// Returns the parent object
-        /// </summary>
-        public abstract WzObject Parent { get; internal set; }
-
-        /// <summary>
-        /// Returns the parent WZ File
-        /// </summary>
-        public abstract WzFile WzFileParent { get; }
-
-        public WzObject this[string name]
+        get
         {
-            get
+            if (this is WzFile wzFile)
             {
-                if (this is WzFile)
-                {
-                    return ((WzFile) this)[name];
-                }
-
-                if (this is WzDirectory)
-                {
-                    return ((WzDirectory) this)[name];
-                }
-
-                if (this is WzImage)
-                {
-                    return ((WzImage) this)[name];
-                }
-
-                if (this is WzImageProperty)
-                {
-                    return ((WzImageProperty) this)[name];
-                }
-
-                throw new NotImplementedException();
+                return wzFile[name];
             }
-        }
 
-        public string FullPath
-        {
-            get
+            if (this is WzDirectory wzDirectory)
             {
-                if (this is WzFile)
-                {
-                    return ((WzFile) this).WzDirectory.Name;
-                }
-
-                var result = Name;
-                var currObj = this;
-                while (currObj.Parent != null)
-                {
-                    currObj = currObj.Parent;
-                    result = currObj.Name + @"\" + result;
-                }
-
-                return result;
+                return wzDirectory[name];
             }
+
+            if (this is WzImage wzImage)
+            {
+                return wzImage[name];
+            }
+
+            if (this is WzImageProperty wzImageProperty)
+            {
+                return wzImageProperty[name];
+            }
+
+            return null;
         }
+    }
 
-        public virtual object WzValue => null;
-
-        public abstract void Remove();
-
-        #region Cast Values
-
-        public virtual int GetInt()
+    [JsonIgnore]
+    public string FullPath
+    {
+        get
         {
-            throw new NotImplementedException();
-        }
+            if (this is WzFile wzFile)
+            {
+                return wzFile.WzDirectory.Name;
+            }
 
-        public virtual short GetShort()
+            var result = Name;
+            var currObj = this;
+            while (currObj.Parent != null)
+            {
+                currObj = currObj.Parent;
+                result = currObj.Name + @"\" + result;
+            }
+
+            return result;
+        }
+    }
+
+    [JsonIgnore] public virtual object WzValue => null;
+
+    #region Cast Values
+
+    public virtual int GetInt()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual short GetShort()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual long GetLong()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual float GetFloat()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual double GetDouble()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual string GetString()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual Point GetPoint()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual Bitmap GetBitmap()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual byte[] GetBytes()
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    public void Export(string path, JsonSerializer serializer = null)
+    {
+        using (var stream = File.OpenWrite(path))
         {
-            throw new NotImplementedException();
+            Export(stream, serializer);
         }
+    }
 
-        public virtual long GetLong()
+    public void Export(Stream stream, JsonSerializer serializer = null)
+    {
+        using (var sr = new StreamWriter(stream))
+        using (var writer = new JsonTextWriter(sr))
         {
-            throw new NotImplementedException();
+            serializer = serializer ?? new JsonSerializer
+            {
+                Formatting = Formatting.Indented
+            };
+            serializer.Serialize(writer, this);
         }
-
-        public virtual float GetFloat()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual double GetDouble()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual string GetString()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual Point GetPoint()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual Bitmap GetBitmap()
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual byte[] GetBytes()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

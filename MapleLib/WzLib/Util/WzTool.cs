@@ -133,7 +133,7 @@ namespace MapleLib.WzLib.Util
             wzf.ParseWzFile();
             if (version == null)
             {
-                version = wzf.version;
+                version = wzf.FileVersion;
             }
 
             var recognizedChars = 0;

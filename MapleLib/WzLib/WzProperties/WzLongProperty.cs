@@ -25,20 +25,11 @@ namespace MapleLib.WzLib.WzProperties
 
         public override WzImageProperty DeepClone()
         {
-            var clone = new WzLongProperty(name, val);
+            var clone = new WzLongProperty(Name, val);
             return clone;
         }
 
         public override object WzValue => Value;
-
-        /// <summary>
-        /// The parent of the object
-        /// </summary>
-        public override WzObject Parent
-        {
-            get => parent;
-            internal set => parent = value;
-        }
 
         /*/// <summary>
         /// The image that this property is contained in
@@ -48,15 +39,6 @@ namespace MapleLib.WzLib.WzProperties
         /// The WzPropertyType of the property
         /// </summary>
         public override WzPropertyType PropertyType => WzPropertyType.Long;
-
-        /// <summary>
-        /// The name of the property
-        /// </summary>
-        public override string Name
-        {
-            get => name;
-            set => name = value;
-        }
 
         public override void WriteValue(WzBinaryWriter writer)
         {
