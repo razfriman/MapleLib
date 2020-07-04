@@ -25,13 +25,13 @@ namespace MapleLib.WzLib.WzProperties
         {
             if (value is Point)
             {
-                x.val = ((Point) value).X;
-                y.val = ((Point) value).Y;
+                x.Value = ((Point) value).X;
+                y.Value = ((Point) value).Y;
             }
             else
             {
-                x.val = ((Size) value).Width;
-                y.val = ((Size) value).Height;
+                x.Value = ((Size) value).Width;
+                y.Value = ((Size) value).Height;
             }
         }
 
@@ -149,15 +149,9 @@ namespace MapleLib.WzLib.WzProperties
 
         #region Cast Values
 
-        public override Point GetPoint()
-        {
-            return new Point(x.val, y.val);
-        }
+        public override Point GetPoint() => new Point(x.Value, y.Value);
 
-        public override string ToString()
-        {
-            return "X: " + x.val + ", Y: " + y.val;
-        }
+        public override string ToString() => $"X: {x.Value}, Y: {y.Value}";
 
         #endregion
     }

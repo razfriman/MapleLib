@@ -1,12 +1,10 @@
 ﻿#define UOLRES
 
 using System.Collections.Generic;
-using System.DrawingCore;
-using System.IO;
+using System.Drawing;
 using MapleLib.Helper;
 using MapleLib.WzLib.Util;
 using Microsoft.Extensions.Logging;
-using Point = System.Drawing.Point;
 
 namespace MapleLib.WzLib.WzProperties
 {

@@ -11,9 +11,6 @@ namespace MapleLib.WzLib.WzProperties
         internal string name;
         internal long val;
 
-        internal WzObject parent;
-        //internal WzImage imgParent;
-
         #endregion
 
         #region Inherited Members

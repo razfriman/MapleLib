@@ -12,10 +12,7 @@ namespace MapleLib.Helper
             {
                 if (_log == null)
                 {
-                    var factory = new LoggerFactory()
-                        .AddConsole()
-                        .AddDebug();
-
+                    var factory = new LoggerFactory();
                     _log = factory.CreateLogger("MapleLib");
                 }
 

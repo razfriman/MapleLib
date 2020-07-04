@@ -15,9 +15,9 @@ namespace MapleLib.Tests.WzLib
 
             using (var ms = new MemoryStream())
             {
-                file.ExportJson(ms);
+                file.Export(ms);
                 var contents = Encoding.ASCII.GetString(ms.ToArray());
-                Assert.AreEqual(257, contents.Length);
+                Assert.AreEqual(374, contents.Length);
             }
         }
     }
